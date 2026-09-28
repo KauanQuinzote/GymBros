@@ -63,6 +63,13 @@
   - Modularização dos dados de áudios em schemas tipados por categoria (`soundboardData.ts`).
 - [x] **Investigação & Fix de Áudio no Mobile vs. Web**:
   - Configuração do modo de áudio nativo (`setAudioModeAsync` com `playsInSilentMode: true` e `interruptionMode: 'duckOthers'`) com fallback automático para TTS.
+- [ ] **Notificações na Barra de Notificação do Celular (Início de Treino do Bro)**:
+  - Disparar notificação do sistema (Android notification shade / status bar) assim que um bro da comunidade iniciar o treino.
+  - Exibir nome do bro, horário e treino iniciado (ex: *"Kauan acabou de iniciar o treino de Peito + Ombro!"*).
+  - Permitir toque na notificação para abrir direto o app e acompanhar o status ou mandar uma provocação/motivação.
+- [ ] **Hospedagem de Áudios no Supabase Storage**:
+  - Criar bucket público `soundboard-audios` no Supabase Storage para hospedar todos os memes e efeitos sonoros com CDN rápida e sem bloqueio 403.
+  - Atualizar `soundboardData.ts` para consumir URLs oficiais do Storage.
 
 ### 6. Gamificação, Desafios & Conquistas
 - [ ] **Expansão de Conquistas (Achievements)**: Adicionar catálogo amplo de categorias e conquistas na gamificação (no mínimo 50 achievements divididos em categorias como Força, Constância, Social, Cardio, Desafios, etc.).
