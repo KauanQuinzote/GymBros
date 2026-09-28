@@ -67,6 +67,8 @@
   - Disparar notificação do sistema (Android notification shade / status bar) assim que um bro da comunidade iniciar o treino.
   - Exibir nome do bro, horário e treino iniciado (ex: *"Kauan acabou de iniciar o treino de Peito + Ombro!"*).
   - Permitir toque na notificação para abrir direto o app e acompanhar o status ou mandar uma provocação/motivação.
+- [ ] **Remoção de Provocações Automáticas ao Finalizar Treino**:
+  - Eliminar qualquer lógica que dispare provocações ou áudios automáticos no término do treino (provocações e memes devem ser 100% manuais e intencionais disparados pelos bros).
 - [ ] **Hospedagem de Áudios no Supabase Storage**:
   - Criar bucket público `soundboard-audios` no Supabase Storage para hospedar todos os memes e efeitos sonoros com CDN rápida e sem bloqueio 403.
   - Atualizar `soundboardData.ts` para consumir URLs oficiais do Storage.
