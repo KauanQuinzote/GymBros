@@ -10,7 +10,7 @@ import { HistoryScreen } from './src/features/history';
 import { BromanceProvider, BromanceScreen, NudgeModal } from './src/features/bromance';
 import { Home, Dumbbell, Calendar, Award, Flame } from 'lucide-react-native';
 
-type TabType = 'home' | 'workout' | 'routines' | 'bromance' | 'history';
+type TabType = 'home' | 'workout' | 'routines' | 'chilling' | 'history';
 
 const MainNavigation: React.FC = () => {
   const { activeProfile } = useAuth();
@@ -24,7 +24,7 @@ const MainNavigation: React.FC = () => {
   if (activeSession && activeTab === 'workout') {
     return (
       <SafeAreaView className="flex-1 bg-[#0A0D14]">
-        <NudgeModal onReplyPress={() => setActiveTab('bromance')} />
+        <NudgeModal onReplyPress={() => setActiveTab('chilling')} />
         <ActiveWorkoutScreen onFinish={() => setActiveTab('home')} />
       </SafeAreaView>
     );
@@ -33,7 +33,7 @@ const MainNavigation: React.FC = () => {
   return (
     <SafeAreaView className="flex-1 bg-[#0A0D14]">
       <StatusBar barStyle="light-content" backgroundColor="#0A0D14" />
-      <NudgeModal onReplyPress={() => setActiveTab('bromance')} />
+      <NudgeModal onReplyPress={() => setActiveTab('chilling')} />
 
       {/* Main Content Area */}
       <View className="flex-1">
@@ -50,7 +50,7 @@ const MainNavigation: React.FC = () => {
         {activeTab === 'routines' && (
           <RoutinesScreen onStartWorkout={() => setActiveTab('workout')} />
         )}
-        {activeTab === 'bromance' && <BromanceScreen />}
+        {activeTab === 'chilling' && <BromanceScreen />}
         {activeTab === 'history' && <HistoryScreen />}
       </View>
 
@@ -92,13 +92,13 @@ const MainNavigation: React.FC = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          className={`items-center py-1 px-2.5 rounded-xl ${activeTab === 'bromance' ? 'bg-[#0A0D14]' : ''}`}
-          onPress={() => setActiveTab('bromance')}
+          className={`items-center py-1 px-2.5 rounded-xl ${activeTab === 'chilling' ? 'bg-[#0A0D14]' : ''}`}
+          onPress={() => setActiveTab('chilling')}
           activeOpacity={0.7}
         >
-          <Flame color={activeTab === 'bromance' ? '#FF453A' : '#64748B'} size={18} />
-          <Text className={`text-[10px] font-semibold mt-1 ${activeTab === 'bromance' ? 'text-[#FF453A] font-bold' : 'text-slate-400'}`}>
-            Bromance
+          <Flame color={activeTab === 'chilling' ? '#FF453A' : '#64748B'} size={18} />
+          <Text className={`text-[10px] font-semibold mt-1 ${activeTab === 'chilling' ? 'text-[#FF453A] font-bold' : 'text-slate-400'}`}>
+            Chilling
           </Text>
         </TouchableOpacity>
 

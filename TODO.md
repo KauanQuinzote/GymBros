@@ -3,13 +3,13 @@
 ## Prioridade Próxima
 
 ### 1. Rebranding & Nomenclaturas
-- [ ] **Renomear Projeto & App**:
+- [x] **Renomear Projeto & App**:
   - Atualizar o nome do projeto de **MyBroth** para **GymBros**.
   - Remover `app_temp` do `app.json` (`name`, `slug`) e do `package.json` (`name`), definindo o nome exibido no celular como **GymBros**.
-- [ ] **Identidade Visual & Ícone do App**:
+- [x] **Identidade Visual & Ícone do App**:
   - Criar e configurar o ícone oficial do **GymBros** seguindo o padrão Apple Minimalist / Neon Dark (1024x1024 px).
   - Configurar ícones adaptativos do Android (`android-icon-foreground.png`, `android-icon-background.png`, `monochromeImage`) e `splash-icon.png`.
-- [ ] **Renomear Romance para Chilling**: Atualizar a feature/seção de romance para **Chilling**.
+- [x] **Renomear Romance para Chilling**: Atualizar a feature/seção de romance para **Chilling**.
 
 ### 2. Sincronização Real-time Cross-Device (PC <-> Celular)
 - [ ] **Servidor de Sync LAN (Dev)** ou **Configuração do Supabase Realtime**:
@@ -19,7 +19,7 @@
     - **Opção B (Supabase Cloud)**: Conectar `EXPO_PUBLIC_SUPABASE_URL` e `EXPO_PUBLIC_SUPABASE_ANON_KEY` com canais de `Presence` e `Broadcast`.
 
 ### 3. Comunidades & Privacidade de Bros
-- [ ] **Sincronização Dinâmica de Perfis do Supabase**:
+- [x] **Sincronização Dinâmica de Perfis do Supabase**:
   - Garantir que o app carregue e liste todos os perfis cadastrados diretamente da tabela `profiles` do Supabase na inicialização (sem ficar restrito ao fallback local que só lista o usuário inicial).
   - Tratar mapeamento de campos (`name`, `avatar_emoji` / `avatar_color`, `pin_code`, `initials`) para que bros como o Fábio e novos usuários apareçam imediatamente na seleção de perfil.
 - [ ] **Múltiplas Comunidades de Bros**: Possibilidade de criar várias comunidades/grupos de amigos.

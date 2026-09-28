@@ -35,7 +35,7 @@ export const ProfileSelectScreen: React.FC = () => {
           className="text-4xl font-extrabold text-slate-50 tracking-tight"
           style={{ fontSize: 36, fontWeight: '800', color: '#F8FAFC', letterSpacing: -0.5 }}
         >
-          MyBroth
+          GymBros
         </Text>
         <Text
           className="text-slate-400 text-base mt-2 text-center"

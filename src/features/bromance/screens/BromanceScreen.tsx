@@ -30,10 +30,10 @@ export const BromanceScreen: React.FC = () => {
         <View className="bg-[#161B26] p-5 mx-5 my-3 rounded-3xl border border-[#262F42]">
           <View className="flex-row items-center gap-2 mb-2">
             <Skull color="#FF453A" size={24} />
-            <Text className="text-white text-lg font-bold">Trash Talk & Soundboard</Text>
+            <Text className="text-white text-lg font-bold">Chilling & Soundboard</Text>
           </View>
           <Text className="text-slate-400 text-xs leading-relaxed">
-            Envie provocações instantâneas e efeitos sonoros virais para o seu bro. Escolha um meme abaixo ou digite o link do áudio!
+            Envie provocações instantâneas e efeitos sonoros virais para o seu bro no Chilling. Escolha um meme abaixo ou toque no soundboard!
           </Text>
         </View>
 
