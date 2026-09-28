@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { useAuth } from '../../auth/context/AuthContext';
 import { Users } from 'lucide-react-native';
 
@@ -7,6 +7,65 @@ interface BroRecipientSelectorProps {
   selectedRecipientId: string | null; // null means 'ALL'
   onSelectRecipient: (recipientId: string | null) => void;
 }
+
+const PulsingStatusBadge: React.FC<{ isTraining: boolean }> = ({ isTraining }) => {
+  const pulseAnim = useRef(new Animated.Value(0.4)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 900,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0.35,
+          duration: 900,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [pulseAnim]);
+
+  const color = isTraining ? '#00FF66' : '#00F0FF';
+  const label = isTraining ? 'treinando agora' : 'on';
+
+  return (
+    <View className="flex-row items-center ml-1.5 gap-1 bg-[#0A0D14] px-1.5 py-0.5 rounded-md border border-[#262F42]">
+      <Animated.View
+        style={{
+          width: 6,
+          height: 6,
+          borderRadius: 3,
+          backgroundColor: color,
+          opacity: pulseAnim,
+          transform: [
+            {
+              scale: pulseAnim.interpolate({
+                inputRange: [0.35, 1],
+                outputRange: [0.85, 1.25],
+              }),
+            },
+          ],
+        }}
+      />
+      <Text
+        style={{
+          color,
+          fontSize: 9,
+          fontWeight: '800',
+          textTransform: 'lowercase',
+          letterSpacing: 0.2,
+        }}
+      >
+        {label}
+      </Text>
+    </View>
+  );
+};
 
 export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
   selectedRecipientId,
@@ -99,18 +158,8 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
                 {bro.name.split(' ')[0]}
               </Text>
 
-              {/* Status indicator dot */}
-              {isOnline && (
-                <View
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: 3,
-                    backgroundColor: isTraining ? '#00FF66' : '#00F0FF',
-                    marginLeft: 6,
-                  }}
-                />
-              )}
+              {/* Status indicator badge animado */}
+              {isOnline && <PulsingStatusBadge isTraining={isTraining} />}
             </TouchableOpacity>
           );
         })}
@@ -118,3 +167,4 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
     </View>
   );
 };
+
