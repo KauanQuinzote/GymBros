@@ -18,14 +18,27 @@ jest.mock('../../../shared/services/supabaseClient', () => {
     presenceState: jest.fn().mockReturnValue({}),
   };
 
+  const mockProfiles = [
+    {
+      id: 'kauan-profile-id',
+      name: 'Kauan Domingues',
+      initials: 'KD',
+      avatar_color: '#0A84FF',
+      pin_code: '1234',
+      email: 'kauan@test.com',
+      bro_points: 100,
+      streak: 3,
+    },
+  ];
+
   return {
     isSupabaseConfigured: true,
     supabase: {
       channel: jest.fn().mockReturnValue(mockChannel),
       removeChannel: jest.fn(),
       from: jest.fn().mockReturnValue({
-        select: jest.fn().mockResolvedValue({ data: [], error: null }),
-        insert: jest.fn().mockResolvedValue({ data: [], error: null }),
+        select: jest.fn().mockResolvedValue({ data: mockProfiles, error: null }),
+        insert: jest.fn().mockResolvedValue({ data: mockProfiles, error: null }),
       }),
       functions: {
         invoke: jest.fn().mockResolvedValue({ data: { success: true }, error: null }),
@@ -62,6 +75,10 @@ describe('AuthContext - Real-Time Presence & Edge Function Logging (TDD)', () =>
 
     const { result } = renderHook(() => useAuth(), { wrapper });
 
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
     await act(async () => {
       const success = result.current.loginWithPin('kauan-profile-id', '1234');
       expect(success).toBe(true);
@@ -86,6 +103,10 @@ describe('AuthContext - Real-Time Presence & Edge Function Logging (TDD)', () =>
     );
 
     const { result } = renderHook(() => useAuth(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     await act(async () => {
       result.current.loginWithPin('kauan-profile-id', '1234');
