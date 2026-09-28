@@ -10,6 +10,10 @@
   - Criar e configurar o ícone oficial do **GymBros** seguindo o padrão Apple Minimalist / Neon Dark (1024x1024 px).
   - Configurar ícones adaptativos do Android (`android-icon-foreground.png`, `android-icon-background.png`, `monochromeImage`) e `splash-icon.png`.
 - [x] **Renomear Romance para Chilling**: Atualizar a feature/seção de romance para **Chilling**.
+- [ ] **Refatoração Completa de Código (`bromance` -> `chill`)**:
+  - Renomear diretório `src/features/bromance/` para `src/features/chill/`.
+  - Renomear classes, hooks, contextos e tipos (`useBromance` -> `useChill`, `BromanceContext` -> `ChillContext`, `BromanceProvider` -> `ChillProvider`, `BromanceScreen` -> `ChillScreen`, `BromanceNudgeLog` -> `ChillNudgeLog`).
+  - Atualizar todas as importações em `App.tsx`, componentes e suíte de testes.
 - [ ] **Padronização de Cores & Tokens (Tailwind / NativeWind)**:
   - Mapear paleta completa no `tailwind.config.js` (ex: `neon-cyan`, `neon-green`, `neon-yellow`, `neon-red`, `apple-dark`, `apple-card`, `apple-border`).
   - Eliminar cores hexadecimais inline/hardcoded no Tailwind (ex: `[#00F0FF]`, `[#0A0D14]`, `[#161B26]`, `[#262F42]`), substituindo por classes de tokens semânticos (`bg-apple-dark`, `border-apple-border`, `text-neon-cyan`, etc.).
