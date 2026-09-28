@@ -33,9 +33,10 @@
 - [ ] **Múltiplas Comunidades de Bros**: Possibilidade de criar várias comunidades/grupos de amigos.
   - Cada bro pode pertencer a 1..N comunidades.
   - Os treinos e atividades devem ser visíveis apenas para os membros das comunidades em que o bro participa (evitando que usuários desconhecidos vejam treinos).
-- [ ] **Segurança de Banco & Políticas de RLS (Row Level Security)**:
-  - Habilitar e configurar RLS em todas as tabelas no Supabase (`profiles`, `workouts`, `communities`, `presence_events`, etc.).
-  - Definir policies restritivas de `SELECT`, `INSERT`, `UPDATE` e `DELETE` baseadas em `auth.uid()` e vínculo de membros de comunidade.
+- [ ] **Configuração e Ativação de RLS (Row Level Security) no Supabase**:
+  - Habilitar RLS em todas as tabelas geradas no Supabase (`profiles`, `workout_routines`, `workout_exercises`, `workout_logs`, `communities`, `community_members`, `presence_events`, `bro_nudges`).
+  - Definir e testar políticas restritivas de `SELECT`, `INSERT`, `UPDATE` e `DELETE` baseadas em `auth.uid()` e vínculo de membros de comunidade.
+  - Garantir que migrações futuras mantenham idempotência e não bloqueiem operações anon/authenticated autorizadas.
 
 ### 4. Treinos & Cardio
 - [ ] **Tipos Avançados de Séries & Exercícios**:
