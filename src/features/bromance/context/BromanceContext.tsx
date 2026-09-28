@@ -9,14 +9,14 @@ const NUDGES_STORAGE_KEY = '@mybroth_nudges_history';
 interface BromanceContextType {
   nudgeHistory: BromanceNudgeLog[];
   activeIncomingNudge: BromanceNudgeLog | null;
-  sendNudge: (text: string, category: any, audioUrl?: string) => Promise<void>;
+  sendNudge: (text: string, category: any, audioUrl?: string, recipientId?: string | null) => Promise<void>;
   dismissIncomingNudge: () => Promise<void>;
 }
 
 const BromanceContext = createContext<BromanceContextType>({} as BromanceContextType);
 
 export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { activeProfile, partnerProfile } = useAuth();
+  const { activeProfile, partnerProfile, profiles } = useAuth();
   const [nudgeHistory, setNudgeHistory] = useState<BromanceNudgeLog[]>([]);
   const [activeIncomingNudge, setActiveIncomingNudge] = useState<BromanceNudgeLog | null>(null);
 
@@ -45,7 +45,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const { data, error } = await supabase
             .from('nudges')
             .select('*')
-            .eq('receiver_id', activeProfile.id)
+            .or(`receiver_id.eq.${activeProfile.id},receiver_id.eq.ALL`)
             .is('read_at', null)
             .order('created_at', { ascending: true });
 
@@ -74,7 +74,11 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       nudgeChannel
         .on('broadcast', { event: 'nudge_event' }, (payload: any) => {
           const incoming = payload.payload as BromanceNudgeLog;
-          if (incoming && incoming.receiver_id === activeProfile.id) {
+          if (
+            incoming &&
+            (incoming.receiver_id === activeProfile.id || incoming.receiver_id === 'ALL') &&
+            incoming.sender_id !== activeProfile.id
+          ) {
             setActiveIncomingNudge(incoming);
             setNudgeHistory((prev) => [incoming, ...prev]);
             saveHistoryToStorage([incoming, ...nudgeHistory]);
@@ -98,15 +102,26 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  const sendNudge = async (text: string, category: any, audioUrl?: string) => {
-    if (!activeProfile || !partnerProfile) return;
+  const sendNudge = async (
+    text: string,
+    category: any,
+    audioUrl?: string,
+    recipientId?: string | null
+  ) => {
+    if (!activeProfile) return;
+
+    // Se recipientId for null, envia como broadcast para 'ALL' ou para o partner
+    const targetReceiverId =
+      recipientId !== undefined
+        ? recipientId || 'ALL'
+        : partnerProfile?.id || 'ALL';
 
     const newNudge: BromanceNudgeLog = {
-      id: `nudge_${Date.now()}`,
+      id: `nudge_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       sender_id: activeProfile.id,
       sender_name: activeProfile.name,
       sender_initials: activeProfile.initials,
-      receiver_id: partnerProfile.id,
+      receiver_id: targetReceiverId,
       nudge_text: text,
       category,
       audio_url: audioUrl || null,
@@ -120,7 +135,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     if (isSupabaseConfigured && supabase) {
       try {
-        // 1. Transmitir via Realtime WebSocket para entrega instantânea se o parceiro estiver online
+        // 1. Transmitir via Realtime WebSocket para entrega instantânea
         const nudgeChannel = supabase.channel('bro_nudges');
         await nudgeChannel.send({
           type: 'broadcast',
@@ -128,7 +143,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           payload: newNudge,
         });
 
-        // 2. Persistir no Postgres para entrega assíncrona caso o parceiro estivesse offline
+        // 2. Persistir no Postgres para entrega assíncrona
         await supabase.from('nudges').insert([
           {
             id: newNudge.id,

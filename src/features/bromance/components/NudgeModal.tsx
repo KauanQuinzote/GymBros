@@ -13,8 +13,16 @@ export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
 
   useEffect(() => {
     if (activeIncomingNudge) {
-      // Reproduz o áudio MP3 (se houver audio_url) ou fala via TTS
-      AudioService.playUrl(activeIncomingNudge.audio_url, activeIncomingNudge.nudge_text);
+      if (activeIncomingNudge.audio_url) {
+        AudioService.playUrl(activeIncomingNudge.audio_url, activeIncomingNudge.nudge_text);
+      } else {
+        // Toca o som do Taco Bell e narra a frase via TTS
+        AudioService.playTacoBell().then(() => {
+          setTimeout(() => {
+            AudioService.playUrl(null, activeIncomingNudge.nudge_text);
+          }, 800);
+        });
+      }
     } else {
       AudioService.stop();
     }

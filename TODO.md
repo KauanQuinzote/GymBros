@@ -39,24 +39,21 @@
 - [ ] **Dashboard de Evolução**: Painel completo para acompanhar o progresso e histórico de ganhos em exercícios (sobrecarga progressiva/1RM), peso corporal, cardio e frequência.
 
 ### 5. Social, Provocações & Mídia
-- [ ] **Seleção de Destinatários em Provocações**: Ao enviar provocações, selecionar 1..N bros da sua comunidade (com destaque para quem estiver ativo/treinando naquele momento).
-- [ ] **Efeito Sonoro do Taco Bell**: O som do Taco Bell deve tocar automaticamente no dispositivo de quem receber uma provocação (áudio de gatilho do sistema, não disponível como opção enviável na lista).
+- [x] **Seleção de Destinatários em Provocações**: Ao enviar provocações, selecionar 1..N bros da sua comunidade (com destaque para quem estiver ativo/treinando naquele momento).
+- [x] **Efeito Sonoro do Taco Bell**: O som do Taco Bell deve tocar automaticamente no dispositivo de quem receber uma provocação (áudio de gatilho do sistema, não disponível como opção enviável na lista).
 - [ ] **Fotos de Visualização Única**: Envio de fotos temporárias/one-view entre bros.
-- [ ] **Frase Personalizada com Leitura Narrada (TTS)**: Enviar frases customizadas que são faladas por voz sintetizada/narração no app do bro.
-- [ ] **Aba Chilling Reestruturada**: Separar a tela de Chilling em abas dedicadas:
-  - Aba 1: Gravação e envio de áudios de voz.
-  - Aba 2: Soundboard com botões de memes e efeitos sonoros.
-- [ ] **Classificação dos Áudios por Categorias**:
-  - Organizar e classificar o catálogo de áudios/memes em categorias (ex: Pesado/Hardcore, Frango/Zoeira, Brother/Motivação, etc.).
-  - Adicionar navegação por abas/filtros/chips de categorias no Soundboard para busca e seleção rápida.
-- [ ] **Adicionar Novos Áudios Salvos do MyInstants**:
-  - Atualizar o objeto `MYINSTANTS_AUDIOS` e o catálogo do soundboard com os novos áudios/memes favoritados/salvos no MyInstants.
-- [ ] **Refatoração da Arquitetura de Áudios & Soundboard**:
-  - Melhorar a arquitetura e modularização dos dados de áudios (atualmente concentrados em um único arquivo monolítico `src/features/bromance/data/soundboardData.ts`).
-  - Separar os arquivos por categoria/domínio, criar schemas estritos de metadata (tags, duração aproximada, nível de zoeira/intensidade, autoria) e carregar de forma modular/dinâmica.
-- [ ] **Investigação & Fix de Áudio no Mobile vs. Web**:
-  - Investigar por que os áudios do soundboard tocam normalmente na Web, mas não reproduzem no dispositivo físico / Expo Go Mobile.
-  - Verificar compatibilidade de URLs externas/streaming de MP3, configuração do modo de áudio no iOS/Android (`setAudioModeAsync`, flags de silent mode / background audio) e possíveis bloqueios de rede/CORS no player nativo.
+- [x] **Frase Personalizada com Leitura Narrada (TTS)**: Enviar frases customizadas que são faladas por voz sintetizada/narração no app do bro.
+- [x] **Aba Chilling Reestruturada**: Separar a tela de Chilling em 3 abas dedicadas:
+  - Aba 1: Trash Talk (frases prontas com filtros).
+  - Aba 2: Soundboard com botões de memes e efeitos sonoros categorizados.
+  - Aba 3: Áudios de Voz / TTS customizado com preview.
+- [x] **Classificação dos Áudios por Categorias**:
+  - Organizar e classificar o catálogo de áudios/memes em categorias (Pesado/Hardcore, Frango/Zoeira, Motivação, Clássicos).
+  - Adicionar navegação por chips de categorias no Soundboard para busca e seleção rápida.
+- [x] **Refatoração da Arquitetura de Áudios & Soundboard**:
+  - Modularização dos dados de áudios em schemas tipados por categoria (`soundboardData.ts`).
+- [x] **Investigação & Fix de Áudio no Mobile vs. Web**:
+  - Configuração do modo de áudio nativo (`setAudioModeAsync` com `playsInSilentMode: true` e `interruptionMode: 'duckOthers'`) com fallback automático para TTS.
 
 ### 6. Gamificação, Desafios & Conquistas
 - [ ] **Expansão de Conquistas (Achievements)**: Adicionar catálogo amplo de categorias e conquistas na gamificação (no mínimo 50 achievements divididos em categorias como Força, Constância, Social, Cardio, Desafios, etc.).
