@@ -59,7 +59,7 @@ export const RoutinesScreen: React.FC<RoutinesScreenProps> = ({ onStartWorkout }
   };
 
   return (
-    <View className="flex-1 bg-[#0A0D14]">
+    <View className="flex-1 bg-slate-950">
       <HeaderBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         <RoutinesHeader onCreatePress={() => setCreateRoutineModalVisible(true)} />

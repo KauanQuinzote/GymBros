@@ -15,10 +15,10 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
     <View
       className={`rounded-2xl p-4 my-2 border ${
         isTraining
-          ? 'bg-[#052214] border-[#00FF66]/50 shadow-emerald-500/30'
+          ? 'bg-emerald-950/50 border-emerald-500/50 shadow-emerald-500/30'
           : isOnline
-          ? 'bg-[#031926] border-[#00F0FF]/40 shadow-cyan-500/30'
-          : 'bg-[#161B26] border-[#262F42]'
+          ? 'bg-cyan-950/50 border-cyan-400/40 shadow-cyan-500/30'
+          : 'bg-slate-900 border-slate-800'
       }`}
     >
       <View className="flex-row justify-between items-center">
@@ -38,21 +38,21 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
 
         {/* Badges Neon de Status */}
         {isTraining ? (
-          <View className="flex-row items-center bg-[#00FF66]/15 px-3 py-1.5 rounded-xl gap-2 border border-[#00FF66]/40">
-            <View className="w-2.5 h-2.5 rounded-full bg-[#00FF66]" />
-            <Text className="text-[#00FF66] text-[11px] font-extrabold tracking-wider">
+          <View className="flex-row items-center bg-emerald-500/15 px-3 py-1.5 rounded-xl gap-2 border border-emerald-500/40">
+            <View className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <Text className="text-emerald-400 text-[11px] font-extrabold tracking-wider">
               TREINANDO AGORA
             </Text>
           </View>
         ) : isOnline ? (
-          <View className="flex-row items-center bg-[#00F0FF]/15 px-3 py-1.5 rounded-xl gap-2 border border-[#00F0FF]/40">
-            <View className="w-2.5 h-2.5 rounded-full bg-[#00F0FF]" />
-            <Text className="text-[#00F0FF] text-[11px] font-extrabold tracking-wider">
+          <View className="flex-row items-center bg-cyan-400/15 px-3 py-1.5 rounded-xl gap-2 border border-cyan-400/40">
+            <View className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
+            <Text className="text-cyan-400 text-[11px] font-extrabold tracking-wider">
               ONLINE NO APP
             </Text>
           </View>
         ) : (
-          <View className="bg-[#262F42] px-3 py-1.5 rounded-xl">
+          <View className="bg-slate-800 px-3 py-1.5 rounded-xl">
             <Text className="text-slate-400 text-[11px] font-semibold">OFFLINE</Text>
           </View>
         )}
@@ -60,7 +60,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
 
       {/* Telemetria do Treino ou Navegação */}
       {isTraining ? (
-        <View className="mt-3.5 pt-3.5 border-t border-[#00FF66]/20 gap-2">
+        <View className="mt-3.5 pt-3.5 border-t border-emerald-500/20 gap-2">
           {bro.routine_name ? (
             <View className="flex-row items-center gap-2">
               <Dumbbell color="#00FF66" size={16} />
@@ -80,16 +80,16 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
           ) : null}
 
           {bro.current_weight_kg ? (
-            <View className="flex-row items-center gap-2 bg-[#00FF66]/10 px-2.5 py-1 rounded-lg self-start">
+            <View className="flex-row items-center gap-2 bg-emerald-500/10 px-2.5 py-1 rounded-lg self-start">
               <Zap color="#FFD60A" size={14} />
-              <Text className="text-[#FFD60A] text-xs font-bold">
+              <Text className="text-amber-400 text-xs font-bold">
                 Carga: {bro.current_weight_kg} kg {bro.current_set ? `• Série ${bro.current_set}` : ''}
               </Text>
             </View>
           ) : null}
         </View>
       ) : isOnline ? (
-        <View className="mt-3 pt-3 border-t border-[#00F0FF]/20 flex-row items-center gap-2">
+        <View className="mt-3 pt-3 border-t border-cyan-400/20 flex-row items-center gap-2">
           <UserCheck color="#00F0FF" size={16} />
           <Text className="text-slate-300 text-xs font-medium">
             Seu bro está ativo e navegando no app agora!

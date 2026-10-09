@@ -37,11 +37,11 @@ export const BromanceScreen: React.FC = () => {
   };
 
   return (
-    <View className="flex-1 bg-[#0A0D14]">
+    <View className="flex-1 bg-slate-950">
       <HeaderBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
         {/* Banner do Chilling */}
-        <View className="bg-[#161B26] p-5 mx-5 my-3 rounded-3xl border border-[#262F42]">
+        <View className="bg-slate-900 p-5 mx-5 my-3 rounded-3xl border border-slate-800">
           <View className="flex-row items-center gap-2 mb-2">
             <Skull color="#FF453A" size={22} />
             <Text className="text-white text-lg font-bold">Chilling & Social</Text>
@@ -58,10 +58,10 @@ export const BromanceScreen: React.FC = () => {
         />
 
         {/* Segmented Control - 3 Abas do Chilling */}
-        <View className="flex-row bg-[#161B26] mx-5 p-1 rounded-2xl border border-[#262F42] mb-3">
+        <View className="flex-row bg-slate-900 mx-5 p-1 rounded-2xl border border-slate-800 mb-3">
           <TouchableOpacity
             className={`flex-1 py-2.5 rounded-xl flex-row items-center justify-center gap-1.5 ${
-              activeTab === 'trash_talk' ? 'bg-[#0A0D14] border border-[#262F42]' : ''
+              activeTab === 'trash_talk' ? 'bg-slate-950 border border-slate-800' : ''
             }`}
             onPress={() => setActiveTab('trash_talk')}
             activeOpacity={0.7}
@@ -69,7 +69,7 @@ export const BromanceScreen: React.FC = () => {
             <Skull color={activeTab === 'trash_talk' ? '#FF453A' : '#64748B'} size={15} />
             <Text
               className={`text-xs font-bold ${
-                activeTab === 'trash_talk' ? 'text-[#FF453A]' : 'text-slate-400'
+                activeTab === 'trash_talk' ? 'text-rose-500' : 'text-slate-400'
               }`}
             >
               Trash Talk
@@ -78,7 +78,7 @@ export const BromanceScreen: React.FC = () => {
 
           <TouchableOpacity
             className={`flex-1 py-2.5 rounded-xl flex-row items-center justify-center gap-1.5 ${
-              activeTab === 'soundboard' ? 'bg-[#0A0D14] border border-[#262F42]' : ''
+              activeTab === 'soundboard' ? 'bg-slate-950 border border-slate-800' : ''
             }`}
             onPress={() => setActiveTab('soundboard')}
             activeOpacity={0.7}
@@ -86,7 +86,7 @@ export const BromanceScreen: React.FC = () => {
             <Music color={activeTab === 'soundboard' ? '#00F0FF' : '#64748B'} size={15} />
             <Text
               className={`text-xs font-bold ${
-                activeTab === 'soundboard' ? 'text-[#00F0FF]' : 'text-slate-400'
+                activeTab === 'soundboard' ? 'text-cyan-400' : 'text-slate-400'
               }`}
             >
               Soundboard
@@ -95,7 +95,7 @@ export const BromanceScreen: React.FC = () => {
 
           <TouchableOpacity
             className={`flex-1 py-2.5 rounded-xl flex-row items-center justify-center gap-1.5 ${
-              activeTab === 'voice_tts' ? 'bg-[#0A0D14] border border-[#262F42]' : ''
+              activeTab === 'voice_tts' ? 'bg-slate-950 border border-slate-800' : ''
             }`}
             onPress={() => setActiveTab('voice_tts')}
             activeOpacity={0.7}
@@ -103,7 +103,7 @@ export const BromanceScreen: React.FC = () => {
             <Mic color={activeTab === 'voice_tts' ? '#FFD60A' : '#64748B'} size={15} />
             <Text
               className={`text-xs font-bold ${
-                activeTab === 'voice_tts' ? 'text-[#FFD60A]' : 'text-slate-400'
+                activeTab === 'voice_tts' ? 'text-amber-400' : 'text-slate-400'
               }`}
             >
               Áudios de Voz

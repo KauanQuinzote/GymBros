@@ -32,9 +32,9 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
 
 
   return (
-    <View className="bg-[#161B26] p-5 mx-5 rounded-3xl border border-[#262F42] gap-4">
+    <View className="bg-slate-900 p-5 mx-5 rounded-3xl border border-slate-800 gap-4">
       <View className="flex-row items-center gap-2.5">
-        <View className="w-10 h-10 rounded-2xl bg-[#00F0FF]/15 justify-center items-center">
+        <View className="w-10 h-10 rounded-2xl bg-cyan-400/15 justify-center items-center">
           <Mic color="#00F0FF" size={20} />
         </View>
         <View className="flex-1">
@@ -46,7 +46,7 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
       </View>
 
       {/* Input de Frase */}
-      <View className="bg-[#0A0D14] border border-[#262F42] rounded-2xl p-3.5 focus:border-[#00F0FF]">
+      <View className="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 focus:border-cyan-400">
         <TextInput
           className="text-slate-100 text-sm min-h-[70px] text-top leading-relaxed"
           placeholder="Digite a frase que a voz sintetizada vai falar no app do bro..."
@@ -57,19 +57,19 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
           onChangeText={setText}
           maxLength={200}
         />
-        <View className="flex-row justify-between items-center mt-2 pt-2 border-t border-[#1E293B]">
+        <View className="flex-row justify-between items-center mt-2 pt-2 border-t border-slate-800">
           <Text className="text-slate-500 text-[11px]">{text.length}/200 caracteres</Text>
 
           {/* Botão Testar / Preview Local */}
           <TouchableOpacity
-            className="flex-row items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#1E293B]"
+            className="flex-row items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800"
             onPress={handlePreview}
             disabled={!text.trim()}
             activeOpacity={0.7}
           >
             <Volume2 color={text.trim() ? '#00F0FF' : '#64748B'} size={14} />
             <Text
-              className={`text-xs font-semibold ${text.trim() ? 'text-[#00F0FF]' : 'text-slate-500'
+              className={`text-xs font-semibold ${text.trim() ? 'text-cyan-400' : 'text-slate-500'
                 }`}
             >
               Testar Voz
@@ -80,7 +80,7 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
 
       {/* Botão de Envio para o Bro */}
       <TouchableOpacity
-        className={`py-3.5 px-4 rounded-xl flex-row justify-center items-center gap-2 shadow-lg ${text.trim() && !isSending ? 'bg-[#00F0FF]' : 'bg-[#262F42]'
+        className={`py-3.5 px-4 rounded-xl flex-row justify-center items-center gap-2 shadow-lg ${text.trim() && !isSending ? 'bg-cyan-400' : 'bg-slate-800'
           }`}
         onPress={handleSend}
         disabled={!text.trim() || isSending}

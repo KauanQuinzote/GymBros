@@ -30,13 +30,13 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
 
   if (isCompleted) {
     return (
-      <View className="bg-[#30D158]/10 rounded-2xl p-4 border border-[#30D158]/30 items-center">
+      <View className="bg-emerald-500/10 rounded-2xl p-4 border border-emerald-500/30 items-center">
         <CheckCircle2 color="#30D158" size={24} />
-        <Text className="text-[#30D158] font-bold text-sm mt-1">Exercício Concluído!</Text>
+        <Text className="text-emerald-400 font-bold text-sm mt-1">Exercício Concluído!</Text>
         <Text className="text-slate-400 text-xs mt-0.5">Todas as {currentExercise.defaultSets} séries programadas foram executadas.</Text>
 
         {hasNextExercise && onNextExercise && (
-          <TouchableOpacity className="bg-[#0A84FF] px-4 py-2.5 rounded-xl mt-3" onPress={onNextExercise} activeOpacity={0.8}>
+          <TouchableOpacity className="bg-blue-600 px-4 py-2.5 rounded-xl mt-3" onPress={onNextExercise} activeOpacity={0.8}>
             <Text className="text-white font-bold text-xs">IR PARA O PRÓXIMO EXERCÍCIO</Text>
           </TouchableOpacity>
         )}
@@ -45,7 +45,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
   }
 
   return (
-    <View className="bg-[#0A0D14] rounded-2xl p-4 border border-[#262F42]">
+    <View className="bg-slate-950 rounded-2xl p-4 border border-slate-800">
       <Text className="text-slate-50 text-sm font-bold mb-3">
         Registrar Série #{currentSetsCount + 1} de {currentExercise.defaultSets}
       </Text>
@@ -54,7 +54,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
         <View className="flex-1">
           <Text className="text-slate-400 text-xs font-semibold mb-1.5">Carga (KG)</Text>
           <TextInput
-            className="bg-[#161B26] text-white rounded-xl px-3 py-2.5 text-lg font-bold text-center border border-[#262F42]"
+            className="bg-slate-900 text-white rounded-xl px-3 py-2.5 text-lg font-bold text-center border border-slate-800"
             keyboardType="numeric"
             value={weightKg}
             onChangeText={onChangeWeight}
@@ -64,7 +64,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
         <View className="flex-1">
           <Text className="text-slate-400 text-xs font-semibold mb-1.5">Repetições</Text>
           <TextInput
-            className="bg-[#161B26] text-white rounded-xl px-3 py-2.5 text-lg font-bold text-center border border-[#262F42]"
+            className="bg-slate-900 text-white rounded-xl px-3 py-2.5 text-lg font-bold text-center border border-slate-800"
             keyboardType="numeric"
             value={reps}
             onChangeText={onChangeReps}
@@ -72,7 +72,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
         </View>
       </View>
 
-      <TouchableOpacity className="flex-row bg-[#0A84FF] py-3.5 rounded-xl justify-center items-center gap-2" onPress={onAddSet} activeOpacity={0.8}>
+      <TouchableOpacity className="flex-row bg-blue-600 py-3.5 rounded-xl justify-center items-center gap-2" onPress={onAddSet} activeOpacity={0.8}>
         <Plus color="#FFFFFF" size={18} />
         <Text className="text-white font-bold text-sm">CONCLUIR SÉRIE (+10 pts)</Text>
       </TouchableOpacity>

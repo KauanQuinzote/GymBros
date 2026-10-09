@@ -27,7 +27,7 @@ export const ExerciseTabList: React.FC<ExerciseTabListProps> = ({
           <TouchableOpacity
             key={ex.id || idx}
             className={`flex-row items-center px-3.5 py-2.5 rounded-xl mr-2.5 border gap-1.5 ${
-              isCurrent ? 'bg-[#0A84FF] border-[#0A84FF]' : 'bg-[#161B26] border-[#262F42]'
+              isCurrent ? 'bg-blue-600 border-blue-500' : 'bg-slate-900 border-slate-800'
             }`}
             onPress={() => onSelectExercise(idx)}
             activeOpacity={0.8}
@@ -36,7 +36,7 @@ export const ExerciseTabList: React.FC<ExerciseTabListProps> = ({
               {idx + 1}. {ex.name}
             </Text>
             {completedSetsCount > 0 && (
-              <View className={`${isDone ? 'bg-[#30D158]' : 'bg-[#0A84FF]'} px-1.5 py-0.5 rounded-full justify-center items-center`}>
+              <View className={`${isDone ? 'bg-emerald-500' : 'bg-blue-600'} px-1.5 py-0.5 rounded-full justify-center items-center`}>
                 <Text className="text-white text-[10px] font-bold">{completedSetsCount}/{exTargetSets}</Text>
               </View>
             )}

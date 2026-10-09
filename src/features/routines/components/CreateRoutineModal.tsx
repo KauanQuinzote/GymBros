@@ -23,8 +23,8 @@ export const CreateRoutineModal: React.FC<CreateRoutineModalProps> = ({
 }) => {
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 bg-[#0A0D14]/88 justify-center items-center p-5">
-        <View className="bg-[#161B26] rounded-3xl p-6 w-full max-w-[340px] border border-[#262F42]">
+      <View className="flex-1 bg-slate-950/90 justify-center items-center p-5">
+        <View className="bg-slate-900 rounded-3xl p-6 w-full max-w-[340px] border border-slate-800">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="text-slate-50 text-lg font-bold">Nova Ficha de Treino</Text>
             <TouchableOpacity onPress={onClose}>
@@ -34,7 +34,7 @@ export const CreateRoutineModal: React.FC<CreateRoutineModalProps> = ({
 
           <Text className="text-slate-400 text-xs font-semibold mb-1.5">Nome da Ficha</Text>
           <TextInput
-            className="bg-[#0A0D14] text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-[#262F42]"
+            className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800"
             placeholder="Ex: Treino de Braço Monstro"
             placeholderTextColor="#64748B"
             value={title}
@@ -43,14 +43,14 @@ export const CreateRoutineModal: React.FC<CreateRoutineModalProps> = ({
 
           <Text className="text-slate-400 text-xs font-semibold mb-1.5">Grupo Muscular Alvo</Text>
           <TextInput
-            className="bg-[#0A0D14] text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-[#262F42]"
+            className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800"
             placeholder="Ex: Bíceps e Tríceps"
             placeholderTextColor="#64748B"
             value={target}
             onChangeText={onChangeTarget}
           />
 
-          <TouchableOpacity className="bg-[#30D158] py-3.5 rounded-xl items-center mt-2" onPress={onSubmit} activeOpacity={0.8}>
+          <TouchableOpacity className="bg-emerald-500 py-3.5 rounded-xl items-center mt-2" onPress={onSubmit} activeOpacity={0.8}>
             <Text className="text-white font-bold text-sm">CRIAR FICHA</Text>
           </TouchableOpacity>
         </View>

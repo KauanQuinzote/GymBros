@@ -29,8 +29,8 @@ export const CreateExerciseModal: React.FC<CreateExerciseModalProps> = ({
 }) => {
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 bg-[#0A0D14]/88 justify-center items-center p-5">
-        <View className="bg-[#161B26] rounded-3xl p-6 w-full max-w-[340px] border border-[#262F42]">
+      <View className="flex-1 bg-slate-950/90 justify-center items-center p-5">
+        <View className="bg-slate-900 rounded-3xl p-6 w-full max-w-[340px] border border-slate-800">
           <View className="flex-row justify-between items-center mb-2">
             <Text className="text-slate-50 text-lg font-bold">Novo Exercício</Text>
             <TouchableOpacity onPress={onClose}>
@@ -38,11 +38,11 @@ export const CreateExerciseModal: React.FC<CreateExerciseModalProps> = ({
             </TouchableOpacity>
           </View>
 
-          <Text className="text-[#0A84FF] text-xs font-semibold mb-3.5">Ficha: {routineTitle}</Text>
+          <Text className="text-blue-500 text-xs font-semibold mb-3.5">Ficha: {routineTitle}</Text>
 
           <Text className="text-slate-400 text-xs font-semibold mb-1.5">Nome do Exercício</Text>
           <TextInput
-            className="bg-[#0A0D14] text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-[#262F42]"
+            className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800"
             placeholder="Ex: Rosca Direta com Barra W"
             placeholderTextColor="#64748B"
             value={exName}
@@ -52,16 +52,16 @@ export const CreateExerciseModal: React.FC<CreateExerciseModalProps> = ({
           <View className="flex-row gap-3">
             <View className="flex-1">
               <Text className="text-slate-400 text-xs font-semibold mb-1.5">Séries Padrão</Text>
-              <TextInput className="bg-[#0A0D14] text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-[#262F42]" keyboardType="numeric" value={exSets} onChangeText={onChangeSets} />
+              <TextInput className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800" keyboardType="numeric" value={exSets} onChangeText={onChangeSets} />
             </View>
 
             <View className="flex-1">
               <Text className="text-slate-400 text-xs font-semibold mb-1.5">Reps Padrão</Text>
-              <TextInput className="bg-[#0A0D14] text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-[#262F42]" keyboardType="numeric" value={exReps} onChangeText={onChangeReps} />
+              <TextInput className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800" keyboardType="numeric" value={exReps} onChangeText={onChangeReps} />
             </View>
           </View>
 
-          <TouchableOpacity className="bg-[#30D158] py-3.5 rounded-xl items-center mt-2" onPress={onSubmit} activeOpacity={0.8}>
+          <TouchableOpacity className="bg-emerald-500 py-3.5 rounded-xl items-center mt-2" onPress={onSubmit} activeOpacity={0.8}>
             <Text className="text-white font-bold text-sm">SALVAR EXERCÍCIO</Text>
           </TouchableOpacity>
         </View>

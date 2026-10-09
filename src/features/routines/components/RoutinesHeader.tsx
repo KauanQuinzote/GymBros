@@ -14,7 +14,7 @@ export const RoutinesHeader: React.FC<RoutinesHeaderProps> = ({ onCreatePress })
         <Text className="text-slate-400 text-xs mt-0.5">Rotinas de alta performance</Text>
       </View>
       <TouchableOpacity
-        className="bg-[#0A84FF] w-11 h-11 rounded-full justify-center items-center"
+        className="bg-blue-600 w-11 h-11 rounded-full justify-center items-center"
         onPress={onCreatePress}
         activeOpacity={0.8}
       >

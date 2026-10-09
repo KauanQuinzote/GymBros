@@ -34,7 +34,7 @@ const PulsingStatusBadge: React.FC<{ isTraining: boolean }> = ({ isTraining }) =
   const label = isTraining ? 'treinando agora' : 'on';
 
   return (
-    <View className="flex-row items-center ml-1.5 gap-1 bg-[#0A0D14] px-1.5 py-0.5 rounded-md border border-[#262F42]">
+    <View className="flex-row items-center ml-1.5 gap-1 bg-slate-950 px-1.5 py-0.5 rounded-md border border-slate-800">
       <Animated.View
         style={{
           width: 6,
@@ -97,8 +97,8 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
         {/* Opção: Todos os Bros */}
         <TouchableOpacity
           className={`flex-row items-center px-3.5 py-2 rounded-xl border ${selectedRecipientId === null
-              ? 'bg-[#0A84FF] border-[#0A84FF]'
-              : 'bg-[#161B26] border-[#262F42]'
+              ? 'bg-blue-600 border-blue-500'
+              : 'bg-slate-900 border-slate-800'
             }`}
           onPress={() => onSelectRecipient(null)}
           activeOpacity={0.8}
@@ -123,10 +123,10 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
             <TouchableOpacity
               key={bro.id}
               className={`flex-row items-center px-3 py-1.5 rounded-xl border ${isSelected
-                  ? 'bg-[#00F0FF]/15 border-[#00F0FF]'
+                  ? 'bg-cyan-400/15 border-cyan-400'
                   : isTraining
-                    ? 'bg-[#161B26] border-[#00FF66]/60'
-                    : 'bg-[#161B26] border-[#262F42]'
+                    ? 'bg-slate-900 border-emerald-500/60'
+                    : 'bg-slate-900 border-slate-800'
                 }`}
               onPress={() => onSelectRecipient(bro.id)}
               activeOpacity={0.8}
@@ -148,7 +148,7 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
               </View>
 
               <Text
-                className={`text-xs font-bold ${isSelected ? 'text-[#00F0FF]' : 'text-slate-200'
+                className={`text-xs font-bold ${isSelected ? 'text-cyan-400' : 'text-slate-200'
                   }`}
               >
                 {bro.name.split(' ')[0]}

@@ -16,7 +16,7 @@ export const HistoryScreen: React.FC = () => {
   }, []);
 
   return (
-    <View className="flex-1 bg-[#0A0D14]">
+    <View className="flex-1 bg-slate-950">
       <HeaderBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         <AchievementsList activeProfile={activeProfile} />

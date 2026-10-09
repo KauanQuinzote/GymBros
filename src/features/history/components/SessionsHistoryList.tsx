@@ -18,7 +18,7 @@ export const SessionsHistoryList: React.FC<SessionsHistoryListProps> = ({ sessio
       <View className="gap-3">
         {sessions.length > 0 ? (
           sessions.map((sess) => (
-            <View key={sess.id} className="bg-[#161B26] rounded-2xl p-4 border border-[#262F42]">
+            <View key={sess.id} className="bg-slate-900 rounded-2xl p-4 border border-slate-800">
               <View className="flex-row items-center gap-2.5 mb-2.5">
                 <Dumbbell color="#30D158" size={18} />
                 <Text className="text-slate-50 text-base font-bold">{sess.routine_name}</Text>
@@ -33,9 +33,9 @@ export const SessionsHistoryList: React.FC<SessionsHistoryListProps> = ({ sessio
                   })}
                 </Text>
 
-                <View className="flex-row items-center bg-[#FFD60A]/15 px-2.5 py-1 rounded-xl gap-1">
+                <View className="flex-row items-center bg-amber-400/15 px-2.5 py-1 rounded-xl gap-1">
                   <Zap color="#FFD60A" size={12} />
-                  <Text className="text-[#FFD60A] text-xs font-bold">+{sess.bro_points_earned} pts</Text>
+                  <Text className="text-amber-400 text-xs font-bold">+{sess.bro_points_earned} pts</Text>
                 </View>
               </View>
             </View>
