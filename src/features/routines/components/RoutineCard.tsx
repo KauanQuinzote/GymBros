@@ -17,8 +17,8 @@ export const RoutineCard: React.FC<RoutineCardProps> = ({
   return (
     <View className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
       <View className="flex-row justify-between items-center mb-2">
-        <Dumbbell className="text-blue-500" size={20} />
-        <Text className="text-blue-500 bg-blue-500/15 px-2.5 py-1 rounded-xl text-xs font-semibold">
+        <Dumbbell className="text-emerald-500" size={20} />
+        <Text className="text-emerald-500 bg-emerald-500/15 px-2.5 py-1 rounded-xl text-xs font-semibold">
           {routine.target_muscle}
         </Text>
       </View>
@@ -52,7 +52,7 @@ export const RoutineCard: React.FC<RoutineCardProps> = ({
           onPress={onStartWorkout}
           activeOpacity={0.8}
         >
-          <Play className="text-white" size={14} fill="currentColor" className="text-white" />
+          <Play className="text-white" size={14} fill="currentColor" />
           <Text className="text-white font-bold text-xs">INICIAR FICHA (+50 pts)</Text>
         </TouchableOpacity>
       </View>

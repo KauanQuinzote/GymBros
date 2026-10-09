@@ -1,63 +1,113 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import { useAuth, BroPresenceState } from '../../auth/context/AuthContext';
+import { useWorkout } from '../../workout/context/WorkoutContext';
 import { BroPresenceCard } from './BroPresenceCard';
-import { Wifi, Users } from 'lucide-react-native';
+import { BroTelemetryModal } from './BroTelemetryModal';
+import { Users } from 'lucide-react-native';
 
-export const NeonBroPresenceWidget: React.FC = () => {
-  const { onlineBros, partnerProfile, isPartnerOnline, partnerStatus } = useAuth();
+interface NeonBroPresenceWidgetProps {
+  onNavigateToChilling?: () => void;
+}
 
-  let activeBrosList: BroPresenceState[] = [...onlineBros];
+export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
+  onNavigateToChilling,
+}) => {
+  const { profiles, onlineBros, activeProfile, partnerProfile, isPartnerOnline, partnerStatus } = useAuth();
+  const { activeSession } = useWorkout();
+  const [selectedBro, setSelectedBro] = useState<BroPresenceState | null>(null);
 
-  // Fallback caso partnerProfile esteja ativo via AuthContext legado mas não esteja no array onlineBros
-  if (activeBrosList.length === 0 && partnerProfile && isPartnerOnline) {
-    activeBrosList.push({
-      user_id: partnerProfile.id,
-      user_name: partnerProfile.name,
-      initials: partnerProfile.initials,
-      avatar_color: partnerProfile.avatar_color,
-      status: partnerStatus,
-      updated_at: new Date().toISOString(),
-    });
-  }
+  // Mapeia todos os perfis cadastrados para seu estado de presença atual
+  const communityBros: BroPresenceState[] = profiles.map((p) => {
+    const isMe = p.id === activeProfile?.id;
+    if (isMe) {
+      return {
+        user_id: p.id,
+        user_name: p.name,
+        initials: p.initials,
+        avatar_color: p.avatar_color,
+        status: activeSession ? 'TRAINING' : 'ONLINE',
+        routine_name: activeSession?.routine_name,
+        updated_at: new Date().toISOString(),
+      };
+    }
 
-  const activeCount = activeBrosList.length;
+    const livePresence = onlineBros.find((b) => b.user_id === p.id);
+    if (livePresence) return livePresence;
 
-  if (activeCount === 0) {
-    return (
-      <View className="bg-slate-950 border border-slate-800 rounded-2xl p-4 mx-5 my-2.5">
-        <View className="flex-row items-center gap-2 mb-2">
-          <Wifi className="text-slate-500" size={16} />
-          <Text className="text-slate-400 text-xs font-bold uppercase tracking-wider">
-            STATUS DOS BROS
-          </Text>
-        </View>
-        <Text className="text-slate-400 text-xs font-normal">
-          Nenhum bro ativo no momento. Inicie um treino para notificar seu grupo!
-        </Text>
-      </View>
-    );
+    if (partnerProfile && partnerProfile.id === p.id && isPartnerOnline) {
+      return {
+        user_id: p.id,
+        user_name: p.name,
+        initials: p.initials,
+        avatar_color: p.avatar_color,
+        status: partnerStatus,
+        updated_at: new Date().toISOString(),
+      };
+    }
+
+    return {
+      user_id: p.id,
+      user_name: p.name,
+      initials: p.initials,
+      avatar_color: p.avatar_color,
+      status: 'OFFLINE',
+      updated_at: p.last_workout_date || new Date().toISOString(),
+    };
+  });
+
+  // Ordena: Treinando primeiro, depois Online, depois Offline
+  communityBros.sort((a, b) => {
+    const rank = (s: string) => (s === 'TRAINING' ? 3 : s === 'ONLINE' ? 2 : 1);
+    return rank(b.status) - rank(a.status);
+  });
+
+  const activeCount = communityBros.filter((b) => b.status === 'ONLINE' || b.status === 'TRAINING').length;
+
+  if (profiles.length === 0) {
+    return null;
   }
 
   return (
-    <View className="bg-slate-950 border border-slate-800 rounded-2xl p-4 mx-5 my-2.5">
+    <View className="bg-slate-900 border border-slate-800 rounded-3xl p-5 mx-5 my-2.5">
       {/* Header do Widget */}
-      <View className="flex-row justify-between items-center mb-2">
+      <View className="flex-row justify-between items-center mb-3.5">
         <View className="flex-row items-center gap-2">
           <Users className="text-cyan-400" size={18} />
           <Text className="text-slate-100 text-sm font-extrabold uppercase tracking-wider">
-            BROS ATIVOS
+            COMUNIDADE DOS BROS
           </Text>
         </View>
         <View className="bg-cyan-400/20 px-2.5 py-0.5 rounded-full border border-cyan-400/40">
-          <Text className="text-cyan-400 text-xs font-black">{activeCount} ONLINE</Text>
+          <Text className="text-cyan-400 text-xs font-black">{activeCount} ATIVOS</Text>
         </View>
       </View>
 
-      {/* Lista de Cards dos Bros */}
-      {activeBrosList.map((bro) => (
-        <BroPresenceCard key={bro.user_id} bro={bro} />
-      ))}
+      {/* Carrossel / Linha Horizontal dos Bros */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 12, paddingVertical: 2 }}
+      >
+        {communityBros.map((bro) => (
+          <BroPresenceCard
+            key={bro.user_id}
+            bro={bro}
+            isCurrentUser={bro.user_id === activeProfile?.id}
+            onPress={() => setSelectedBro(bro)}
+          />
+        ))}
+      </ScrollView>
+
+      {/* Modal de Telemetria e Detalhes ao Tocar no Bro */}
+      <BroTelemetryModal
+        bro={selectedBro}
+        onClose={() => setSelectedBro(null)}
+        onSendNudge={() => {
+          setSelectedBro(null);
+          if (onNavigateToChilling) onNavigateToChilling();
+        }}
+      />
     </View>
   );
 };

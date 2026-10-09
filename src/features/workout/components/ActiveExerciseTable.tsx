@@ -26,7 +26,7 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
 
       {lastHistoryText && (
         <Text className="text-blue-500 text-[11px] font-semibold mb-4 bg-blue-500/10 self-start px-2.5 py-1 rounded-lg">
-          📊 {lastHistoryText}
+          {lastHistoryText}
         </Text>
       )}
 

@@ -12,11 +12,13 @@ interface HomeScreenProps {
   onNavigateToWorkout: () => void;
   onNavigateToRoutines: () => void;
   onNavigateToHistory: () => void;
+  onNavigateToChilling?: () => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
   onNavigateToWorkout,
   onNavigateToRoutines,
+  onNavigateToChilling,
 }) => {
   const { activeProfile, profiles } = useAuth();
   const { activeSession, routines, startWorkout } = useWorkout();
@@ -27,7 +29,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     <View className="flex-1 bg-slate-950">
       <HeaderBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-        <NeonBroPresenceWidget />
+        <NeonBroPresenceWidget onNavigateToChilling={onNavigateToChilling} />
         {activeSession && (
           <ActiveWorkoutBanner session={activeSession} onNavigate={onNavigateToWorkout} />
         )}
