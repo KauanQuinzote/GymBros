@@ -18,7 +18,7 @@ export const RoutineCard: React.FC<RoutineCardProps> = ({
     <View className="bg-[#161B26] rounded-2xl p-5 border border-[#262F42]">
       <View className="flex-row justify-between items-center mb-2">
         <Dumbbell color="#0A84FF" size={20} />
-        <Text className="text-[#0A84FF] bg-[#0A84FF]/15 px-2.5 py-1 rounded-xl text-xs font-semibold">
+        <Text className="text-green-400 bg-green-400/15 px-2.5 py-1 rounded-xl text-xs font-semibold">
           {routine.target_muscle}
         </Text>
       </View>
