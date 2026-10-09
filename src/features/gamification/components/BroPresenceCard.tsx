@@ -70,8 +70,8 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
 
   return (
     <TouchableOpacity
-      className="items-center w-[78px] gap-1.5"
-      style={{ width: 78, alignItems: 'center' }}
+      className="items-center w-[80px] gap-1.5"
+      style={{ width: 80, alignItems: 'center', overflow: 'visible' }}
       onPress={onPress}
       activeOpacity={0.7}
       disabled={!onPress}
@@ -79,7 +79,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
       {/* Container do Avatar com Anel Halo Separado */}
       <View
         className="relative"
-        style={{ width: 70, height: 70, alignItems: 'center', justifyContent: 'center' }}
+        style={{ width: 72, height: 72, alignItems: 'center', justifyContent: 'center', overflow: 'visible' }}
       >
         {/* Camada 0: Halo Neon Pulsante Externo (Apenas a borda pulsa) */}
         {isActive && (

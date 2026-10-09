@@ -74,7 +74,8 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 12, paddingVertical: 2 }}
+        style={{ overflow: 'visible' }}
+        contentContainerStyle={{ gap: 14, paddingVertical: 8, paddingHorizontal: 4 }}
       >
         {communityBros.map((bro) => (
           <BroPresenceCard
