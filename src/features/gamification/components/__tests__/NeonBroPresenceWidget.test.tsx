@@ -37,7 +37,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
     } as any);
   });
 
-  it('should render all community bros with respective status badges (ON, TREINANDO, OFF)', () => {
+  it('should render other community bros with respective status badges and exclude current logged in user', () => {
     const mockProfiles = [
       { id: 'user-1', name: 'Kauan Quinzote', initials: 'KQ', avatar_color: '#00F0FF', pin_code: '1234', bro_points: 100, streak: 3 },
       { id: 'bro-2', name: 'Lucas Bro', initials: 'LB', avatar_color: '#0A84FF', pin_code: '0000', bro_points: 50, streak: 1 },
@@ -88,13 +88,15 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
     expect(screen.getByText('COMUNIDADE DOS BROS')).toBeTruthy();
     expect(screen.getByText(/ATIVOS/i)).toBeTruthy();
 
-    // Verifica que todos os membros aparecem no widget
-    expect(screen.getByText('Kauan')).toBeTruthy();
+    // Verifica que o próprio usuário NÃO aparece no carrossel de outros bros
+    expect(screen.queryByText('Kauan')).toBeNull();
+
+    // Verifica que os outros membros aparecem no widget
     expect(screen.getByText('Lucas')).toBeTruthy();
     expect(screen.getByText('Matheus')).toBeTruthy();
 
     // Verifica os badges
-    expect(screen.getAllByText('ON').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('ON')).toBeTruthy();
     expect(screen.getByText('TREINANDO')).toBeTruthy();
   });
 

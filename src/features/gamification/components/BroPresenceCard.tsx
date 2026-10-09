@@ -1,20 +1,42 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { BroPresenceState } from '../../auth/context/AuthContext';
 
 interface BroPresenceCardProps {
   bro: BroPresenceState;
   onPress?: () => void;
-  isCurrentUser?: boolean;
 }
 
 export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
   bro,
   onPress,
-  isCurrentUser = false,
 }) => {
   const isTraining = bro.status === 'TRAINING';
   const isOnline = bro.status === 'ONLINE' || isTraining;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (!isTraining) {
+      pulseAnim.setValue(1);
+      return;
+    }
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 0.35,
+          duration: 900,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 900,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [isTraining, pulseAnim]);
 
   const ringBorderClass = isTraining
     ? 'border-2 border-emerald-500 shadow-emerald-500/40'
@@ -40,7 +62,8 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
     >
       {/* Container do Avatar com Borda Neon e Badge de Status */}
       <View className="relative">
-        <View
+        <Animated.View
+          style={{ opacity: isTraining ? pulseAnim : 1 }}
           className={`w-14 h-14 rounded-full justify-center items-center p-0.5 ${ringBorderClass}`}
         >
           <View
@@ -51,7 +74,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
               {bro.initials}
             </Text>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Micro-Badge no Canto Inferior */}
         <View
@@ -73,9 +96,6 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
         >
           {bro.user_name.split(' ')[0]}
         </Text>
-        {isCurrentUser && (
-          <Text className="text-slate-500 text-[9px] font-semibold">(Você)</Text>
-        )}
       </View>
     </TouchableOpacity>
   );

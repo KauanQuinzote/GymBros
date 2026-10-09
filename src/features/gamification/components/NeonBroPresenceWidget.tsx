@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useAuth, BroPresenceState } from '../../auth/context/AuthContext';
-import { useWorkout } from '../../workout/context/WorkoutContext';
 import { BroPresenceCard } from './BroPresenceCard';
 import { BroTelemetryModal } from './BroTelemetryModal';
 import { Users } from 'lucide-react-native';
@@ -14,24 +13,12 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
   onNavigateToChilling,
 }) => {
   const { profiles, onlineBros, activeProfile, partnerProfile, isPartnerOnline, partnerStatus } = useAuth();
-  const { activeSession } = useWorkout();
   const [selectedBro, setSelectedBro] = useState<BroPresenceState | null>(null);
 
-  // Mapeia todos os perfis cadastrados para seu estado de presença atual
-  const communityBros: BroPresenceState[] = profiles.map((p) => {
-    const isMe = p.id === activeProfile?.id;
-    if (isMe) {
-      return {
-        user_id: p.id,
-        user_name: p.name,
-        initials: p.initials,
-        avatar_color: p.avatar_color,
-        status: activeSession ? 'TRAINING' : 'ONLINE',
-        routine_name: activeSession?.routine_name,
-        updated_at: new Date().toISOString(),
-      };
-    }
+  // Filtra outros perfis da comunidade (ignora o próprio usuário logado)
+  const otherProfiles = profiles.filter((p) => p.id !== activeProfile?.id);
 
+  const communityBros: BroPresenceState[] = otherProfiles.map((p) => {
     const livePresence = onlineBros.find((b) => b.user_id === p.id);
     if (livePresence) return livePresence;
 
@@ -64,7 +51,7 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
 
   const activeCount = communityBros.filter((b) => b.status === 'ONLINE' || b.status === 'TRAINING').length;
 
-  if (profiles.length === 0) {
+  if (otherProfiles.length === 0) {
     return null;
   }
 
@@ -79,7 +66,7 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
           </Text>
         </View>
         <View className="bg-cyan-400/20 px-2.5 py-0.5 rounded-full border border-cyan-400/40">
-          <Text className="text-cyan-400 text-xs font-black">{activeCount} ATIVOS</Text>
+          <Text className="text-cyan-400 text-xs font-black">{activeCount} Evoluindo  </Text>
         </View>
       </View>
 
@@ -93,7 +80,6 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
           <BroPresenceCard
             key={bro.user_id}
             bro={bro}
-            isCurrentUser={bro.user_id === activeProfile?.id}
             onPress={() => setSelectedBro(bro)}
           />
         ))}
