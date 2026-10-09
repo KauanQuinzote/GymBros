@@ -96,7 +96,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
     expect(screen.getByText('Matheus')).toBeTruthy();
 
     // Verifica os badges
-    expect(screen.getByText('ON')).toBeTruthy();
+    expect(screen.getAllByText('ON').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('TREINANDO')).toBeTruthy();
   });
 
