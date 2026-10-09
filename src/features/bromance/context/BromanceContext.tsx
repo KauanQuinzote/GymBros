@@ -35,9 +35,20 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  // Buscar provocações pendentes (não lidas) enviadas enquanto esteve offline
+  const checkedProfileIdRef = React.useRef<string | null>(null);
+
+  // Buscar provocações pendentes (não exibidas) enviadas enquanto esteve offline
   useEffect(() => {
-    if (!activeProfile) return;
+    if (!activeProfile) {
+      checkedProfileIdRef.current = null;
+      return;
+    }
+
+    // Executa a busca de pendentes apenas uma vez por login/troca de perfil (evita re-execução em ganho de pontos/treino)
+    if (checkedProfileIdRef.current === activeProfile.id) {
+      return;
+    }
+    checkedProfileIdRef.current = activeProfile.id;
 
     const fetchPendingUnreadNudges = async () => {
       if (isSupabaseConfigured && supabase) {
@@ -46,12 +57,19 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .from('nudges')
             .select('*')
             .or(`receiver_id.eq.${activeProfile.id},receiver_id.eq.ALL`)
+            .or('exhibited.is.null,exhibited.eq.false')
             .is('read_at', null)
             .order('created_at', { ascending: true });
 
           if (!error && data && data.length > 0) {
             const pendingNudge = data[0] as BromanceNudgeLog;
             setActiveIncomingNudge(pendingNudge);
+
+            // Marca imediatamente no banco como exibido (exhibited = true) para não repetir
+            await supabase
+              .from('nudges')
+              .update({ exhibited: true })
+              .eq('id', pendingNudge.id);
           }
         } catch (err) {
           console.warn('Error fetching pending nudges from Supabase:', err);
@@ -60,7 +78,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
 
     fetchPendingUnreadNudges();
-  }, [activeProfile]);
+  }, [activeProfile?.id]);
 
   // Listener de Tempo Real via Supabase Realtime WebSocket ('bro_nudges')
   useEffect(() => {
@@ -125,6 +143,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       nudge_text: text,
       category,
       audio_url: audioUrl || null,
+      exhibited: false,
       read_at: null,
       created_at: new Date().toISOString(),
     };
@@ -154,6 +173,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             nudge_text: newNudge.nudge_text,
             category: newNudge.category,
             audio_url: newNudge.audio_url,
+            exhibited: false,
             read_at: null,
             created_at: newNudge.created_at,
           },

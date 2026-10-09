@@ -96,19 +96,17 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
       >
         {/* Opção: Todos os Bros */}
         <TouchableOpacity
-          className={`flex-row items-center px-3.5 py-2 rounded-xl border ${
-            selectedRecipientId === null
+          className={`flex-row items-center px-3.5 py-2 rounded-xl border ${selectedRecipientId === null
               ? 'bg-[#0A84FF] border-[#0A84FF]'
               : 'bg-[#161B26] border-[#262F42]'
-          }`}
+            }`}
           onPress={() => onSelectRecipient(null)}
           activeOpacity={0.8}
         >
           <Users color={selectedRecipientId === null ? '#FFFFFF' : '#94A3B8'} size={15} />
           <Text
-            className={`text-xs font-bold ml-1.5 ${
-              selectedRecipientId === null ? 'text-white' : 'text-slate-300'
-            }`}
+            className={`text-xs font-bold ml-1.5 ${selectedRecipientId === null ? 'text-white' : 'text-slate-300'
+              }`}
           >
             Todos os Bros
           </Text>
@@ -124,13 +122,12 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
           return (
             <TouchableOpacity
               key={bro.id}
-              className={`flex-row items-center px-3 py-1.5 rounded-xl border ${
-                isSelected
+              className={`flex-row items-center px-3 py-1.5 rounded-xl border ${isSelected
                   ? 'bg-[#00F0FF]/15 border-[#00F0FF]'
                   : isTraining
-                  ? 'bg-[#161B26] border-[#00FF66]/60'
-                  : 'bg-[#161B26] border-[#262F42]'
-              }`}
+                    ? 'bg-[#161B26] border-[#00FF66]/60'
+                    : 'bg-[#161B26] border-[#262F42]'
+                }`}
               onPress={() => onSelectRecipient(bro.id)}
               activeOpacity={0.8}
             >
@@ -151,9 +148,8 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
               </View>
 
               <Text
-                className={`text-xs font-bold ${
-                  isSelected ? 'text-[#00F0FF]' : 'text-slate-200'
-                }`}
+                className={`text-xs font-bold ${isSelected ? 'text-[#00F0FF]' : 'text-slate-200'
+                  }`}
               >
                 {bro.name.split(' ')[0]}
               </Text>

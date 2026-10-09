@@ -10,17 +10,22 @@
   - Criar e configurar o ícone oficial do **GymBros** seguindo o padrão Apple Minimalist / Neon Dark (1024x1024 px).
   - Configurar ícones adaptativos do Android (`android-icon-foreground.png`, `android-icon-background.png`, `monochromeImage`) e `splash-icon.png`.
 - [x] **Renomear Romance para Chilling**: Atualizar a feature/seção de romance para **Chilling**.
-- [ ] **Refatoração Completa de Código (`bromance` -> `chill`)**:
-  - Renomear diretório `src/features/bromance/` para `src/features/chill/`.
-  - Renomear classes, hooks, contextos e tipos (`useBromance` -> `useChill`, `BromanceContext` -> `ChillContext`, `BromanceProvider` -> `ChillProvider`, `BromanceScreen` -> `ChillScreen`, `BromanceNudgeLog` -> `ChillNudgeLog`).
-  - Atualizar todas as importações em `App.tsx`, componentes e suíte de testes.
+- [ ] **Refatoração Global de Nomenclaturas e Pastas (`bromance` -> `chilling` / termos pertinentes)**:
+  - Renomear o diretório `src/features/bromance/` para `src/features/chilling/` (ou `src/features/chill/`).
+  - Renomear todos os arquivos com prefixo ou menção a bromance (ex: `src/features/bromance/context/BromanceContext.tsx` -> `ChillContext.tsx`, `BromanceScreen.tsx` -> `ChillingScreen.tsx`, testes `BromanceContext.taunts.test.tsx`, etc.).
+  - Renomear hooks, tipos e contextos exportados (`useBromance` -> `useChilling`, `BromanceContext` -> `ChillingContext`, `BromanceProvider` -> `ChillingProvider`, `BromanceNudgeLog` -> `ChillingNudgeLog`, etc.).
+  - Substituir chaves de persistência legadas (ex: `@mybroth_nudges_history` ou chaves de storage antigas) para o padrão `@gymbros_*`.
+  - Atualizar todas as importações em `App.tsx`, componentes e testes automatizados.
 - [ ] **Padronização de Cores & Tokens (Tailwind / NativeWind)**:
   - Mapear paleta completa no `tailwind.config.js` (ex: `neon-cyan`, `neon-green`, `neon-yellow`, `neon-red`, `apple-dark`, `apple-card`, `apple-border`).
   - Eliminar cores hexadecimais inline/hardcoded no Tailwind (ex: `[#00F0FF]`, `[#0A0D14]`, `[#161B26]`, `[#262F42]`), substituindo por classes de tokens semânticos (`bg-apple-dark`, `border-apple-border`, `text-neon-cyan`, etc.).
   - Centralizar constantes de cores em `src/shared/theme/colors.ts` para uso em ícones Lucide e props nativas.
 
 ### 2. Sincronização Real-time Cross-Device (PC <-> Celular)
-- [ ] **Servidor de Sync LAN (Dev)** ou **Configuração do Supabase Realtime**:
+- [ ] **Bug: Notificação de Início de Treino para Bros da Equipe**:
+  - **Problema**: Ao iniciar um treino, isso não é notificado aos bros da mesma equipe/comunidade. Atualmente o evento/notificação só é disparado/recebido se o usuário estiver online no app naquele instante.
+  - **Solução**: Garantir que o evento de início de treino seja persistido e propagado via Supabase Realtime / canais de comunidade e notificações push para que todos os bros da equipe sejam notificados confiavelmente, mesmo em background ou reabertura do app.
+- [x] **Servidor de Sync LAN (Dev)** ou **Configuração do Supabase Realtime**:
   - **Motivo**: Atualmente, a presença online local (`AsyncStorage` / `BroadcastChannel`) funciona apenas entre abas do mesmo dispositivo (PC <-> PC).
   - **Solução Planejada**:
     - **Opção A (LAN Server)**: Servidor Node/WebSocket na rede local para sincronizar eventos em tempo real.

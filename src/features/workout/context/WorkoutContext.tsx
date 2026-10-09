@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { WorkoutRoutine, WorkoutSession, WorkoutSetLog, ExerciseDefinition } from '../../../shared/types';
 import { LocalStorageService } from '../../../shared/services/storage';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
-import { useAuth } from '../../auth';
+import { useAuth } from '../../auth/context/AuthContext';
 
 interface WorkoutContextType {
   activeSession: WorkoutSession | null;

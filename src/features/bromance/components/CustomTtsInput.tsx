@@ -18,8 +18,9 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
   const handlePreview = () => {
     if (!text.trim()) return;
     setIsPlayingPreview(true);
-    SpeechService.speak(text.trim());
-    setTimeout(() => setIsPlayingPreview(false), 3000);
+    const speechText = text.trim()
+    SpeechService.speak(speechText);
+    setTimeout(() => setIsPlayingPreview(false), 5000);
   };
 
   const handleSend = async () => {
