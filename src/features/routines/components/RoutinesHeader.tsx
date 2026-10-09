@@ -18,7 +18,7 @@ export const RoutinesHeader: React.FC<RoutinesHeaderProps> = ({ onCreatePress })
         onPress={onCreatePress}
         activeOpacity={0.8}
       >
-        <Plus color="#FFFFFF" size={20} />
+        <Plus className="text-white" size={20} />
       </TouchableOpacity>
     </View>
   );

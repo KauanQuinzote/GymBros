@@ -45,7 +45,7 @@ export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
         <View className="w-full bg-slate-900 border border-rose-500 rounded-3xl p-6 items-center shadow-2xl">
           {/* Header Warning */}
           <View className="w-14 h-14 rounded-full bg-rose-500/15 justify-center items-center mb-4">
-            <Flame color="#FF453A" size={30} />
+            <Flame className="text-rose-500" size={30} />
           </View>
 
           <Text className="text-rose-500 font-extrabold text-xs tracking-widest uppercase mb-1">
@@ -69,7 +69,7 @@ export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
             onPress={handleReplayAudio}
             activeOpacity={0.8}
           >
-            <Volume2 color="#FFD60A" size={18} />
+            <Volume2 className="text-amber-400" size={18} />
             <Text className="text-amber-400 font-bold text-xs uppercase">OUVIR EM ÁUDIO NOVAMENTE</Text>
           </TouchableOpacity>
 
@@ -83,7 +83,7 @@ export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
               }}
               activeOpacity={0.8}
             >
-              <MessageSquareReply color="#FFFFFF" size={18} />
+              <MessageSquareReply className="text-white" size={18} />
               <Text className="text-white font-bold text-sm uppercase">REVIDAR AGORA</Text>
             </TouchableOpacity>
 
@@ -92,7 +92,7 @@ export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
               onPress={handleClose}
               activeOpacity={0.7}
             >
-              <X color="#94A3B8" size={18} />
+              <X className="text-slate-400" size={18} />
               <Text className="text-slate-300 font-semibold text-xs uppercase">ENGOLIR & FECHAR</Text>
             </TouchableOpacity>
           </View>

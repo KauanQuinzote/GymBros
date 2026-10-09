@@ -17,7 +17,7 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
   return (
     <View className="mb-4">
       <View className="flex-row items-center gap-2.5">
-        <Dumbbell color="#0A84FF" size={22} />
+        <Dumbbell className="text-blue-500" size={22} />
         <Text className="text-slate-50 text-lg font-bold flex-1">{currentExercise.name}</Text>
       </View>
       <Text className="text-slate-400 text-xs mt-1.5 mb-1">
@@ -45,7 +45,7 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
             <Text className="text-slate-50 text-sm flex-1 text-center">{log.reps} reps</Text>
             <View className="flex-1 flex-row justify-center items-center gap-1">
               {log.is_pr && <Text className="text-amber-400 text-[10px] font-bold">PR (+25 pts)</Text>}
-              <CheckCircle2 color="#30D158" size={18} />
+              <CheckCircle2 className="text-emerald-400" size={18} />
             </View>
           </View>
         ))}

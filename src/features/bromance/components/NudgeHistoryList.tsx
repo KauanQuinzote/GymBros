@@ -10,7 +10,7 @@ export const NudgeHistoryList: React.FC<NudgeHistoryListProps> = ({ nudgeHistory
   return (
     <View className="px-5 mt-6 mb-3">
       <View className="flex-row items-center gap-2 mb-3">
-        <History color="#94A3B8" size={18} />
+        <History className="text-slate-400" size={18} />
         <Text className="text-slate-300 font-bold text-base">Histórico de Provocações</Text>
       </View>
 

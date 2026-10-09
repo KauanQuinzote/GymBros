@@ -57,7 +57,7 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
   return (
     <View className="bg-slate-900 border border-slate-800 rounded-3xl p-5 my-3 shadow-xl">
       <View className="flex-row items-center gap-2.5 mb-4">
-        <Music color="#00F0FF" size={22} />
+        <Music className="text-cyan-400" size={22} />
         <View className="flex-1">
           <Text className="text-white font-extrabold text-base uppercase tracking-wider">
             SOUNDBOARD DE MEMES ({filteredMemes.length})
@@ -98,11 +98,11 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
 
       {/* Busca de Memes */}
       <View className="bg-slate-950 flex-row items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-800 mb-4">
-        <Search color="#94A3B8" size={16} />
+        <Search className="text-slate-400" size={16} />
         <TextInput
           className="flex-1 text-slate-100 text-xs py-1"
           placeholder="Buscar meme (ex: sirene, chaves, goku, lula...)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -142,7 +142,7 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
                 onPress={() => handlePreviewLocal(meme)}
                 activeOpacity={0.7}
               >
-                <Play color="#94A3B8" size={12} />
+                <Play className="text-slate-400" size={12} />
               </TouchableOpacity>
             </View>
           );
@@ -152,7 +152,7 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
       {/* Envio de URL Customizada (ex: MyInstants) */}
       <View className="bg-slate-950 p-4 rounded-2xl border border-slate-800 gap-3">
         <View className="flex-row items-center gap-2">
-          <LinkIcon color="#FFD60A" size={16} />
+          <LinkIcon className="text-amber-400" size={16} />
           <Text className="text-slate-200 text-xs font-bold uppercase">
             LINK CUSTOMIZADO (MYINSTANTS / MP3)
           </Text>
@@ -161,7 +161,7 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
         <TextInput
           className="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
           placeholder="Cole a URL do áudio MP3 (ex: myinstants.com/...)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={customUrl}
           onChangeText={setCustomUrl}
           autoCapitalize="none"
@@ -171,7 +171,7 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
         <TextInput
           className="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
           placeholder="Frase do alerta (Opcional)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={customText}
           onChangeText={setCustomText}
         />

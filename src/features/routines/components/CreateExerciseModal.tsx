@@ -34,7 +34,7 @@ export const CreateExerciseModal: React.FC<CreateExerciseModalProps> = ({
           <View className="flex-row justify-between items-center mb-2">
             <Text className="text-slate-50 text-lg font-bold">Novo Exercício</Text>
             <TouchableOpacity onPress={onClose}>
-              <X color="#94A3B8" size={20} />
+              <X className="text-slate-400" size={20} />
             </TouchableOpacity>
           </View>
 
@@ -44,7 +44,7 @@ export const CreateExerciseModal: React.FC<CreateExerciseModalProps> = ({
           <TextInput
             className="bg-slate-950 text-white rounded-xl px-3.5 py-2.5 mb-3.5 border border-slate-800"
             placeholder="Ex: Rosca Direta com Barra W"
-            placeholderTextColor="#64748B"
+            placeholderTextColor="#94a3b8"
             value={exName}
             onChangeText={onChangeName}
           />

@@ -47,7 +47,7 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({ activeProfil
   return (
     <View className="px-5 mt-5">
       <View className="flex-row items-center gap-2 mb-3.5">
-        <Award color="#FFD60A" size={22} />
+        <Award className="text-amber-400" size={22} />
         <Text className="text-slate-50 text-lg font-bold tracking-tight">Conquistas Ativas</Text>
       </View>
 

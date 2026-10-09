@@ -31,7 +31,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
   if (isCompleted) {
     return (
       <View className="bg-emerald-500/10 rounded-2xl p-4 border border-emerald-500/30 items-center">
-        <CheckCircle2 color="#30D158" size={24} />
+        <CheckCircle2 className="text-emerald-400" size={24} />
         <Text className="text-emerald-400 font-bold text-sm mt-1">Exercício Concluído!</Text>
         <Text className="text-slate-400 text-xs mt-0.5">Todas as {currentExercise.defaultSets} séries programadas foram executadas.</Text>
 
@@ -73,7 +73,7 @@ export const SetRegisterForm: React.FC<SetRegisterFormProps> = ({
       </View>
 
       <TouchableOpacity className="flex-row bg-blue-600 py-3.5 rounded-xl justify-center items-center gap-2" onPress={onAddSet} activeOpacity={0.8}>
-        <Plus color="#FFFFFF" size={18} />
+        <Plus className="text-white" size={18} />
         <Text className="text-white font-bold text-sm">CONCLUIR SÉRIE (+10 pts)</Text>
       </TouchableOpacity>
     </View>

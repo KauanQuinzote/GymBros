@@ -48,7 +48,7 @@ export const PinLoginModal: React.FC<PinLoginModalProps> = ({
       <View className="flex-1 bg-slate-950/90 justify-end">
         <View className="bg-slate-900 rounded-t-3xl p-6 items-center border-t border-slate-800">
           <TouchableOpacity className="self-end p-1" onPress={onClose}>
-            <X color="#94A3B8" size={24} />
+            <X className="text-slate-400" size={24} />
           </TouchableOpacity>
 
           <View style={{ backgroundColor: profile.avatar_color || '#0A84FF' }} className="w-16 h-16 rounded-full justify-center items-center mb-3">
@@ -95,7 +95,7 @@ export const PinLoginModal: React.FC<PinLoginModalProps> = ({
               onPress={handleDelete}
               activeOpacity={0.7}
             >
-              <Delete color="#F8FAFC" size={22} />
+              <Delete className="text-slate-50" size={22} />
             </TouchableOpacity>
           </View>
         </View>

@@ -43,7 +43,7 @@ export const BromanceScreen: React.FC = () => {
         {/* Banner do Chilling */}
         <View className="bg-slate-900 p-5 mx-5 my-3 rounded-3xl border border-slate-800">
           <View className="flex-row items-center gap-2 mb-2">
-            <Skull color="#FF453A" size={22} />
+            <Skull className="text-rose-500" size={22} />
             <Text className="text-white text-lg font-bold">Chilling & Social</Text>
           </View>
           <Text className="text-slate-400 text-xs leading-relaxed">

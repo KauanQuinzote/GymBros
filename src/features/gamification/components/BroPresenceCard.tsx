@@ -63,7 +63,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
         <View className="mt-3.5 pt-3.5 border-t border-emerald-500/20 gap-2">
           {bro.routine_name ? (
             <View className="flex-row items-center gap-2">
-              <Dumbbell color="#00FF66" size={16} />
+              <Dumbbell className="text-emerald-400" size={16} />
               <Text className="text-slate-300 text-xs">
                 Treino: <Text className="font-extrabold text-slate-50">{bro.routine_name}</Text>
               </Text>
@@ -72,7 +72,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
 
           {bro.current_exercise ? (
             <View className="flex-row items-center gap-2">
-              <Activity color="#00F0FF" size={16} />
+              <Activity className="text-cyan-400" size={16} />
               <Text className="text-slate-300 text-xs">
                 Exercício: <Text className="font-extrabold text-slate-50">{bro.current_exercise}</Text>
               </Text>
@@ -81,7 +81,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
 
           {bro.current_weight_kg ? (
             <View className="flex-row items-center gap-2 bg-emerald-500/10 px-2.5 py-1 rounded-lg self-start">
-              <Zap color="#FFD60A" size={14} />
+              <Zap className="text-amber-400" size={14} />
               <Text className="text-amber-400 text-xs font-bold">
                 Carga: {bro.current_weight_kg} kg {bro.current_set ? `• Série ${bro.current_set}` : ''}
               </Text>
@@ -90,7 +90,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
         </View>
       ) : isOnline ? (
         <View className="mt-3 pt-3 border-t border-cyan-400/20 flex-row items-center gap-2">
-          <UserCheck color="#00F0FF" size={16} />
+          <UserCheck className="text-cyan-400" size={16} />
           <Text className="text-slate-300 text-xs font-medium">
             Seu bro está ativo e navegando no app agora!
           </Text>

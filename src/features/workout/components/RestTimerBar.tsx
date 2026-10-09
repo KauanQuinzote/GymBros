@@ -108,7 +108,7 @@ export const RestTimerBar: React.FC = () => {
           }}
           activeOpacity={0.7}
         >
-          <Plus color="#F8FAFC" size={14} />
+          <Plus className="text-slate-50" size={14} />
           <Text className="text-white text-xs font-bold">+30s</Text>
         </TouchableOpacity>
 
@@ -120,7 +120,7 @@ export const RestTimerBar: React.FC = () => {
           }}
           activeOpacity={0.7}
         >
-          <RotateCcw color="#94A3B8" size={16} />
+          <RotateCcw className="text-slate-400" size={16} />
         </TouchableOpacity>
       </View>
     </View>

@@ -22,7 +22,7 @@ export const LeaderboardCard: React.FC<LeaderboardCardProps> = ({ profiles = [],
   return (
     <View className="bg-slate-900 rounded-3xl p-5 mx-5 my-2.5 border border-slate-800">
       <View className="flex-row items-center gap-2 mb-4">
-        <Award color="#FFD60A" size={22} />
+        <Award className="text-amber-400" size={22} />
         <Text className="text-slate-50 text-lg font-bold tracking-tight">Placar Bro Points</Text>
       </View>
 

@@ -18,7 +18,7 @@ export const ActiveWorkoutTop: React.FC<ActiveWorkoutTopProps> = ({
   return (
     <View style={{ paddingTop: 50 }} className="flex-row items-center justify-between px-5 pb-4 bg-slate-900 border-b border-slate-800">
       <TouchableOpacity className="p-2" onPress={onCancel} activeOpacity={0.7}>
-        <ArrowLeft color="#94A3B8" size={20} />
+        <ArrowLeft className="text-slate-400" size={20} />
       </TouchableOpacity>
 
       <View className="items-center flex-1">

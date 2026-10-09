@@ -16,11 +16,11 @@ export const NudgeCard: React.FC<NudgeCardProps> = ({ nudge, isSent, onSend }) =
       <Text className="text-slate-100 font-medium text-sm flex-1 pr-2 leading-snug">"{nudge.text}"</Text>
       <View className="flex-row items-center gap-2">
         <TouchableOpacity className="p-2.5 bg-slate-800 rounded-xl border border-slate-700" onPress={() => SpeechService.speak(nudge.text)} activeOpacity={0.6}>
-          <Volume2 color="#FFD60A" size={18} />
+          <Volume2 className="text-amber-400" size={18} />
         </TouchableOpacity>
 
         <TouchableOpacity className={`px-3 py-2.5 rounded-xl flex-row items-center gap-1.5 ${isSent ? 'bg-emerald-500' : 'bg-blue-600'}`} onPress={() => onSend(nudge)} activeOpacity={0.8}>
-          <Send color="#FFFFFF" size={14} />
+          <Send className="text-white" size={14} />
           <Text className="text-white text-xs font-bold uppercase">{isSent ? 'ENVIADO!' : 'ENVIAR'}</Text>
         </TouchableOpacity>
       </View>

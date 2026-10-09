@@ -35,7 +35,7 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
     <View className="bg-slate-900 p-5 mx-5 rounded-3xl border border-slate-800 gap-4">
       <View className="flex-row items-center gap-2.5">
         <View className="w-10 h-10 rounded-2xl bg-cyan-400/15 justify-center items-center">
-          <Mic color="#00F0FF" size={20} />
+          <Mic className="text-cyan-400" size={20} />
         </View>
         <View className="flex-1">
           <Text className="text-white text-base font-bold">Narração Customizada</Text>
@@ -50,7 +50,7 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
         <TextInput
           className="text-slate-100 text-sm min-h-[70px] text-top leading-relaxed"
           placeholder="Digite a frase que a voz sintetizada vai falar no app do bro..."
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           multiline
           numberOfLines={3}
           value={text}
@@ -87,7 +87,7 @@ export const CustomTtsInput: React.FC<CustomTtsInputProps> = ({
         activeOpacity={0.8}
       >
         {isSending ? (
-          <ActivityIndicator size="small" color="#0A0D14" />
+          <ActivityIndicator size="small" className="text-slate-950" />
         ) : (
           <>
             <Send color={text.trim() ? '#0A0D14' : '#64748B'} size={18} />

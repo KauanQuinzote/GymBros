@@ -47,7 +47,7 @@ export const ProfileSelectScreen: React.FC = () => {
 
       {isLoading ? (
         <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 48, gap: 16 }}>
-          <ActivityIndicator size="large" color="#0A84FF" />
+          <ActivityIndicator size="large" className="text-blue-500" />
           <Text style={{ color: '#94A3B8', fontSize: 15, fontWeight: '500' }}>
             Carregando perfis do banco...
           </Text>
@@ -74,7 +74,7 @@ export const ProfileSelectScreen: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            <Users color="#0A84FF" size={28} />
+            <Users className="text-blue-500" size={28} />
           </View>
 
           <View style={{ alignItems: 'center', gap: 6 }}>
@@ -100,7 +100,7 @@ export const ProfileSelectScreen: React.FC = () => {
               onPress={() => setCreateModalVisible(true)}
               activeOpacity={0.8}
             >
-              <UserPlus color="#FFFFFF" size={18} />
+              <UserPlus className="text-white" size={18} />
               <Text style={{ color: '#FFFFFF', fontWeight: '700', fontSize: 15 }}>
                 Criar Novo Perfil
               </Text>
@@ -121,7 +121,7 @@ export const ProfileSelectScreen: React.FC = () => {
               onPress={() => loadProfiles()}
               activeOpacity={0.8}
             >
-              <RefreshCw color="#94A3B8" size={16} />
+              <RefreshCw className="text-slate-400" size={16} />
               <Text style={{ color: '#94A3B8', fontWeight: '600', fontSize: 14 }}>
                 Tentar Novamente
               </Text>
@@ -169,14 +169,14 @@ export const ProfileSelectScreen: React.FC = () => {
                 </Text>
 
                 <View className="flex-row items-center gap-1.5 mt-1" style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                  <Award color="#FFD60A" size={14} />
+                  <Award className="text-amber-400" size={14} />
                   <Text className="text-amber-400 font-semibold text-xs" style={{ color: '#FFD60A', fontWeight: '600', fontSize: 12 }}>
                     {profile.bro_points} Bro Points
                   </Text>
                 </View>
               </View>
 
-              <ChevronRight color="#64748B" size={20} />
+              <ChevronRight className="text-slate-500" size={20} />
             </TouchableOpacity>
           ))}
 
@@ -198,7 +198,7 @@ export const ProfileSelectScreen: React.FC = () => {
             onPress={() => setCreateModalVisible(true)}
             activeOpacity={0.8}
           >
-            <UserPlus color="#0A84FF" size={20} />
+            <UserPlus className="text-blue-500" size={20} />
             <Text className="text-blue-500 font-bold text-base" style={{ color: '#0A84FF', fontWeight: '700', fontSize: 16 }}>
               + Criar Perfil de Bro
             </Text>

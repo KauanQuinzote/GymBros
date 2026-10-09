@@ -32,7 +32,7 @@ export const QuickRoutinesList: React.FC<QuickRoutinesListProps> = ({
             activeOpacity={0.8}
           >
             <View className="flex-row justify-between items-center mb-2">
-              <Dumbbell color="#0A84FF" size={20} />
+              <Dumbbell className="text-blue-500" size={20} />
               <Text className="text-blue-500 text-xs font-semibold bg-blue-500/15 px-2.5 py-1 rounded-xl">
                 {routine.target_muscle}
               </Text>
@@ -41,7 +41,7 @@ export const QuickRoutinesList: React.FC<QuickRoutinesListProps> = ({
             <Text className="text-slate-400 text-xs mt-1 mb-4">{routine.exercises.length} Exercícios</Text>
 
             <View className="flex-row items-center justify-center bg-blue-600 py-3 rounded-xl gap-2">
-              <Play color="#FFFFFF" size={14} fill="#FFFFFF" />
+              <Play className="text-white" size={14} fill="currentColor" className="text-white" />
               <Text className="text-white font-bold text-xs">INICIAR FICHA (+50 pts)</Text>
             </View>
           </TouchableOpacity>
