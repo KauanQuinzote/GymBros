@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, Platform } from 'react-native';
 import { BroPresenceState } from '../../auth/context/AuthContext';
 
 interface BroPresenceCardProps {
@@ -13,7 +13,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
 }) => {
   const isTraining = bro.status === 'TRAINING';
   const isOnline = bro.status === 'ONLINE' || isTraining;
-  const isActive = isOnline; // Pisca para Online ou Treinando
+  const isActive = isOnline; // Ativo quando Online ou Treinando
 
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
@@ -27,12 +27,12 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
         Animated.timing(pulseAnim, {
           toValue: 0.25,
           duration: 900,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
         Animated.timing(pulseAnim, {
           toValue: 1,
           duration: 900,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
       ])
     );
@@ -40,20 +40,33 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
     return () => loop.stop();
   }, [isActive, pulseAnim]);
 
-  const haloBorderClass = isTraining
-    ? 'border-2 border-emerald-500 bg-emerald-500/15 shadow-lg shadow-emerald-500/60'
+  // Cores de status Neon
+  const neonColor = isTraining ? '#10B981' : isOnline ? '#22D3EE' : '#262F42';
+  const haloBgColor = isTraining
+    ? 'rgba(16, 185, 129, 0.15)'
     : isOnline
-    ? 'border-2 border-cyan-400 bg-cyan-400/15 shadow-md shadow-cyan-500/50'
-    : '';
+    ? 'rgba(34, 211, 238, 0.15)'
+    : 'transparent';
 
-  const badgeBgClass = isTraining
-    ? 'bg-emerald-500'
-    : isOnline
-    ? 'bg-cyan-400'
-    : 'bg-slate-800';
+  // Sombra e Glow compatíveis com Web e Mobile
+  const haloShadowStyle =
+    Platform.OS === 'web' && isActive
+      ? {
+          boxShadow: isTraining
+            ? '0 0 14px rgba(16, 185, 129, 0.7)'
+            : '0 0 14px rgba(34, 211, 238, 0.7)',
+        }
+      : {
+          shadowColor: neonColor,
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.8,
+          shadowRadius: 8,
+          elevation: 6,
+        };
 
+  const badgeBgColor = isTraining ? '#10B981' : isOnline ? '#22D3EE' : '#1E2536';
   const badgeText = isTraining ? 'TREINANDO' : isOnline ? 'ON' : 'OFF';
-  const badgeTextColor = isTraining || isOnline ? 'text-slate-950 font-black' : 'text-slate-400 font-bold';
+  const badgeTextColor = isTraining || isOnline ? '#0A0D14' : '#94A3B8';
 
   return (
     <TouchableOpacity
@@ -71,14 +84,19 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
         {/* Camada 0: Halo Neon Pulsante Externo (Apenas a borda pulsa) */}
         {isActive && (
           <Animated.View
-            style={{
-              position: 'absolute',
-              width: 70,
-              height: 70,
-              borderRadius: 35,
-              opacity: pulseAnim,
-            }}
-            className={`justify-center items-center ${haloBorderClass}`}
+            style={[
+              {
+                position: 'absolute',
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                borderWidth: 2,
+                borderColor: neonColor,
+                backgroundColor: haloBgColor,
+                opacity: pulseAnim,
+              },
+              haloShadowStyle as any,
+            ]}
           />
         )}
 
@@ -114,15 +132,20 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
             borderRadius: 10,
             borderWidth: 1.5,
             borderColor: '#0A0D14',
+            backgroundColor: badgeBgColor,
             alignItems: 'center',
             justifyContent: 'center',
             opacity: isActive ? pulseAnim : 1,
           }}
-          className={`border-slate-950 ${badgeBgClass}`}
         >
           <Text
-            style={{ fontSize: isTraining ? 7.5 : 8, letterSpacing: 0.4 }}
-            className={`uppercase ${badgeTextColor}`}
+            style={{
+              fontSize: isTraining ? 7.5 : 8,
+              letterSpacing: 0.4,
+              fontWeight: '900',
+              color: badgeTextColor,
+            }}
+            className="uppercase"
           >
             {badgeText}
           </Text>
@@ -132,10 +155,12 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
       {/* Nome do Bro */}
       <View className="items-center w-full mt-0.5">
         <Text
-          style={{ fontSize: 12, fontWeight: '700', textAlign: 'center' }}
-          className={`text-xs font-bold text-center ${
-            isTraining ? 'text-emerald-400' : isOnline ? 'text-slate-100' : 'text-slate-400'
-          }`}
+          style={{
+            fontSize: 12,
+            fontWeight: '700',
+            textAlign: 'center',
+            color: isTraining ? '#34D399' : isOnline ? '#F8FAFC' : '#94A3B8',
+          }}
           numberOfLines={1}
         >
           {bro.user_name.split(' ')[0]}

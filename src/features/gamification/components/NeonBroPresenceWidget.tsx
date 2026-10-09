@@ -66,7 +66,7 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
           </Text>
         </View>
         <View className="bg-cyan-400/20 px-2.5 py-0.5 rounded-full border border-cyan-400/40">
-          <Text className="text-cyan-400 text-xs font-black">{activeCount} Mosntro(s)  </Text>
+          <Text className="text-cyan-400 text-xs font-black">{activeCount} Monstro(s)</Text>
         </View>
       </View>
 
