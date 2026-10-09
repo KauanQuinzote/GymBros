@@ -25,7 +25,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
     const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
-          toValue: 0.4,
+          toValue: 0.25,
           duration: 900,
           useNativeDriver: true,
         }),
@@ -40,11 +40,11 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
     return () => loop.stop();
   }, [isActive, pulseAnim]);
 
-  const ringBorderClass = isTraining
-    ? 'border-2 border-emerald-500 shadow-lg shadow-emerald-500/60'
+  const haloBorderClass = isTraining
+    ? 'border-2 border-emerald-500 bg-emerald-500/15 shadow-lg shadow-emerald-500/60'
     : isOnline
-    ? 'border-2 border-cyan-400 shadow-md shadow-cyan-500/50'
-    : 'border border-slate-800 opacity-60';
+    ? 'border-2 border-cyan-400 bg-cyan-400/15 shadow-md shadow-cyan-500/50'
+    : '';
 
   const badgeBgClass = isTraining
     ? 'bg-emerald-500'
@@ -63,42 +63,52 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
       activeOpacity={0.7}
       disabled={!onPress}
     >
-      {/* Container do Avatar com Borda Neon e Badge */}
-      <View className="relative" style={{ width: 68, height: 68, alignItems: 'center', justifyContent: 'center' }}>
-        <Animated.View
-          style={{
-            width: 66,
-            height: 66,
-            borderRadius: 33,
-            padding: 2.5,
-            opacity: isActive ? pulseAnim : 1,
-          }}
-          className={`justify-center items-center ${ringBorderClass}`}
-        >
-          <View
+      {/* Container do Avatar com Anel Halo Separado */}
+      <View
+        className="relative"
+        style={{ width: 70, height: 70, alignItems: 'center', justifyContent: 'center' }}
+      >
+        {/* Camada 0: Halo Neon Pulsante Externo (Apenas a borda pulsa) */}
+        {isActive && (
+          <Animated.View
             style={{
-              backgroundColor: bro.avatar_color || '#0A84FF',
-              width: '100%',
-              height: '100%',
-              borderRadius: 30,
+              position: 'absolute',
+              width: 70,
+              height: 70,
+              borderRadius: 35,
+              opacity: pulseAnim,
             }}
-            className="justify-center items-center"
-          >
-            <Text
-              style={{ fontSize: 18, fontWeight: '800', color: '#FFFFFF' }}
-              className="text-white text-lg font-extrabold"
-            >
-              {bro.initials}
-            </Text>
-          </View>
-        </Animated.View>
+            className={`justify-center items-center ${haloBorderClass}`}
+          />
+        )}
 
-        {/* Badge Neon Estilizado no Canto Inferior */}
+        {/* Camada 1: Círculo Fixo do Avatar (100% NÍTIDO E SEM PISCAR) */}
         <View
           style={{
+            width: 58,
+            height: 58,
+            borderRadius: 29,
+            backgroundColor: bro.avatar_color || '#0A84FF',
+            borderWidth: isActive ? 2 : 1,
+            borderColor: isActive ? '#0A0D14' : '#262F42',
+            opacity: isActive ? 1 : 0.6,
+          }}
+          className="justify-center items-center shadow-md"
+        >
+          <Text
+            style={{ fontSize: 18, fontWeight: '800', color: '#FFFFFF' }}
+            className="text-white text-lg font-extrabold"
+          >
+            {bro.initials}
+          </Text>
+        </View>
+
+        {/* Camada 2: Badge Neon Pulsante no Canto Inferior */}
+        <Animated.View
+          style={{
             position: 'absolute',
-            bottom: -2,
-            right: -2,
+            bottom: 0,
+            right: 0,
             paddingHorizontal: isTraining ? 6 : 5,
             paddingVertical: 1.5,
             borderRadius: 10,
@@ -106,6 +116,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
             borderColor: '#0A0D14',
             alignItems: 'center',
             justifyContent: 'center',
+            opacity: isActive ? pulseAnim : 1,
           }}
           className={`border-slate-950 ${badgeBgClass}`}
         >
@@ -115,7 +126,7 @@ export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
           >
             {badgeText}
           </Text>
-        </View>
+        </Animated.View>
       </View>
 
       {/* Nome do Bro */}
