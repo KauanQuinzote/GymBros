@@ -16,6 +16,7 @@ export interface BromanceNudgeLog {
   nudge_text: string;
   category: NudgeCategory;
   audio_url?: string | null;
+  exhibited?: boolean;
   read_at?: string | null;
   created_at: string;
 }
