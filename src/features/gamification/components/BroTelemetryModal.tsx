@@ -92,7 +92,7 @@ export const BroTelemetryModal: React.FC<BroTelemetryModalProps> = ({
           <View className="flex-row gap-3 mt-4">
             {onSendNudge && (
               <TouchableOpacity
-                className="flex-1 bg-blue-600 py-3 rounded-xl flex-row justify-center items-center gap-2"
+                className="flex-1 bg-red-600 py-3 rounded-xl flex-row justify-center items-center gap-2"
                 onPress={() => {
                   onClose();
                   onSendNudge(bro);

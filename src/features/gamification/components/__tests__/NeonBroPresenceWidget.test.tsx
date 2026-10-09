@@ -86,7 +86,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
     render(<NeonBroPresenceWidget />);
 
     expect(screen.getByText('COMUNIDADE DOS BROS')).toBeTruthy();
-    expect(screen.getByText(/ATIVOS/i)).toBeTruthy();
+    expect(screen.getByText(/Monstro\(s\)/i)).toBeTruthy();
 
     // Verifica que o próprio usuário NÃO aparece no carrossel de outros bros
     expect(screen.queryByText('Kauan')).toBeNull();
