@@ -1,23 +1,18 @@
--- Script de criação das tabelas para o aplicativo MyBroth no Supabase
+-- Script de criação das tabelas para o aplicativo GymBros no Supabase
 
--- 1. Tabela de Usuários (Bro A e Bro B)
+-- 1. Tabela de Perfis de Usuários (Bros)
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
-  avatar_emoji TEXT NOT NULL DEFAULT '🏋️‍♂️',
+  initials VARCHAR(4) NOT NULL DEFAULT 'BR',
+  avatar_color VARCHAR(16) NOT NULL DEFAULT '#0A84FF',
   pin_code VARCHAR(4) NOT NULL DEFAULT '1234',
+  email TEXT,
   bro_points INT NOT NULL DEFAULT 0,
   streak INT NOT NULL DEFAULT 0,
   last_workout_date DATE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
-
--- Inserir os 2 Bros padrão se a tabela estiver vazia
-INSERT INTO public.profiles (name, avatar_emoji, pin_code, bro_points, streak)
-VALUES 
-  ('Bro 1', '💪', '1234', 150, 3),
-  ('Bro 2', '🔥', '4321', 120, 2)
-ON CONFLICT DO NOTHING;
 
 -- 2. Tabela de Fichas de Treino
 CREATE TABLE IF NOT EXISTS public.routines (

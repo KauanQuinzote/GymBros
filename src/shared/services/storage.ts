@@ -6,19 +6,7 @@ const SESSIONS_KEY = '@mybroth_sessions';
 const SETS_KEY = '@mybroth_sets';
 const ROUTINES_KEY = '@mybroth_routines';
 
-export const DEFAULT_PROFILES: BroProfile[] = [
-  {
-    id: 'kauan-profile-id',
-    name: 'Kauan Domingues',
-    initials: 'KD',
-    avatar_color: '#0A84FF',
-    pin_code: '1234',
-    email: 'kauandominguesdesouza@gmail.com',
-    bro_points: 0,
-    streak: 0,
-    last_workout_date: new Date().toISOString().split('T')[0],
-  },
-];
+export const DEFAULT_PROFILES: BroProfile[] = [];
 
 export const DEFAULT_ROUTINES: WorkoutRoutine[] = [];
 
@@ -27,8 +15,7 @@ export const LocalStorageService = {
     try {
       const data = await AsyncStorage.getItem(PROFILES_KEY);
       if (!data) {
-        await AsyncStorage.setItem(PROFILES_KEY, JSON.stringify(DEFAULT_PROFILES));
-        return DEFAULT_PROFILES;
+        return [];
       }
       const parsed: BroProfile[] = JSON.parse(data);
       const cleaned = parsed.filter(
@@ -38,14 +25,9 @@ export const LocalStorageService = {
           !p.id.toLowerCase().includes('alpha') &&
           !p.id.toLowerCase().includes('beta')
       );
-      if (cleaned.length !== parsed.length || cleaned.length === 0) {
-        const finalProfiles = cleaned.length > 0 ? cleaned : DEFAULT_PROFILES;
-        await AsyncStorage.setItem(PROFILES_KEY, JSON.stringify(finalProfiles));
-        return finalProfiles;
-      }
-      return parsed;
+      return cleaned;
     } catch {
-      return DEFAULT_PROFILES;
+      return [];
     }
   },
 

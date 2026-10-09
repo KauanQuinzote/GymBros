@@ -3,6 +3,8 @@ import { SpeechService } from './speechService';
 
 let currentPlayer: AudioPlayer | null = null;
 
+export const TACO_BELL_SOUND_URL = 'https://www.myinstants.com/media/sounds/taco-bell-bong-sfx.mp3';
+
 export const AudioService = {
   /**
    * Reproduz um arquivo de áudio remoto (MP3/WAV) via expo-audio.
@@ -44,6 +46,13 @@ export const AudioService = {
   },
 
   /**
+   * Toca o som oficial do Taco Bell para notificações/gatilhos do sistema.
+   */
+  async playTacoBell(): Promise<boolean> {
+    return this.playUrl(TACO_BELL_SOUND_URL, 'Atenção!');
+  },
+
+  /**
    * Interrompe qualquer áudio ou fala em andamento e libera os recursos.
    */
   async stop(): Promise<void> {
@@ -59,3 +68,4 @@ export const AudioService = {
     }
   },
 };
+

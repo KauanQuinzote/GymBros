@@ -30,13 +30,22 @@ interface AuthContextType {
   addBroPoints: (amount: number) => Promise<void>;
   incrementStreak: () => Promise<void>;
   registerProfile: (data: Omit<BroProfile, 'id' | 'bro_points' | 'streak'>) => Promise<BroProfile>;
+  loadProfiles: () => Promise<void>;
   isLoading: boolean;
 }
+
+const generateUUID = (): string => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [profiles, setProfiles] = useState<BroProfile[]>(DEFAULT_PROFILES);
+  const [profiles, setProfiles] = useState<BroProfile[]>([]);
   const [activeProfile, setActiveProfile] = useState<BroProfile | null>(null);
   const [isPartnerOnline, setIsPartnerOnline] = useState(false);
   const [partnerStatus, setPartnerStatus] = useState<PartnerPresenceStatus>('OFFLINE');
@@ -54,8 +63,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (isSupabaseConfigured && supabase) {
       try {
         const { data, error } = await supabase.from('profiles').select('*');
-        if (!error && data && data.length > 0) {
-          loadedProfiles = data as BroProfile[];
+        if (!error && data) {
+          loadedProfiles = data.map((item: any) => ({
+            id: String(item.id),
+            name: item.name || 'Bro',
+            initials:
+              item.initials ||
+              (item.name
+                ? item.name
+                    .split(' ')
+                    .filter(Boolean)
+                    .map((n: string) => n[0])
+                    .slice(0, 2)
+                    .join('')
+                    .toUpperCase()
+                : 'BR'),
+            avatar_color: item.avatar_color || '#0A84FF',
+            pin_code: String(item.pin_code || '1234'),
+            email: item.email || undefined,
+            bro_points: Number(item.bro_points) || 0,
+            streak: Number(item.streak) || 0,
+            last_workout_date: item.last_workout_date || undefined,
+          }));
           await LocalStorageService.saveProfiles(loadedProfiles);
         } else {
           loadedProfiles = await LocalStorageService.getProfiles();
@@ -224,7 +253,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerProfile = async (
     data: Omit<BroProfile, 'id' | 'bro_points' | 'streak'>
   ): Promise<BroProfile> => {
-    const id = 'bro_' + Date.now();
+    const id = generateUUID();
     const created: BroProfile = {
       id,
       bro_points: 0,
@@ -237,18 +266,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('profiles').insert([
-          {
-            id: created.id,
-            name: created.name,
-            initials: created.initials,
-            avatar_color: created.avatar_color,
-            pin_code: created.pin_code,
-            email: created.email,
-            bro_points: 0,
-            streak: 0,
-          },
-        ]);
+        const { data: insertedData, error } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: created.id,
+              name: created.name,
+              initials: created.initials,
+              avatar_color: created.avatar_color,
+              pin_code: created.pin_code,
+              email: created.email,
+              bro_points: 0,
+              streak: 0,
+            },
+          ])
+          .select()
+          .single();
+
+        if (!error && insertedData) {
+          const synced: BroProfile = {
+            id: String(insertedData.id),
+            name: insertedData.name,
+            initials: insertedData.initials || created.initials,
+            avatar_color: insertedData.avatar_color || created.avatar_color,
+            pin_code: String(insertedData.pin_code || created.pin_code),
+            email: insertedData.email || created.email,
+            bro_points: Number(insertedData.bro_points) || 0,
+            streak: Number(insertedData.streak) || 0,
+            last_workout_date: insertedData.last_workout_date || undefined,
+          };
+          const syncedProfiles = updated.map((p) => (p.id === created.id ? synced : p));
+          setProfiles(syncedProfiles);
+          await LocalStorageService.saveProfiles(syncedProfiles);
+          return synced;
+        }
       } catch (err) {
         console.warn('Failed to sync profile to cloud:', err);
       }
@@ -270,6 +321,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addBroPoints,
         incrementStreak,
         registerProfile,
+        loadProfiles,
         isLoading,
       }}
     >

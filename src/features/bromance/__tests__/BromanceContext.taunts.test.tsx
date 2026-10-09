@@ -23,6 +23,7 @@ jest.mock('../../../shared/services/supabaseClient', () => {
       from: jest.fn().mockReturnValue({
         select: jest.fn().mockReturnThis(),
         eq: jest.fn().mockReturnThis(),
+        or: jest.fn().mockReturnThis(),
         is: jest.fn().mockReturnThis(),
         order: jest.fn().mockResolvedValue({ data: [], error: null }),
         insert: jest.fn().mockResolvedValue({ data: [], error: null }),
@@ -66,6 +67,7 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
       addBroPoints: jest.fn(),
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
+      loadProfiles: jest.fn(),
       isLoading: false,
     });
   });
@@ -101,6 +103,7 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
     (supabase?.from as jest.Mock).mockReturnValueOnce({
       select: jest.fn().mockReturnThis(),
       eq: jest.fn().mockReturnThis(),
+      or: jest.fn().mockReturnThis(),
       is: jest.fn().mockReturnThis(),
       order: jest.fn().mockResolvedValue({ data: [pendingNudge], error: null }),
     });
@@ -134,6 +137,7 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
     (supabase?.from as jest.Mock).mockReturnValueOnce({
       select: jest.fn().mockReturnThis(),
       eq: jest.fn().mockReturnThis(),
+      or: jest.fn().mockReturnThis(),
       is: jest.fn().mockReturnThis(),
       order: jest.fn().mockResolvedValue({ data: [pendingNudge], error: null }),
     });

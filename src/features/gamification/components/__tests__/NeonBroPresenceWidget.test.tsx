@@ -48,6 +48,7 @@ describe('NeonBroPresenceWidget (Subagent Tester TDD)', () => {
       addBroPoints: jest.fn(),
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
+      loadProfiles: jest.fn(),
       isLoading: false,
     });
 
@@ -78,6 +79,7 @@ describe('NeonBroPresenceWidget (Subagent Tester TDD)', () => {
       addBroPoints: jest.fn(),
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
+      loadProfiles: jest.fn(),
       isLoading: false,
     });
 
@@ -113,6 +115,7 @@ describe('NeonBroPresenceWidget (Subagent Tester TDD)', () => {
       addBroPoints: jest.fn(),
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
+      loadProfiles: jest.fn(),
       isLoading: false,
     });
 
