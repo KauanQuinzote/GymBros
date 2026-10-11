@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { WorkoutRoutine, WorkoutSession, WorkoutSetLog, ExerciseDefinition } from '../../../shared/types';
 import { LocalStorageService } from '../../../shared/services/storage';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
+import { NotificationService } from '../../../shared/services/notifications';
 import { useAuth } from '../../auth/context/AuthContext';
 
 interface WorkoutContextType {
@@ -13,7 +14,7 @@ interface WorkoutContextType {
   startWorkout: (routine: WorkoutRoutine) => Promise<void>;
   logSet: (exerciseName: string, weightKg: number, reps: number) => Promise<void>;
   finishWorkout: () => Promise<{ broPointsEarned: number }>;
-  cancelWorkout: () => void;
+  cancelWorkout: () => Promise<void>;
   restTimerSeconds: number;
   isTimerRunning: boolean;
   startRestTimer: (duration?: number) => void;
@@ -25,7 +26,7 @@ interface WorkoutContextType {
 const WorkoutContext = createContext<WorkoutContextType>({} as WorkoutContextType);
 
 export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { activeProfile, partnerProfile, addBroPoints, incrementStreak } = useAuth();
+  const { activeProfile, partnerProfile, profiles, trackPresenceStatus, addBroPoints, incrementStreak } = useAuth();
   
   const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
   const [activeSession, setActiveSession] = useState<WorkoutSession | null>(null);
@@ -35,6 +36,11 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const [restTimerSeconds, setRestTimerSeconds] = useState(60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  // Inicializa o serviço de notificações nativas
+  useEffect(() => {
+    NotificationService.init();
+  }, []);
 
   useEffect(() => {
     if (!activeProfile) {
@@ -90,12 +96,27 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         { event: '*', schema: 'public', table: 'workout_sessions' },
         (payload) => {
           const updated = payload.new as WorkoutSession;
+          if (!updated || !updated.user_id) return;
+
+          // Se a sessão for do partner estático, atualiza o partnerActiveSession
           if (partnerProfile && updated.user_id === partnerProfile.id) {
             if (updated.status === 'in_progress') {
               setPartnerActiveSession(updated);
             } else {
               setPartnerActiveSession(null);
             }
+          }
+
+          // Se outro bro da comunidade acabou de iniciar um treino, dispara a notificação no celular
+          if (
+            payload.eventType === 'INSERT' &&
+            updated.user_id !== activeProfile?.id &&
+            updated.status === 'in_progress'
+          ) {
+            const bro = profiles.find((p) => p.id === updated.user_id);
+            const broName = bro?.name || 'Seu Bro';
+            const routineName = updated.routine_name || 'Treino';
+            NotificationService.notifyWorkoutStarted(broName, routineName);
           }
         }
       )
@@ -106,7 +127,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         supabase.removeChannel(subscription);
       }
     };
-  }, [partnerProfile]);
+  }, [activeProfile, partnerProfile, profiles]);
 
   const addRoutine = async (title: string, targetMuscle: string): Promise<WorkoutRoutine> => {
     const newRoutine: WorkoutRoutine = {
@@ -189,6 +210,14 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setCurrentSetLogs([]);
     await LocalStorageService.saveSession(newSession);
 
+    // Atualiza status de presença imediatamente para a comunidade
+    await trackPresenceStatus('TRAINING', {
+      routine_name: newSession.routine_name,
+      current_exercise: newSession.current_exercise,
+      current_set: newSession.current_set,
+      current_weight_kg: newSession.current_weight_kg,
+    });
+
     if (isSupabaseConfigured && supabase) {
       await supabase.from('workout_sessions').insert(newSession);
     }
@@ -227,6 +256,13 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await LocalStorageService.saveSession(updatedSession);
     await LocalStorageService.saveSetLog(activeSession.id, newLog);
 
+    await trackPresenceStatus('TRAINING', {
+      routine_name: updatedSession.routine_name,
+      current_exercise: updatedSession.current_exercise,
+      current_set: updatedSession.current_set,
+      current_weight_kg: updatedSession.current_weight_kg,
+    });
+
     if (isSupabaseConfigured && supabase) {
       await supabase.from('workout_sessions').update(updatedSession).eq('id', activeSession.id);
       await supabase.from('workout_logs').insert(newLog);
@@ -250,6 +286,9 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await addBroPoints(totalEarned);
     await incrementStreak();
 
+    // Retorna a presença para ONLINE após o treino
+    await trackPresenceStatus('ONLINE');
+
     if (isSupabaseConfigured && supabase) {
       await supabase.from('workout_sessions').update(completedSession).eq('id', activeSession.id);
     }
@@ -259,7 +298,11 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return { broPointsEarned: totalEarned };
   };
 
-  const cancelWorkout = () => {
+  const cancelWorkout = async () => {
+    if (activeSession && isSupabaseConfigured && supabase) {
+      await supabase.from('workout_sessions').update({ status: 'cancelled' }).eq('id', activeSession.id);
+    }
+    await trackPresenceStatus('ONLINE');
     setActiveSession(null);
     setCurrentSetLogs([]);
   };

@@ -68,6 +68,7 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
+      trackPresenceStatus: jest.fn(),
       isLoading: false,
     });
   });

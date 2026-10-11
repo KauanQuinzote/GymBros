@@ -80,6 +80,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
+      trackPresenceStatus: jest.fn(),
       isLoading: false,
     });
 
@@ -132,6 +133,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
+      trackPresenceStatus: jest.fn(),
       isLoading: false,
     });
 

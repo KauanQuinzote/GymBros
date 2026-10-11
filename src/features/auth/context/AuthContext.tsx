@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { BroProfile } from '../../../shared/types';
 import { LocalStorageService, DEFAULT_PROFILES } from '../../../shared/services/storage';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
@@ -31,6 +31,7 @@ interface AuthContextType {
   incrementStreak: () => Promise<void>;
   registerProfile: (data: Omit<BroProfile, 'id' | 'bro_points' | 'streak'>) => Promise<BroProfile>;
   loadProfiles: () => Promise<void>;
+  trackPresenceStatus: (status: PartnerPresenceStatus, extra?: Partial<BroPresenceState>) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -51,6 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [partnerStatus, setPartnerStatus] = useState<PartnerPresenceStatus>('OFFLINE');
   const [onlineBros, setOnlineBros] = useState<BroPresenceState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const presenceChannelRef = useRef<any>(null);
 
   useEffect(() => {
     loadProfiles();
@@ -117,6 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (isSupabaseConfigured && supabase) {
       presenceChannel = supabase.channel('bro_presence');
+      presenceChannelRef.current = presenceChannel;
 
       presenceChannel
         .on('presence', { event: 'sync' }, () => {
@@ -195,9 +198,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         presenceChannel.untrack();
         supabase.removeChannel(presenceChannel);
+        presenceChannelRef.current = null;
       }
     };
   }, [activeProfile, partnerProfile]);
+
+  const trackPresenceStatus = async (
+    status: PartnerPresenceStatus,
+    extra: Partial<BroPresenceState> = {}
+  ) => {
+    if (!activeProfile || !presenceChannelRef.current) return;
+    try {
+      const payload = {
+        user_id: activeProfile.id,
+        user_name: activeProfile.name,
+        status,
+        ...extra,
+        updated_at: new Date().toISOString(),
+      };
+      await presenceChannelRef.current.track(payload);
+
+      if (isSupabaseConfigured && supabase?.functions) {
+        await supabase.functions.invoke('presence-logger', {
+          body: payload,
+        });
+      }
+    } catch (e) {
+      console.warn('Erro ao atualizar status de presença:', e);
+    }
+  };
 
   const loginWithPin = (profileId: string, pin: string): boolean => {
     const target = profiles.find((p) => p.id === profileId);
@@ -322,6 +351,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         incrementStreak,
         registerProfile,
         loadProfiles,
+        trackPresenceStatus,
         isLoading,
       }}
     >

@@ -74,6 +74,7 @@ describe('Chilling Components Unit Tests', () => {
       incrementStreak: jest.fn(),
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
+      trackPresenceStatus: jest.fn(),
       isLoading: false,
     });
 

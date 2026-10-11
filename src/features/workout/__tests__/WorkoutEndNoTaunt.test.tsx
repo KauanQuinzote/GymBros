@@ -23,7 +23,7 @@ jest.mock('../../auth/context/AuthContext', () => ({
     partnerProfile: null,
     addBroPoints: jest.fn().mockResolvedValue(undefined),
     incrementStreak: jest.fn().mockResolvedValue(undefined),
-    updateTrainingStatus: jest.fn().mockResolvedValue(undefined),
+    trackPresenceStatus: jest.fn().mockResolvedValue(undefined),
   })),
 }));
 
