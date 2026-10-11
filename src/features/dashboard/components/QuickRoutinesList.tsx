@@ -41,7 +41,7 @@ export const QuickRoutinesList: React.FC<QuickRoutinesListProps> = ({
             <Text className="text-slate-400 text-xs mt-1 mb-4">{routine.exercises.length} Exercícios</Text>
 
             <View className="flex-row items-center justify-center bg-blue-600 py-3 rounded-xl gap-2">
-              <Play className="text-white" size={14} fill="currentColor" className="text-white" />
+              <Play className="text-white" size={14} fill="currentColor" />
               <Text className="text-white font-bold text-xs">INICIAR FICHA (+50 pts)</Text>
             </View>
           </TouchableOpacity>

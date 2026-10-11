@@ -52,7 +52,7 @@ export const RoutineCard: React.FC<RoutineCardProps> = ({
           onPress={onStartWorkout}
           activeOpacity={0.8}
         >
-          <Play className="text-white" size={14} fill="currentColor" className="text-white" />
+          <Play className="text-white" size={14} fill="currentColor" />
           <Text className="text-white font-bold text-xs">INICIAR FICHA (+50 pts)</Text>
         </TouchableOpacity>
       </View>
