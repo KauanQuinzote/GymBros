@@ -55,9 +55,9 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
   };
 
   return (
-    <View className="bg-[#161B26] border border-[#262F42] rounded-3xl p-5 my-3 shadow-xl">
+    <View className="bg-slate-900 border border-slate-800 rounded-3xl p-5 my-3 shadow-xl">
       <View className="flex-row items-center gap-2.5 mb-4">
-        <Music color="#00F0FF" size={22} />
+        <Music className="text-cyan-400" size={22} />
         <View className="flex-1">
           <Text className="text-white font-extrabold text-base uppercase tracking-wider">
             SOUNDBOARD DE MEMES ({filteredMemes.length})
@@ -79,8 +79,8 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
             key={cat.id}
             className={`px-3.5 py-2 rounded-xl border ${
               selectedCategory === cat.id
-                ? 'bg-[#00F0FF] border-[#00F0FF]'
-                : 'bg-[#0A0D14] border-[#262F42]'
+                ? 'bg-cyan-400 border-cyan-400'
+                : 'bg-slate-950 border-slate-800'
             }`}
             onPress={() => setSelectedCategory(cat.id)}
             activeOpacity={0.8}
@@ -97,12 +97,12 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
       </ScrollView>
 
       {/* Busca de Memes */}
-      <View className="bg-[#0A0D14] flex-row items-center gap-2.5 px-3.5 py-2 rounded-xl border border-[#262F42] mb-4">
-        <Search color="#94A3B8" size={16} />
+      <View className="bg-slate-950 flex-row items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-800 mb-4">
+        <Search className="text-slate-400" size={16} />
         <TextInput
           className="flex-1 text-slate-100 text-xs py-1"
           placeholder="Buscar meme (ex: sirene, chaves, goku, lula...)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
@@ -118,8 +118,8 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
               key={meme.id}
               className={`p-3 rounded-2xl border flex-row items-center justify-between w-[48%] ${
                 isSending
-                  ? 'bg-[#00F0FF]/20 border-[#00F0FF]'
-                  : 'bg-[#0A0D14] border-[#262F42]'
+                  ? 'bg-cyan-400/20 border-cyan-400'
+                  : 'bg-slate-950 border-slate-800'
               }`}
             >
               <TouchableOpacity
@@ -131,18 +131,18 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
                 <Text className="text-slate-100 font-bold text-xs" numberOfLines={2}>
                   {displayName}
                 </Text>
-                <Text className="text-[#00F0FF] font-semibold text-[10px] mt-1 uppercase">
+                <Text className="text-cyan-400 font-semibold text-[10px] mt-1 uppercase">
                   Enviar ➔
                 </Text>
               </TouchableOpacity>
 
               {/* Botão de Preview Local */}
               <TouchableOpacity
-                className="w-7 h-7 rounded-lg bg-[#161B26] border border-[#262F42] justify-center items-center"
+                className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 justify-center items-center"
                 onPress={() => handlePreviewLocal(meme)}
                 activeOpacity={0.7}
               >
-                <Play color="#94A3B8" size={12} />
+                <Play className="text-slate-400" size={12} />
               </TouchableOpacity>
             </View>
           );
@@ -150,18 +150,18 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
       </View>
 
       {/* Envio de URL Customizada (ex: MyInstants) */}
-      <View className="bg-[#0A0D14] p-4 rounded-2xl border border-[#262F42] gap-3">
+      <View className="bg-slate-950 p-4 rounded-2xl border border-slate-800 gap-3">
         <View className="flex-row items-center gap-2">
-          <LinkIcon color="#FFD60A" size={16} />
+          <LinkIcon className="text-amber-400" size={16} />
           <Text className="text-slate-200 text-xs font-bold uppercase">
             LINK CUSTOMIZADO (MYINSTANTS / MP3)
           </Text>
         </View>
 
         <TextInput
-          className="bg-[#161B26] border border-[#262F42] rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
+          className="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
           placeholder="Cole a URL do áudio MP3 (ex: myinstants.com/...)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={customUrl}
           onChangeText={setCustomUrl}
           autoCapitalize="none"
@@ -169,16 +169,16 @@ export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
         />
 
         <TextInput
-          className="bg-[#161B26] border border-[#262F42] rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
+          className="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 text-xs"
           placeholder="Frase do alerta (Opcional)"
-          placeholderTextColor="#64748B"
+          placeholderTextColor="#94a3b8"
           value={customText}
           onChangeText={setCustomText}
         />
 
         <TouchableOpacity
           className={`py-3 px-4 rounded-xl flex-row justify-center items-center gap-2 ${
-            customUrl.trim() ? 'bg-[#00F0FF]' : 'bg-[#262F42]'
+            customUrl.trim() ? 'bg-cyan-400' : 'bg-slate-800'
           }`}
           onPress={handleSendCustomUrl}
           disabled={!customUrl.trim() || sendingId === 'custom'}

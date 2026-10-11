@@ -47,7 +47,7 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({ activeProfil
   return (
     <View className="px-5 mt-5">
       <View className="flex-row items-center gap-2 mb-3.5">
-        <Award color="#FFD60A" size={22} />
+        <Award className="text-amber-400" size={22} />
         <Text className="text-slate-50 text-lg font-bold tracking-tight">Conquistas Ativas</Text>
       </View>
 
@@ -58,7 +58,7 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({ activeProfil
             <View
               key={ach.id}
               className={`flex-row items-center rounded-2xl p-3.5 border gap-3 ${
-                ach.unlocked ? 'bg-[#161B26] border-[#262F42]' : 'bg-[#0A0D14] border-[#161B26] opacity-50'
+                ach.unlocked ? 'bg-slate-900 border-slate-800' : 'bg-slate-950 border-slate-800 opacity-50'
               }`}
             >
               <View style={{ backgroundColor: `${ach.iconColor}20` }} className="w-10 h-10 rounded-full justify-center items-center">
@@ -68,8 +68,8 @@ export const AchievementsList: React.FC<AchievementsListProps> = ({ activeProfil
                 <Text className={`font-bold text-sm ${ach.unlocked ? 'text-slate-50' : 'text-slate-500'}`}>{ach.title}</Text>
                 <Text className="text-slate-400 text-xs mt-0.5">{ach.desc}</Text>
               </View>
-              <View className={`px-2 py-1 rounded-lg ${ach.unlocked ? 'bg-emerald-500/15' : 'bg-[#262F42]'}`}>
-                <Text className="text-[#30D158] text-[9px] font-bold">{ach.unlocked ? 'CONCLUÍDO' : 'BLOQUEADO'}</Text>
+              <View className={`px-2 py-1 rounded-lg ${ach.unlocked ? 'bg-emerald-500/15' : 'bg-slate-800'}`}>
+                <Text className="text-emerald-400 text-[9px] font-bold">{ach.unlocked ? 'CONCLUÍDO' : 'BLOQUEADO'}</Text>
               </View>
             </View>
           );

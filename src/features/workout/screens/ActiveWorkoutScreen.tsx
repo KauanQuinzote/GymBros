@@ -58,12 +58,12 @@ export const ActiveWorkoutScreen: React.FC<ActiveWorkoutScreenProps> = ({ onFini
   };
 
   return (
-    <View className="flex-1 bg-[#0A0D14]">
+    <View className="flex-1 bg-slate-950">
       <ActiveWorkoutTop routineName={activeSession.routine_name} broPointsEarned={activeSession.bro_points_earned} onCancel={cancelWorkout} onComplete={handleCompleteWorkout} />
       <RestTimerBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         <ExerciseTabList exercises={exercises} activeExerciseIndex={activeExerciseIndex} currentSetLogs={currentSetLogs} onSelectExercise={setActiveExerciseIndex} />
-        <View className="bg-[#161B26] mx-5 rounded-3xl p-5 border border-[#262F42]">
+        <View className="bg-slate-900 mx-5 rounded-3xl p-5 border border-slate-800">
           <ActiveExerciseTable currentExercise={currentExercise} logsForCurrentExercise={logsForCurrentExercise} lastHistoryText={lastHistoryText} />
           <SetRegisterForm currentExercise={currentExercise} currentSetsCount={logsForCurrentExercise.length} weightKg={weightKg} reps={reps} onChangeWeight={setWeightKg} onChangeReps={setReps} onAddSet={handleAddSet} onNextExercise={() => setActiveExerciseIndex(activeExerciseIndex + 1)} hasNextExercise={activeExerciseIndex < exercises.length - 1} />
         </View>

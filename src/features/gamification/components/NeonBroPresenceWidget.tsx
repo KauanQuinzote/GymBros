@@ -25,9 +25,9 @@ export const NeonBroPresenceWidget: React.FC = () => {
 
   if (activeCount === 0) {
     return (
-      <View className="bg-[#0A0D14] border border-[#262F42] rounded-2xl p-4 mx-5 my-2.5">
+      <View className="bg-slate-950 border border-slate-800 rounded-2xl p-4 mx-5 my-2.5">
         <View className="flex-row items-center gap-2 mb-2">
-          <Wifi color="#64748B" size={16} />
+          <Wifi className="text-slate-500" size={16} />
           <Text className="text-slate-400 text-xs font-bold uppercase tracking-wider">
             STATUS DOS BROS
           </Text>
@@ -40,17 +40,17 @@ export const NeonBroPresenceWidget: React.FC = () => {
   }
 
   return (
-    <View className="bg-[#0A0D14] border border-[#1E293B] rounded-2xl p-4 mx-5 my-2.5">
+    <View className="bg-slate-950 border border-slate-800 rounded-2xl p-4 mx-5 my-2.5">
       {/* Header do Widget */}
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center gap-2">
-          <Users color="#00F0FF" size={18} />
+          <Users className="text-cyan-400" size={18} />
           <Text className="text-slate-100 text-sm font-extrabold uppercase tracking-wider">
             BROS ATIVOS
           </Text>
         </View>
-        <View className="bg-[#00F0FF]/20 px-2.5 py-0.5 rounded-full border border-[#00F0FF]/40">
-          <Text className="text-[#00F0FF] text-xs font-black">{activeCount} ONLINE</Text>
+        <View className="bg-cyan-400/20 px-2.5 py-0.5 rounded-full border border-cyan-400/40">
+          <Text className="text-cyan-400 text-xs font-black">{activeCount} ONLINE</Text>
         </View>
       </View>
 

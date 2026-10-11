@@ -51,43 +51,43 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View className="flex-1 bg-black/80 justify-center items-center px-6">
-        <View className="w-full bg-[#161B26] border border-[#262F42] rounded-3xl p-6">
+        <View className="w-full bg-slate-900 border border-slate-800 rounded-3xl p-6">
           <View className="flex-row justify-between items-center mb-6">
             <View className="flex-row items-center gap-2">
-              <UserPlus color="#0A84FF" size={22} />
+              <UserPlus className="text-blue-500" size={22} />
               <Text className="text-xl font-bold text-white tracking-tight">Criar Perfil de Bro</Text>
             </View>
             <TouchableOpacity onPress={onClose}>
-              <X color="#94A3B8" size={22} />
+              <X className="text-slate-400" size={22} />
             </TouchableOpacity>
           </View>
 
           <View className="space-y-4 gap-4">
             <TextInput
               placeholder="Nome Completo"
-              placeholderTextColor="#64748B"
+              placeholderTextColor="#94a3b8"
               value={name}
               onChangeText={setName}
-              className="bg-[#0A0D14] border border-[#262F42] rounded-xl px-4 py-3 text-white text-base"
+              className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-base"
             />
             <TextInput
               placeholder="E-mail"
-              placeholderTextColor="#64748B"
+              placeholderTextColor="#94a3b8"
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}
               onChangeText={setEmail}
-              className="bg-[#0A0D14] border border-[#262F42] rounded-xl px-4 py-3 text-white text-base"
+              className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-base"
             />
             <TextInput
               placeholder="PIN de Acesso (4 dígitos)"
-              placeholderTextColor="#64748B"
+              placeholderTextColor="#94a3b8"
               keyboardType="number-pad"
               secureTextEntry
               maxLength={4}
               value={pin}
               onChangeText={setPin}
-              className="bg-[#0A0D14] border border-[#262F42] rounded-xl px-4 py-3 text-white text-base"
+              className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white text-base"
             />
 
             <View className="flex-row justify-between items-center my-2">
@@ -105,7 +105,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               disabled={loading || !name.trim() || pin.length < 4}
               onPress={handleCreate}
               className={`py-4 rounded-xl items-center justify-center ${
-                !name.trim() || pin.length < 4 ? 'bg-[#1E293B]' : 'bg-[#0A84FF]'
+                !name.trim() || pin.length < 4 ? 'bg-slate-800' : 'bg-blue-600'
               }`}
             >
               <Text className="text-white font-bold text-base">

@@ -17,7 +17,7 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
   return (
     <View className="mb-4">
       <View className="flex-row items-center gap-2.5">
-        <Dumbbell color="#0A84FF" size={22} />
+        <Dumbbell className="text-blue-500" size={22} />
         <Text className="text-slate-50 text-lg font-bold flex-1">{currentExercise.name}</Text>
       </View>
       <Text className="text-slate-400 text-xs mt-1.5 mb-1">
@@ -25,13 +25,13 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
       </Text>
 
       {lastHistoryText && (
-        <Text className="text-[#0A84FF] text-[11px] font-semibold mb-4 bg-[#0A84FF]/10 self-start px-2.5 py-1 rounded-lg">
+        <Text className="text-blue-500 text-[11px] font-semibold mb-4 bg-blue-500/10 self-start px-2.5 py-1 rounded-lg">
           📊 {lastHistoryText}
         </Text>
       )}
 
-      <View className="bg-[#0A0D14] rounded-2xl p-3">
-        <View className="flex-row justify-between pb-2 border-b border-[#161B26]">
+      <View className="bg-slate-950 rounded-2xl p-3">
+        <View className="flex-row justify-between pb-2 border-b border-slate-800">
           <Text className="text-slate-500 text-xs font-semibold flex-1 text-center">Série</Text>
           <Text className="text-slate-500 text-xs font-semibold flex-1 text-center">Carga (kg)</Text>
           <Text className="text-slate-500 text-xs font-semibold flex-1 text-center">Reps</Text>
@@ -39,13 +39,13 @@ export const ActiveExerciseTable: React.FC<ActiveExerciseTableProps> = ({
         </View>
 
         {logsForCurrentExercise.map((log) => (
-          <View key={log.id} className="flex-row justify-between items-center py-2.5 border-b border-[#161B26]">
-            <Text className="text-[#0A84FF] text-sm font-bold flex-1 text-center">#{log.set_number}</Text>
+          <View key={log.id} className="flex-row justify-between items-center py-2.5 border-b border-slate-800">
+            <Text className="text-blue-500 text-sm font-bold flex-1 text-center">#{log.set_number}</Text>
             <Text className="text-slate-50 text-sm flex-1 text-center">{log.weight_kg} kg</Text>
             <Text className="text-slate-50 text-sm flex-1 text-center">{log.reps} reps</Text>
             <View className="flex-1 flex-row justify-center items-center gap-1">
-              {log.is_pr && <Text className="text-[#FFD60A] text-[10px] font-bold">PR (+25 pts)</Text>}
-              <CheckCircle2 color="#30D158" size={18} />
+              {log.is_pr && <Text className="text-amber-400 text-[10px] font-bold">PR (+25 pts)</Text>}
+              <CheckCircle2 className="text-emerald-400" size={18} />
             </View>
           </View>
         ))}

@@ -33,18 +33,18 @@ export const RestTimerBar: React.FC = () => {
   // Paleta de Cores Dinâmicas por Estágio
   const getStageColors = () => {
     if (restTimerSeconds > 30) {
-      return { start: '#30D158', stop: '#0A84FF', text: 'text-[#30D158]' }; // Verde Apple
+      return { start: '#30D158', stop: '#0A84FF', text: 'text-emerald-400' }; // Verde Apple
     }
     if (restTimerSeconds >= 10) {
-      return { start: '#FF9F0A', stop: '#FFD60A', text: 'text-[#FF9F0A]' }; // Laranja
+      return { start: '#FF9F0A', stop: '#FFD60A', text: 'text-amber-500' }; // Laranja
     }
-    return { start: '#FF453A', stop: '#FF9F0A', text: 'text-[#FF453A]' }; // Vermelho Alerta
+    return { start: '#FF453A', stop: '#FF9F0A', text: 'text-rose-500' }; // Vermelho Alerta
   };
 
   const colors = getStageColors();
 
   return (
-    <View className="flex-row items-center justify-between bg-[#161B26] p-4 rounded-3xl mx-5 my-3 border border-[#262F42]">
+    <View className="flex-row items-center justify-between bg-slate-900 p-4 rounded-3xl mx-5 my-3 border border-slate-800">
       {/* Esquerda: Anel Circular SVG com Contador de Tempo */}
       <View className="flex-row items-center gap-3">
         <View className="relative w-16 h-16 justify-center items-center">
@@ -100,7 +100,7 @@ export const RestTimerBar: React.FC = () => {
       {/* Direita: Botões de Ação de Tempo */}
       <View className="flex-row items-center gap-2">
         <TouchableOpacity
-          className="flex-row items-center bg-[#262F42] px-3 py-2 rounded-xl gap-1"
+          className="flex-row items-center bg-slate-800 px-3 py-2 rounded-xl gap-1"
           onPress={() => {
             const nextTime = restTimerSeconds + 30;
             setInitialDuration(Math.max(initialDuration, nextTime));
@@ -108,19 +108,19 @@ export const RestTimerBar: React.FC = () => {
           }}
           activeOpacity={0.7}
         >
-          <Plus color="#F8FAFC" size={14} />
+          <Plus className="text-slate-50" size={14} />
           <Text className="text-white text-xs font-bold">+30s</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          className="bg-[#262F42] p-2.5 rounded-xl"
+          className="bg-slate-800 p-2.5 rounded-xl"
           onPress={() => {
             setInitialDuration(60);
             startRestTimer(60);
           }}
           activeOpacity={0.7}
         >
-          <RotateCcw color="#94A3B8" size={16} />
+          <RotateCcw className="text-slate-400" size={16} />
         </TouchableOpacity>
       </View>
     </View>

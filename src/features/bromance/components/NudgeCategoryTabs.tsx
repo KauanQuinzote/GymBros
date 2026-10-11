@@ -13,9 +13,9 @@ export const NudgeCategoryTabs: React.FC<NudgeCategoryTabsProps> = ({
   onSelectCategory,
 }) => {
   return (
-    <View className="flex-row mx-5 my-2 bg-[#161B26] p-1.5 rounded-2xl border border-[#262F42] justify-between">
+    <View className="flex-row mx-5 my-2 bg-slate-900 p-1.5 rounded-2xl border border-slate-800 justify-between">
       <TouchableOpacity
-        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'pesado' ? 'bg-[#FF453A]' : ''}`}
+        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'pesado' ? 'bg-rose-500' : ''}`}
         onPress={() => onSelectCategory('pesado')}
         activeOpacity={0.8}
       >
@@ -24,7 +24,7 @@ export const NudgeCategoryTabs: React.FC<NudgeCategoryTabsProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity
-        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'frango' ? 'bg-[#FF9F0A]' : ''}`}
+        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'frango' ? 'bg-amber-500' : ''}`}
         onPress={() => onSelectCategory('frango')}
         activeOpacity={0.8}
       >
@@ -33,7 +33,7 @@ export const NudgeCategoryTabs: React.FC<NudgeCategoryTabsProps> = ({
       </TouchableOpacity>
 
       <TouchableOpacity
-        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'brother' ? 'bg-[#30D158]' : ''}`}
+        className={`flex-1 py-2.5 rounded-xl items-center flex-row justify-center gap-1.5 ${selectedCategory === 'brother' ? 'bg-emerald-500' : ''}`}
         onPress={() => onSelectCategory('brother')}
         activeOpacity={0.8}
       >

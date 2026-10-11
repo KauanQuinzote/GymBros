@@ -27,7 +27,7 @@ export const ProfileSelectScreen: React.FC = () => {
         paddingTop: 60,
         paddingBottom: 40,
       }}
-      className="bg-[#0A0D14] px-5 pt-20 pb-10"
+      className="bg-slate-950 px-5 pt-20 pb-10"
       style={{ backgroundColor: '#0A0D14', flex: 1 }}
     >
       <View className="items-center mb-10" style={{ alignItems: 'center', marginBottom: 40 }}>
@@ -47,7 +47,7 @@ export const ProfileSelectScreen: React.FC = () => {
 
       {isLoading ? (
         <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 48, gap: 16 }}>
-          <ActivityIndicator size="large" color="#0A84FF" />
+          <ActivityIndicator size="large" className="text-blue-500" />
           <Text style={{ color: '#94A3B8', fontSize: 15, fontWeight: '500' }}>
             Carregando perfis do banco...
           </Text>
@@ -74,7 +74,7 @@ export const ProfileSelectScreen: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            <Users color="#0A84FF" size={28} />
+            <Users className="text-blue-500" size={28} />
           </View>
 
           <View style={{ alignItems: 'center', gap: 6 }}>
@@ -100,7 +100,7 @@ export const ProfileSelectScreen: React.FC = () => {
               onPress={() => setCreateModalVisible(true)}
               activeOpacity={0.8}
             >
-              <UserPlus color="#FFFFFF" size={18} />
+              <UserPlus className="text-white" size={18} />
               <Text style={{ color: '#FFFFFF', fontWeight: '700', fontSize: 15 }}>
                 Criar Novo Perfil
               </Text>
@@ -121,7 +121,7 @@ export const ProfileSelectScreen: React.FC = () => {
               onPress={() => loadProfiles()}
               activeOpacity={0.8}
             >
-              <RefreshCw color="#94A3B8" size={16} />
+              <RefreshCw className="text-slate-400" size={16} />
               <Text style={{ color: '#94A3B8', fontWeight: '600', fontSize: 14 }}>
                 Tentar Novamente
               </Text>
@@ -133,7 +133,7 @@ export const ProfileSelectScreen: React.FC = () => {
           {profiles.map((profile) => (
             <TouchableOpacity
               key={profile.id}
-              className="flex-row items-center bg-[#161B26] rounded-2xl p-5 border border-[#262F42] gap-4"
+              className="flex-row items-center bg-slate-900 rounded-2xl p-5 border border-slate-800 gap-4"
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -169,19 +169,19 @@ export const ProfileSelectScreen: React.FC = () => {
                 </Text>
 
                 <View className="flex-row items-center gap-1.5 mt-1" style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                  <Award color="#FFD60A" size={14} />
-                  <Text className="text-[#FFD60A] font-semibold text-xs" style={{ color: '#FFD60A', fontWeight: '600', fontSize: 12 }}>
+                  <Award className="text-amber-400" size={14} />
+                  <Text className="text-amber-400 font-semibold text-xs" style={{ color: '#FFD60A', fontWeight: '600', fontSize: 12 }}>
                     {profile.bro_points} Bro Points
                   </Text>
                 </View>
               </View>
 
-              <ChevronRight color="#64748B" size={20} />
+              <ChevronRight className="text-slate-500" size={20} />
             </TouchableOpacity>
           ))}
 
           <TouchableOpacity
-            className="flex-row items-center justify-center bg-[#161B26] border border-dashed border-[#0A84FF] rounded-2xl p-5 gap-3 mt-2"
+            className="flex-row items-center justify-center bg-slate-900 border border-dashed border-blue-500 rounded-2xl p-5 gap-3 mt-2"
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -198,8 +198,8 @@ export const ProfileSelectScreen: React.FC = () => {
             onPress={() => setCreateModalVisible(true)}
             activeOpacity={0.8}
           >
-            <UserPlus color="#0A84FF" size={20} />
-            <Text className="text-[#0A84FF] font-bold text-base" style={{ color: '#0A84FF', fontWeight: '700', fontSize: 16 }}>
+            <UserPlus className="text-blue-500" size={20} />
+            <Text className="text-blue-500 font-bold text-base" style={{ color: '#0A84FF', fontWeight: '700', fontSize: 16 }}>
               + Criar Perfil de Bro
             </Text>
           </TouchableOpacity>
