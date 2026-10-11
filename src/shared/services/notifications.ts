@@ -37,13 +37,18 @@ export class NotificationService {
 
     try {
       if (Platform.OS === 'android') {
-        await setNotificationChannelAsync('gymbros_workouts', {
-          name: 'Treinos da Equipe',
-          importance: AndroidImportance.HIGH,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#0A84FF',
-          sound: 'default',
-        });
+        try {
+          await setNotificationChannelAsync('gymbros_workouts', {
+            name: 'Treinos da Equipe',
+            importance: AndroidImportance.HIGH,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#0A84FF',
+            sound: 'default',
+          });
+        } catch (channelError) {
+          // No Expo Go ou em ambientes sem NotificationsChannelsProvider nativo registrado
+          console.warn('Canal de notificação Android ignorado:', channelError);
+        }
       }
 
       const { status: existingStatus } = await getPermissionsAsync();
