@@ -1,101 +1,171 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Animated, Platform } from 'react-native';
 import { BroPresenceState } from '../../auth/context/AuthContext';
-import { Activity, Dumbbell, UserCheck, Zap } from 'lucide-react-native';
 
 interface BroPresenceCardProps {
   bro: BroPresenceState;
+  onPress?: () => void;
 }
 
-export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({ bro }) => {
+export const BroPresenceCard: React.FC<BroPresenceCardProps> = ({
+  bro,
+  onPress,
+}) => {
   const isTraining = bro.status === 'TRAINING';
   const isOnline = bro.status === 'ONLINE' || isTraining;
+  const isActive = isOnline; // Ativo quando Online ou Treinando
+
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (!isActive) {
+      pulseAnim.setValue(1);
+      return;
+    }
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 0.25,
+          duration: 900,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 900,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [isActive, pulseAnim]);
+
+  // Cores de status Neon
+  const neonColor = isTraining ? '#10B981' : isOnline ? '#22D3EE' : '#262F42';
+  const haloBgColor = isTraining
+    ? 'rgba(16, 185, 129, 0.15)'
+    : isOnline
+    ? 'rgba(34, 211, 238, 0.15)'
+    : 'transparent';
+
+  // Sombra e Glow compatíveis com Web e Mobile
+  const haloShadowStyle =
+    Platform.OS === 'web' && isActive
+      ? {
+          boxShadow: isTraining
+            ? '0 0 14px rgba(16, 185, 129, 0.7)'
+            : '0 0 14px rgba(34, 211, 238, 0.7)',
+        }
+      : {
+          shadowColor: neonColor,
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.8,
+          shadowRadius: 8,
+          elevation: 6,
+        };
+
+  const badgeBgColor = isTraining ? '#10B981' : isOnline ? '#22D3EE' : '#1E2536';
+  const badgeText = isTraining ? 'TREINANDO' : isOnline ? 'ON' : 'OFF';
+  const badgeTextColor = isTraining || isOnline ? '#0A0D14' : '#94A3B8';
 
   return (
-    <View
-      className={`rounded-2xl p-4 my-2 border ${
-        isTraining
-          ? 'bg-emerald-950/50 border-emerald-500/50 shadow-emerald-500/30'
-          : isOnline
-          ? 'bg-cyan-950/50 border-cyan-400/40 shadow-cyan-500/30'
-          : 'bg-slate-900 border-slate-800'
-      }`}
+    <TouchableOpacity
+      className="items-center w-[80px] gap-1.5"
+      style={{ width: 80, alignItems: 'center', overflow: 'visible' }}
+      onPress={onPress}
+      activeOpacity={0.7}
+      disabled={!onPress}
     >
-      <View className="flex-row justify-between items-center">
-        {/* Informações do Bro */}
-        <View className="flex-row items-center gap-3">
-          <View
-            style={{ backgroundColor: bro.avatar_color || (isTraining ? '#00FF66' : '#00F0FF') }}
-            className="w-10 h-10 rounded-full justify-center items-center shadow-lg"
-          >
-            <Text className="text-slate-950 text-sm font-extrabold">{bro.initials}</Text>
-          </View>
-          <View>
-            <Text className="text-slate-50 text-base font-bold">{bro.user_name}</Text>
-            <Text className="text-slate-400 text-xs font-medium">Parceiro de Treino</Text>
-          </View>
-        </View>
-
-        {/* Badges Neon de Status */}
-        {isTraining ? (
-          <View className="flex-row items-center bg-emerald-500/15 px-3 py-1.5 rounded-xl gap-2 border border-emerald-500/40">
-            <View className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <Text className="text-emerald-400 text-[11px] font-extrabold tracking-wider">
-              TREINANDO AGORA
-            </Text>
-          </View>
-        ) : isOnline ? (
-          <View className="flex-row items-center bg-cyan-400/15 px-3 py-1.5 rounded-xl gap-2 border border-cyan-400/40">
-            <View className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
-            <Text className="text-cyan-400 text-[11px] font-extrabold tracking-wider">
-              ONLINE NO APP
-            </Text>
-          </View>
-        ) : (
-          <View className="bg-slate-800 px-3 py-1.5 rounded-xl">
-            <Text className="text-slate-400 text-[11px] font-semibold">OFFLINE</Text>
-          </View>
+      {/* Container do Avatar com Anel Halo Separado */}
+      <View
+        className="relative"
+        style={{ width: 72, height: 72, alignItems: 'center', justifyContent: 'center', overflow: 'visible' }}
+      >
+        {/* Camada 0: Halo Neon Pulsante Externo (Apenas a borda pulsa) */}
+        {isActive && (
+          <Animated.View
+            style={[
+              {
+                position: 'absolute',
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                borderWidth: 2,
+                borderColor: neonColor,
+                backgroundColor: haloBgColor,
+                opacity: pulseAnim,
+              },
+              haloShadowStyle as any,
+            ]}
+          />
         )}
-      </View>
 
-      {/* Telemetria do Treino ou Navegação */}
-      {isTraining ? (
-        <View className="mt-3.5 pt-3.5 border-t border-emerald-500/20 gap-2">
-          {bro.routine_name ? (
-            <View className="flex-row items-center gap-2">
-              <Dumbbell className="text-emerald-400" size={16} />
-              <Text className="text-slate-300 text-xs">
-                Treino: <Text className="font-extrabold text-slate-50">{bro.routine_name}</Text>
-              </Text>
-            </View>
-          ) : null}
-
-          {bro.current_exercise ? (
-            <View className="flex-row items-center gap-2">
-              <Activity className="text-cyan-400" size={16} />
-              <Text className="text-slate-300 text-xs">
-                Exercício: <Text className="font-extrabold text-slate-50">{bro.current_exercise}</Text>
-              </Text>
-            </View>
-          ) : null}
-
-          {bro.current_weight_kg ? (
-            <View className="flex-row items-center gap-2 bg-emerald-500/10 px-2.5 py-1 rounded-lg self-start">
-              <Zap className="text-amber-400" size={14} />
-              <Text className="text-amber-400 text-xs font-bold">
-                Carga: {bro.current_weight_kg} kg {bro.current_set ? `• Série ${bro.current_set}` : ''}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-      ) : isOnline ? (
-        <View className="mt-3 pt-3 border-t border-cyan-400/20 flex-row items-center gap-2">
-          <UserCheck className="text-cyan-400" size={16} />
-          <Text className="text-slate-300 text-xs font-medium">
-            Seu bro está ativo e navegando no app agora!
+        {/* Camada 1: Círculo Fixo do Avatar (100% NÍTIDO E SEM PISCAR) */}
+        <View
+          style={{
+            width: 58,
+            height: 58,
+            borderRadius: 29,
+            backgroundColor: bro.avatar_color || '#0A84FF',
+            borderWidth: isActive ? 2 : 1,
+            borderColor: isActive ? '#0A0D14' : '#262F42',
+            opacity: isActive ? 1 : 0.6,
+          }}
+          className="justify-center items-center shadow-md"
+        >
+          <Text
+            style={{ fontSize: 18, fontWeight: '800', color: '#FFFFFF' }}
+            className="text-white text-lg font-extrabold"
+          >
+            {bro.initials}
           </Text>
         </View>
-      ) : null}
-    </View>
+
+        {/* Camada 2: Badge Neon Pulsante no Canto Inferior */}
+        <Animated.View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            paddingHorizontal: isTraining ? 6 : 5,
+            paddingVertical: 1.5,
+            borderRadius: 10,
+            borderWidth: 1.5,
+            borderColor: '#0A0D14',
+            backgroundColor: badgeBgColor,
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: isActive ? pulseAnim : 1,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: isTraining ? 7.5 : 8,
+              letterSpacing: 0.4,
+              fontWeight: '900',
+              color: badgeTextColor,
+            }}
+            className="uppercase"
+          >
+            {badgeText}
+          </Text>
+        </Animated.View>
+      </View>
+
+      {/* Nome do Bro */}
+      <View className="items-center w-full mt-0.5">
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: '700',
+            textAlign: 'center',
+            color: isTraining ? '#34D399' : isOnline ? '#F8FAFC' : '#94A3B8',
+          }}
+          numberOfLines={1}
+        >
+          {bro.user_name.split(' ')[0]}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };

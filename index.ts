@@ -1,4 +1,5 @@
 import './global.css';
+import './src/shared/utils/iconInterop';
 import { registerRootComponent } from 'expo';
 
 import App from './App';

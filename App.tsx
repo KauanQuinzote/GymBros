@@ -1,4 +1,5 @@
 import './global.css';
+import './src/shared/utils/iconInterop';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -42,6 +43,7 @@ const MainNavigation: React.FC = () => {
             onNavigateToWorkout={() => setActiveTab('workout')}
             onNavigateToRoutines={() => setActiveTab('routines')}
             onNavigateToHistory={() => setActiveTab('history')}
+            onNavigateToChilling={() => setActiveTab('chilling')}
           />
         )}
         {activeTab === 'workout' && !activeSession && (
