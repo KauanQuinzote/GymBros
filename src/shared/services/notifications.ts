@@ -1,17 +1,25 @@
-import * as Notifications from 'expo-notifications';
+import { setNotificationHandler } from 'expo-notifications/build/NotificationsHandler';
+import { scheduleNotificationAsync } from 'expo-notifications/build/scheduleNotificationAsync';
+import { setNotificationChannelAsync } from 'expo-notifications/build/setNotificationChannelAsync';
+import { getPermissionsAsync, requestPermissionsAsync } from 'expo-notifications/build/NotificationPermissions';
+import { AndroidImportance } from 'expo-notifications/build/NotificationChannelManager.types';
 import { Platform } from 'react-native';
 
 // Configuração padrão de exibição em primeiro plano
 if (Platform.OS !== 'web') {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-      shouldShowBanner: true,
-      shouldShowList: true,
-    }),
-  });
+  try {
+    setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+  } catch (err) {
+    console.warn('Falha ao configurar handler de notificações:', err);
+  }
 }
 
 export class NotificationService {
@@ -29,20 +37,20 @@ export class NotificationService {
 
     try {
       if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('gymbros_workouts', {
+        await setNotificationChannelAsync('gymbros_workouts', {
           name: 'Treinos da Equipe',
-          importance: Notifications.AndroidImportance.HIGH,
+          importance: AndroidImportance.HIGH,
           vibrationPattern: [0, 250, 250, 250],
           lightColor: '#0A84FF',
           sound: 'default',
         });
       }
 
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } = await getPermissionsAsync();
       let finalStatus = existingStatus;
 
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
+        const { status } = await requestPermissionsAsync();
         finalStatus = status;
       }
 
@@ -61,7 +69,7 @@ export class NotificationService {
     if (Platform.OS === 'web') return;
 
     try {
-      await Notifications.scheduleNotificationAsync({
+      await scheduleNotificationAsync({
         content: {
           title: 'GymBros - Treino Iniciado',
           body: `${broName} acabou de iniciar o treino de ${routineName}.`,

@@ -56,17 +56,17 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
   }
 
   return (
-    <View className="bg-slate-900 border border-slate-800 rounded-3xl p-5 mx-5 my-2.5">
+    <View className="rounded-3xl">
       {/* Header do Widget */}
-      <View className="flex-row justify-between items-center mb-3.5">
-        <View className="flex-row items-center gap-2">
+      <View className={clsx('flex-row', 'justify-between', 'items-center', 'mb-3.5')}>
+        <View className={clsx('flex-row', 'items-center', 'gap-2')}>
           <Users className="text-cyan-400" size={18} />
-          <Text className="text-slate-100 text-sm font-extrabold uppercase tracking-wider">
+          <Text className={clsx('text-slate-100', 'text-sm', 'font-extrabold', 'uppercase', 'tracking-wider')}>
             COMUNIDADE DOS BROS
           </Text>
         </View>
-        <View className="bg-cyan-400/20 px-2.5 py-0.5 rounded-full border border-cyan-400/40">
-          <Text className="text-cyan-400 text-xs font-black">{activeCount} Monstro(s)</Text>
+        <View className={clsx('bg-cyan-400/20', 'px-2.5', 'py-0.5', 'rounded-full', 'border', 'border-cyan-400/40')}>
+          <Text className={clsx('text-cyan-400', 'text-xs', 'font-black')}>{activeCount} Monstro(s)</Text>
         </View>
       </View>
 

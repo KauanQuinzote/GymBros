@@ -5,7 +5,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
-    '^expo-notifications$': '<rootDir>/__mocks__/expo-notifications.js',
+    '^expo-notifications(.*)$': '<rootDir>/__mocks__/expo-notifications.js',
   },
   transform: {
     '^.+\\.[jt]sx?$': ['ts-jest', { tsconfig: { jsx: 'react-jsx' } }],
