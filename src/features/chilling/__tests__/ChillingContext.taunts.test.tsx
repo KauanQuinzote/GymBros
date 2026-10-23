@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { BromanceProvider, useBromance } from '../context/BromanceContext';
+import { ChillingProvider, useChilling } from '../context/ChillingContext';
 import { useAuth } from '../../auth/context/AuthContext';
 import { supabase } from '../../../shared/services/supabaseClient';
 
@@ -35,7 +35,7 @@ jest.mock('../../../shared/services/supabaseClient', () => {
 
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
-describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', () => {
+describe('ChillingContext - Real-Time & Offline Taunts (Subagent Tester TDD)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -75,10 +75,10 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
 
   it('should send nudge via Supabase Realtime broadcast and insert into nudges Postgres table', async () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <BromanceProvider>{children}</BromanceProvider>
+      <ChillingProvider>{children}</ChillingProvider>
     );
 
-    const { result } = renderHook(() => useBromance(), { wrapper });
+    const { result } = renderHook(() => useChilling(), { wrapper });
 
     await act(async () => {
       await result.current.sendNudge('Bora treinar frango!', 'frango');
@@ -110,10 +110,10 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
     });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <BromanceProvider>{children}</BromanceProvider>
+      <ChillingProvider>{children}</ChillingProvider>
     );
 
-    const { result } = renderHook(() => useBromance(), { wrapper });
+    const { result } = renderHook(() => useChilling(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.activeIncomingNudge).not.toBeNull();
@@ -144,10 +144,10 @@ describe('BromanceContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
     });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <BromanceProvider>{children}</BromanceProvider>
+      <ChillingProvider>{children}</ChillingProvider>
     );
 
-    const { result } = renderHook(() => useBromance(), { wrapper });
+    const { result } = renderHook(() => useChilling(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.activeIncomingNudge).not.toBeNull();

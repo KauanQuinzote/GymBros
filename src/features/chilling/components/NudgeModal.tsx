@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import { useBromance } from '../context/BromanceContext';
+import { useChilling } from '../context/ChillingContext';
 import { AudioService } from '../services/audioService';
 import { Flame, X, MessageSquareReply, Volume2 } from 'lucide-react-native';
 
@@ -9,7 +9,7 @@ interface NudgeModalProps {
 }
 
 export const NudgeModal: React.FC<NudgeModalProps> = ({ onReplyPress }) => {
-  const { activeIncomingNudge, dismissIncomingNudge } = useBromance();
+  const { activeIncomingNudge, dismissIncomingNudge } = useChilling();
 
   useEffect(() => {
     if (activeIncomingNudge) {

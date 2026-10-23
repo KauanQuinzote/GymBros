@@ -5,8 +5,8 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { WorkoutProvider, useWorkout } from '../context/WorkoutContext';
 import { useAuth } from '../../auth/context/AuthContext';
-import { AudioService } from '../../bromance/services/audioService';
-import { SpeechService } from '../../bromance/services/speechService';
+import { AudioService } from '../../chilling/services/audioService';
+import { SpeechService } from '../../chilling/services/speechService';
 import { WorkoutRoutine } from '../../../shared/types';
 
 jest.mock('../../auth/context/AuthContext', () => ({
@@ -27,14 +27,14 @@ jest.mock('../../auth/context/AuthContext', () => ({
   })),
 }));
 
-jest.mock('../../bromance/services/audioService', () => ({
+jest.mock('../../chilling/services/audioService', () => ({
   AudioService: {
     playUrl: jest.fn().mockResolvedValue(true),
     stop: jest.fn().mockResolvedValue(true),
   },
 }));
 
-jest.mock('../../bromance/services/speechService', () => ({
+jest.mock('../../chilling/services/speechService', () => ({
   SpeechService: {
     speak: jest.fn(),
     stop: jest.fn(),

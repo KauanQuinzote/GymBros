@@ -10,7 +10,7 @@
   - Criar e configurar o ícone oficial do **GymBros** seguindo o padrão Apple Minimalist / Neon Dark (1024x1024 px).
   - Configurar ícones adaptativos do Android (`android-icon-foreground.png`, `android-icon-background.png`, `monochromeImage`) e `splash-icon.png`.
 - [x] **Renomear Romance para Chilling**: Atualizar a feature/seção de romance para **Chilling**.
-- [ ] **Refatoração Global de Nomenclaturas e Pastas (`bromance` -> `chilling` / termos pertinentes)**:
+- [x] **Refatoração Global de Nomenclaturas e Pastas (`bromance` -> `chilling` / termos pertinentes)**:
   - Renomear o diretório `src/features/bromance/` para `src/features/chilling/` (ou `src/features/chill/`).
   - Renomear todos os arquivos com prefixo ou menção a bromance (ex: `src/features/bromance/context/BromanceContext.tsx` -> `ChillContext.tsx`, `BromanceScreen.tsx` -> `ChillingScreen.tsx`, testes `BromanceContext.taunts.test.tsx`, etc.).
   - Renomear hooks, tipos e contextos exportados (`useBromance` -> `useChilling`, `BromanceContext` -> `ChillingContext`, `BromanceProvider` -> `ChillingProvider`, `BromanceNudgeLog` -> `ChillingNudgeLog`, etc.).

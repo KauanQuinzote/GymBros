@@ -6,7 +6,7 @@ import {
   SoundboardCategory,
   SoundboardMemeItem,
 } from '../data/soundboardData';
-import { useBromance } from '../context/BromanceContext';
+import { useChilling } from '../context/ChillingContext';
 import { AudioService } from '../services/audioService';
 import { Volume2, Music, Send, Link as LinkIcon, Search, Play } from 'lucide-react-native';
 
@@ -17,7 +17,7 @@ interface SoundboardPickerProps {
 export const SoundboardPicker: React.FC<SoundboardPickerProps> = ({
   selectedRecipientId,
 }) => {
-  const { sendNudge } = useBromance();
+  const { sendNudge } = useChilling();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<SoundboardCategory | 'todos'>('todos');
   const [customUrl, setCustomUrl] = useState('');

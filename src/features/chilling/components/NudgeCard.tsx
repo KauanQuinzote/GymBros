@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Send, Volume2 } from 'lucide-react-native';
-import { BromanceNudgeItem } from '../types';
+import { ChillingNudgeItem } from '../types';
 import { SpeechService } from '../services/speechService';
 
 interface NudgeCardProps {
-  nudge: BromanceNudgeItem;
+  nudge: ChillingNudgeItem;
   isSent: boolean;
-  onSend: (nudge: BromanceNudgeItem) => void;
+  onSend: (nudge: ChillingNudgeItem) => void;
 }
 
 export const NudgeCard: React.FC<NudgeCardProps> = ({ nudge, isSent, onSend }) => {

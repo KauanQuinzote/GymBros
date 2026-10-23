@@ -3,11 +3,11 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BroRecipientSelector } from '../components/BroRecipientSelector';
 import { CustomTtsInput } from '../components/CustomTtsInput';
 import { useAuth } from '../../auth/context/AuthContext';
-import { useBromance } from '../context/BromanceContext';
+import { useChilling } from '../context/ChillingContext';
 import { SpeechService } from '../services/speechService';
 
 jest.mock('../../auth/context/AuthContext');
-jest.mock('../context/BromanceContext');
+jest.mock('../context/ChillingContext');
 jest.mock('lucide-react-native', () => ({
   Users: () => null,
   User: () => null,
@@ -28,7 +28,7 @@ jest.mock('../services/speechService', () => ({
 }));
 
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
-const mockedUseBromance = useBromance as jest.MockedFunction<typeof useBromance>;
+const mockedUseChilling = useChilling as jest.MockedFunction<typeof useChilling>;
 
 describe('Chilling Components Unit Tests', () => {
   beforeEach(() => {
@@ -78,7 +78,7 @@ describe('Chilling Components Unit Tests', () => {
       isLoading: false,
     });
 
-    mockedUseBromance.mockReturnValue({
+    mockedUseChilling.mockReturnValue({
       nudgeHistory: [],
       activeIncomingNudge: null,
       sendNudge: jest.fn().mockResolvedValue(undefined),
