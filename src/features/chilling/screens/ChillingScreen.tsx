@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { HeaderBar } from '../../../shared/components/HeaderBar';
-import { BROMANCE_NUDGES } from '../data/nudges';
-import { useBromance } from '../context/BromanceContext';
-import { NudgeCategory, BromanceNudgeItem } from '../types';
+import { CHILLING_NUDGES } from '../data/nudges';
+import { useChilling } from '../context/ChillingContext';
+import { NudgeCategory, ChillingNudgeItem } from '../types';
 import { NudgeCategoryTabs } from '../components/NudgeCategoryTabs';
 import { NudgeCard } from '../components/NudgeCard';
 import { NudgeHistoryList } from '../components/NudgeHistoryList';
@@ -14,17 +14,17 @@ import { Skull, Music, Mic } from 'lucide-react-native';
 
 type ChillingTabType = 'trash_talk' | 'soundboard' | 'voice_tts';
 
-export const BromanceScreen: React.FC = () => {
-  const { sendNudge, nudgeHistory } = useBromance();
+export const ChillingScreen: React.FC = () => {
+  const { sendNudge, nudgeHistory } = useChilling();
   const [activeTab, setActiveTab] = useState<ChillingTabType>('trash_talk');
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<NudgeCategory>('pesado');
   const [sentSuccessId, setSentSuccessId] = useState<string | null>(null);
   const [isSendingCustom, setIsSendingCustom] = useState(false);
 
-  const filteredNudges = BROMANCE_NUDGES.filter((n) => n.category === selectedCategory);
+  const filteredNudges = CHILLING_NUDGES.filter((n) => n.category === selectedCategory);
 
-  const handleSendNudge = async (nudge: BromanceNudgeItem) => {
+  const handleSendNudge = async (nudge: ChillingNudgeItem) => {
     await sendNudge(nudge.text, nudge.category, undefined, selectedRecipientId);
     setSentSuccessId(nudge.id);
     setTimeout(() => setSentSuccessId(null), 2000);
@@ -155,3 +155,6 @@ export const BromanceScreen: React.FC = () => {
     </View>
   );
 };
+
+export const BromanceScreen = ChillingScreen;
+

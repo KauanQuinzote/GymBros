@@ -1,13 +1,13 @@
 export type NudgeCategory = 'pesado' | 'frango' | 'brother';
 
-export interface BromanceNudgeItem {
+export interface ChillingNudgeItem {
   id: string;
   category: NudgeCategory;
   text: string;
   intensity: 'heavy' | 'medium' | 'hyped';
 }
 
-export interface BromanceNudgeLog {
+export interface ChillingNudgeLog {
   id: string;
   sender_id: string;
   sender_name: string;

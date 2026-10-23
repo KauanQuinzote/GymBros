@@ -1,7 +1,7 @@
-import { BromanceNudgeItem } from '../types';
+import { ChillingNudgeItem } from '../types';
 
-export const BROMANCE_NUDGES: BromanceNudgeItem[] = [
-  // --- Categoria: Bromance Pesado (Zoeira de Maromba sem Freio / 5ª Série Raiz) ---
+export const CHILLING_NUDGES: ChillingNudgeItem[] = [
+  // --- Categoria: Chilling Pesado (Zoeira de Maromba sem Freio / 5ª Série Raiz) ---
   {
     id: 'p-1',
     category: 'pesado',
@@ -463,3 +463,5 @@ export const BROMANCE_NUDGES: BromanceNudgeItem[] = [
     intensity: 'hyped',
   },
 ];
+
+export const BROMANCE_NUDGES = CHILLING_NUDGES;

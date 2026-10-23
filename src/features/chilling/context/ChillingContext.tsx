@@ -1,24 +1,24 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BromanceNudgeLog } from '../types';
+import { ChillingNudgeLog } from '../types';
 import { useAuth } from '../../auth/context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
 
-const NUDGES_STORAGE_KEY = '@mybroth_nudges_history';
+const NUDGES_STORAGE_KEY = '@gymbros_nudges_history';
 
-interface BromanceContextType {
-  nudgeHistory: BromanceNudgeLog[];
-  activeIncomingNudge: BromanceNudgeLog | null;
+interface ChillingContextType {
+  nudgeHistory: ChillingNudgeLog[];
+  activeIncomingNudge: ChillingNudgeLog | null;
   sendNudge: (text: string, category: any, audioUrl?: string, recipientId?: string | null) => Promise<void>;
   dismissIncomingNudge: () => Promise<void>;
 }
 
-const BromanceContext = createContext<BromanceContextType>({} as BromanceContextType);
+const ChillingContext = createContext<ChillingContextType>({} as ChillingContextType);
 
-export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { activeProfile, partnerProfile, profiles } = useAuth();
-  const [nudgeHistory, setNudgeHistory] = useState<BromanceNudgeLog[]>([]);
-  const [activeIncomingNudge, setActiveIncomingNudge] = useState<BromanceNudgeLog | null>(null);
+  const [nudgeHistory, setNudgeHistory] = useState<ChillingNudgeLog[]>([]);
+  const [activeIncomingNudge, setActiveIncomingNudge] = useState<ChillingNudgeLog | null>(null);
 
   useEffect(() => {
     loadNudgeHistory();
@@ -62,7 +62,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .order('created_at', { ascending: true });
 
           if (!error && data && data.length > 0) {
-            const pendingNudge = data[0] as BromanceNudgeLog;
+            const pendingNudge = data[0] as ChillingNudgeLog;
             setActiveIncomingNudge(pendingNudge);
 
             // Marca imediatamente no banco como exibido (exhibited = true) para não repetir
@@ -91,7 +91,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       nudgeChannel
         .on('broadcast', { event: 'nudge_event' }, (payload: any) => {
-          const incoming = payload.payload as BromanceNudgeLog;
+          const incoming = payload.payload as ChillingNudgeLog;
           if (
             incoming &&
             (incoming.receiver_id === activeProfile.id || incoming.receiver_id === 'ALL') &&
@@ -112,7 +112,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, [activeProfile, nudgeHistory]);
 
-  const saveHistoryToStorage = async (history: BromanceNudgeLog[]) => {
+  const saveHistoryToStorage = async (history: ChillingNudgeLog[]) => {
     try {
       await AsyncStorage.setItem(NUDGES_STORAGE_KEY, JSON.stringify(history));
     } catch (e) {
@@ -134,7 +134,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         ? recipientId || 'ALL'
         : partnerProfile?.id || 'ALL';
 
-    const newNudge: BromanceNudgeLog = {
+    const newNudge: ChillingNudgeLog = {
       id: `nudge_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       sender_id: activeProfile.id,
       sender_name: activeProfile.name,
@@ -199,7 +199,7 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <BromanceContext.Provider
+    <ChillingContext.Provider
       value={{
         nudgeHistory,
         activeIncomingNudge,
@@ -208,8 +208,13 @@ export const BromanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }}
     >
       {children}
-    </BromanceContext.Provider>
+    </ChillingContext.Provider>
   );
 };
 
-export const useBromance = () => useContext(BromanceContext);
+export const useChilling = () => useContext(ChillingContext);
+
+// Aliases para retrocompatibilidade
+export const BromanceProvider = ChillingProvider;
+export const useBromance = useChilling;
+

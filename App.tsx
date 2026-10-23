@@ -8,7 +8,7 @@ import { WorkoutProvider, useWorkout, ActiveWorkoutScreen } from './src/features
 import { HomeScreen } from './src/features/dashboard';
 import { RoutinesScreen } from './src/features/routines';
 import { HistoryScreen } from './src/features/history';
-import { BromanceProvider, BromanceScreen, NudgeModal } from './src/features/bromance';
+import { ChillingProvider, ChillingScreen, NudgeModal } from './src/features/chilling';
 import { Home, Dumbbell, Calendar, Award, Flame } from 'lucide-react-native';
 
 type TabType = 'home' | 'workout' | 'routines' | 'chilling' | 'history';
@@ -52,7 +52,7 @@ const MainNavigation: React.FC = () => {
         {activeTab === 'routines' && (
           <RoutinesScreen onStartWorkout={() => setActiveTab('workout')} />
         )}
-        {activeTab === 'chilling' && <BromanceScreen />}
+        {activeTab === 'chilling' && <ChillingScreen />}
         {activeTab === 'history' && <HistoryScreen />}
       </View>
 
@@ -124,9 +124,9 @@ export default function App() {
     <SafeAreaProvider style={{ flex: 1, backgroundColor: '#0A0D14' }}>
       <AuthProvider>
         <WorkoutProvider>
-          <BromanceProvider>
+          <ChillingProvider>
             <MainNavigation />
-          </BromanceProvider>
+          </ChillingProvider>
         </WorkoutProvider>
       </AuthProvider>
     </SafeAreaProvider>
