@@ -120,14 +120,22 @@ export const ChillingScreen: React.FC = () => {
             />
 
             <View className="px-5 my-3 gap-3">
-              {filteredNudges.map((nudge) => (
-                <NudgeCard
-                  key={nudge.id}
-                  nudge={nudge}
-                  isSent={sentSuccessId === nudge.id}
-                  onSend={handleSendNudge}
-                />
-              ))}
+              {filteredNudges.length === 0 ? (
+                <View className="py-12 items-center justify-center bg-slate-900/50 rounded-2xl border border-slate-800/60 p-6">
+                  <Text className="text-slate-400 text-sm font-medium text-center">
+                    Nenhuma frase disponível nesta categoria no momento.
+                  </Text>
+                </View>
+              ) : (
+                filteredNudges.map((nudge) => (
+                  <NudgeCard
+                    key={nudge.id}
+                    nudge={nudge}
+                    isSent={sentSuccessId === nudge.id}
+                    onSend={handleSendNudge}
+                  />
+                ))
+              )}
             </View>
           </View>
         )}
