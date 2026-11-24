@@ -69,6 +69,7 @@ describe('ChillingContext - Real-Time & Offline Taunts (Subagent Tester TDD)', (
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
       trackPresenceStatus: jest.fn(),
+      setPresenceScope: jest.fn(),
       isLoading: false,
     });
   });

@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ChillingNudgeLog } from '../types';
 import { useAuth } from '../../auth/context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
+import { useCommunity } from '../../communities';
+import { isNudgeInScope } from '../domain/isNudgeInScope';
 
 const NUDGES_STORAGE_KEY = '@gymbros_nudges_history';
 
@@ -19,6 +21,18 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const { activeProfile, partnerProfile, profiles } = useAuth();
   const [nudgeHistory, setNudgeHistory] = useState<ChillingNudgeLog[]>([]);
   const [activeIncomingNudge, setActiveIncomingNudge] = useState<ChillingNudgeLog | null>(null);
+  const { memberIds, isScopeReady } = useCommunity();
+  // Sem CommunityProvider (testes legados) o escopo e considerado pronto.
+  const scopeReady = isScopeReady !== false;
+  // Lido dentro dos handlers de tempo real para nao recriar o canal a cada recarga de membros.
+  const memberIdsRef = React.useRef(memberIds);
+  memberIdsRef.current = memberIds;
+
+  // Filtrado na exposicao: pendentes podem chegar antes dos membros da comunidade carregarem
+  const visibleIncomingNudge =
+    activeIncomingNudge && isNudgeInScope(activeIncomingNudge, memberIds)
+      ? activeIncomingNudge
+      : null;
 
   useEffect(() => {
     loadNudgeHistory();
@@ -44,6 +58,9 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return;
     }
 
+    // Aguarda os membros da comunidade para nao marcar como exibida uma provocacao fora do escopo
+    if (!scopeReady) return;
+
     // Executa a busca de pendentes apenas uma vez por login/troca de perfil (evita re-execução em ganho de pontos/treino)
     if (checkedProfileIdRef.current === activeProfile.id) {
       return;
@@ -61,8 +78,11 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .is('read_at', null)
             .order('created_at', { ascending: true });
 
-          if (!error && data && data.length > 0) {
-            const pendingNudge = data[0] as ChillingNudgeLog;
+          const inScope = ((data ?? []) as ChillingNudgeLog[]).filter((n) =>
+            isNudgeInScope(n, memberIdsRef.current)
+          );
+          if (!error && inScope.length > 0) {
+            const pendingNudge = inScope[0];
             setActiveIncomingNudge(pendingNudge);
 
             // Marca imediatamente no banco como exibido (exhibited = true) para não repetir
@@ -78,7 +98,7 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
 
     fetchPendingUnreadNudges();
-  }, [activeProfile?.id]);
+  }, [activeProfile?.id, scopeReady]);
 
   // Listener de Tempo Real via Supabase Realtime WebSocket ('bro_nudges')
   useEffect(() => {
@@ -95,7 +115,8 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           if (
             incoming &&
             (incoming.receiver_id === activeProfile.id || incoming.receiver_id === 'ALL') &&
-            incoming.sender_id !== activeProfile.id
+            incoming.sender_id !== activeProfile.id &&
+            isNudgeInScope(incoming, memberIdsRef.current)
           ) {
             setActiveIncomingNudge(incoming);
             setNudgeHistory((prev) => [incoming, ...prev]);
@@ -202,7 +223,7 @@ export const ChillingProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <ChillingContext.Provider
       value={{
         nudgeHistory,
-        activeIncomingNudge,
+        activeIncomingNudge: visibleIncomingNudge,
         sendNudge,
         dismissIncomingNudge,
       }}

@@ -6,6 +6,7 @@ module.exports = {
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
     '^expo-notifications(.*)$': '<rootDir>/__mocks__/expo-notifications.js',
+    '^lucide-react-native$': '<rootDir>/__mocks__/lucide-react-native.js',
   },
   transform: {
     '^.+\\.[jt]sx?$': ['ts-jest', { tsconfig: { jsx: 'react-jsx' } }],

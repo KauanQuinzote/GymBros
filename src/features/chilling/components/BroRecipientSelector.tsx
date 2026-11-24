@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { useAuth } from '../../auth/context/AuthContext';
+import { useCommunity, scopeToCommunity } from '../../communities';
 import { Users } from 'lucide-react-native';
 
 interface BroRecipientSelectorProps {
@@ -73,8 +74,12 @@ export const BroRecipientSelector: React.FC<BroRecipientSelectorProps> = ({
 }) => {
   const { profiles, onlineBros, activeProfile } = useAuth();
 
-  // Filtrar outros perfis (não mostrar a si próprio como destinatário)
-  const otherProfiles = profiles.filter((p) => p.id !== activeProfile?.id);
+  const { memberIds } = useCommunity();
+
+  // Apenas membros da comunidade ativa (não mostrar a si próprio como destinatário)
+  const otherProfiles = scopeToCommunity(profiles, memberIds ?? null, (p) => p.id).filter(
+    (p) => p.id !== activeProfile?.id
+  );
 
   return (
     <View className="mb-4">

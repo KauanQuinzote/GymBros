@@ -32,6 +32,8 @@ interface AuthContextType {
   registerProfile: (data: Omit<BroProfile, 'id' | 'bro_points' | 'streak'>) => Promise<BroProfile>;
   loadProfiles: () => Promise<void>;
   trackPresenceStatus: (status: PartnerPresenceStatus, extra?: Partial<BroPresenceState>) => Promise<void>;
+  /** Define a comunidade cujo canal de presenca deve ser usado (null = canal global legado). */
+  setPresenceScope: (communityId: string | null) => void;
   isLoading: boolean;
 }
 
@@ -43,6 +45,10 @@ const generateUUID = (): string => {
   });
 };
 
+/** Canal de presenca isolado por comunidade (ADR 006). */
+export const getPresenceChannelName = (communityId: string | null): string =>
+  communityId ? `presence:community:${communityId}` : 'bro_presence';
+
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -52,7 +58,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [partnerStatus, setPartnerStatus] = useState<PartnerPresenceStatus>('OFFLINE');
   const [onlineBros, setOnlineBros] = useState<BroPresenceState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [presenceScope, setPresenceScope] = useState<string | null>(null);
   const presenceChannelRef = useRef<any>(null);
+  // Ultimo status rastreado (ex.: TRAINING com exercicio atual), reaplicado ao trocar de canal de comunidade
+  const lastTrackedRef = useRef<{ status: PartnerPresenceStatus; extra: Partial<BroPresenceState> } | null>(null);
+  const presenceScopeRef = useRef<string | null>(null);
+  presenceScopeRef.current = presenceScope;
 
   useEffect(() => {
     loadProfiles();
@@ -116,9 +127,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     let presenceChannel: any = null;
+    const subscribedScope = presenceScope;
+    // Presencas do canal anterior nao pertencem a nova comunidade
+    setOnlineBros([]);
 
     if (isSupabaseConfigured && supabase) {
-      presenceChannel = supabase.channel('bro_presence');
+      presenceChannel = supabase.channel(getPresenceChannelName(presenceScope));
       presenceChannelRef.current = presenceChannel;
 
       presenceChannel
@@ -161,10 +175,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         })
         .subscribe(async (status: string) => {
           if (status === 'SUBSCRIBED') {
+            const last = lastTrackedRef.current;
             const trackPayload = {
               user_id: activeProfile.id,
               user_name: activeProfile.name,
-              status: 'ONLINE',
+              ...(last?.extra ?? {}),
+              status: last?.status ?? 'ONLINE',
               updated_at: new Date().toISOString(),
             };
 
@@ -186,7 +202,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       if (presenceChannel && supabase) {
-        if (activeProfile && supabase.functions) {
+        // Troca de comunidade nao e saida do app: nao registra OFFLINE nesse caso
+        const isScopeSwitch = presenceScopeRef.current !== subscribedScope;
+        if (activeProfile && supabase.functions && !isScopeSwitch) {
           supabase.functions.invoke('presence-logger', {
             body: {
               user_id: activeProfile.id,
@@ -201,13 +219,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         presenceChannelRef.current = null;
       }
     };
-  }, [activeProfile, partnerProfile]);
+  }, [activeProfile, partnerProfile, presenceScope]);
 
   const trackPresenceStatus = async (
     status: PartnerPresenceStatus,
     extra: Partial<BroPresenceState> = {}
   ) => {
-    if (!activeProfile || !presenceChannelRef.current) return;
+    if (!activeProfile) return;
+    lastTrackedRef.current = { status, extra };
+    if (!presenceChannelRef.current) return;
     try {
       const payload = {
         user_id: activeProfile.id,
@@ -239,6 +259,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setActiveProfile(null);
+    lastTrackedRef.current = null;
     setIsPartnerOnline(false);
     setPartnerStatus('OFFLINE');
     setOnlineBros([]);
@@ -352,6 +373,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         registerProfile,
         loadProfiles,
         trackPresenceStatus,
+        setPresenceScope,
         isLoading,
       }}
     >

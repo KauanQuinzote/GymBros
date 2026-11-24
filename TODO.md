@@ -35,7 +35,7 @@
 - [x] **Sincronização Dinâmica de Perfis do Supabase**:
   - Garantir que o app carregue e liste todos os perfis cadastrados diretamente da tabela `profiles` do Supabase na inicialização (sem ficar restrito ao fallback local que só lista o usuário inicial).
   - Tratar mapeamento de campos (`name`, `avatar_emoji` / `avatar_color`, `pin_code`, `initials`) para que bros como o Fábio e novos usuários apareçam imediatamente na seleção de perfil.
-- [ ] **Múltiplas Comunidades de Bros**: Possibilidade de criar várias comunidades/grupos de amigos.
+- [x] **Múltiplas Comunidades de Bros** (issue #7 — ver ADR 006; RLS restritivo pendente na task abaixo): Possibilidade de criar várias comunidades/grupos de amigos.
   - Cada bro pode pertencer a 1..N comunidades.
   - Os treinos e atividades devem ser visíveis apenas para os membros das comunidades em que o bro participa (evitando que usuários desconhecidos vejam treinos).
 - [ ] **Configuração e Ativação de RLS (Row Level Security) no Supabase**:
@@ -77,6 +77,10 @@
 - [ ] **Hospedagem de Áudios no Supabase Storage**:
   - Criar bucket público `soundboard-audios` no Supabase Storage para hospedar todos os memes e efeitos sonoros com CDN rápida e sem bloqueio 403.
   - Atualizar `soundboardData.ts` para consumir URLs oficiais do Storage.
+
+- [ ] **Bug: Histórico do Chilling compartilhado entre perfis/comunidades**:
+  - O histórico usa uma chave única `@gymbros_nudges_history` para todos os perfis do aparelho e não respeita a comunidade ativa.
+  - Detalhes e critérios: `.scratch/chilling-history-scope/issues/01-scope-nudge-history.md`.
 
 ### 6. Gamificação, Desafios & Conquistas
 - [ ] **Expansão de Conquistas (Achievements)**: Adicionar catálogo amplo de categorias e conquistas na gamificação (no mínimo 50 achievements divididos em categorias como Força, Constância, Social, Cardio, Desafios, etc.).
