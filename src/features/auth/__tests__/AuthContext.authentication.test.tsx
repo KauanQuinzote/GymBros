@@ -31,6 +31,16 @@ const profile: BroProfile = {
   streak: 2,
 };
 
+const otherProfile: BroProfile = {
+  id: 'profile-2',
+  name: 'Bruno Costa',
+  initials: 'BC',
+  avatar_color: '#30D158',
+  pin_code: '5678',
+  bro_points: 100,
+  streak: 4,
+};
+
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <AuthProvider>{children}</AuthProvider>
 );
@@ -75,6 +85,30 @@ describe('AuthContext - autenticação e cadastro', () => {
 
     expect(authenticated).toBe(false);
     expect(result.current.activeProfile).toBeNull();
+  });
+
+  it('credita os pontos ao perfil autenticado sem alterar os demais perfis', async () => {
+    jest.mocked(LocalStorageService.getProfiles).mockResolvedValue([profile, otherProfile]);
+    const { result } = renderHook(() => useAuth(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    act(() => {
+      result.current.loginWithPin(profile.id, profile.pin_code);
+    });
+
+    await act(async () => {
+      await result.current.addBroPoints(185);
+    });
+
+    expect(result.current.profiles).toEqual([
+      { ...profile, bro_points: 205 },
+      otherProfile,
+    ]);
+    expect(result.current.activeProfile).toEqual({ ...profile, bro_points: 205 });
+    expect(LocalStorageService.saveProfiles).toHaveBeenLastCalledWith(result.current.profiles);
   });
 
   it('cadastra o perfil com pontuação inicial zerada e salva a lista local', async () => {
