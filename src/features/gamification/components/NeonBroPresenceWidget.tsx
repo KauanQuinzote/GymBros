@@ -3,6 +3,8 @@ import { View, Text, ScrollView } from 'react-native';
 import { useAuth, BroPresenceState } from '../../auth/context/AuthContext';
 import { BroPresenceCard } from './BroPresenceCard';
 import { BroTelemetryModal } from './BroTelemetryModal';
+import { buildCommunityBros } from './buildCommunityBros';
+import { useCommunity, scopeToCommunity } from '../../communities';
 import { Users } from 'lucide-react-native';
 
 interface NeonBroPresenceWidgetProps {
@@ -15,38 +17,19 @@ export const NeonBroPresenceWidget: React.FC<NeonBroPresenceWidgetProps> = ({
   const { profiles, onlineBros, activeProfile, partnerProfile, isPartnerOnline, partnerStatus } = useAuth();
   const [selectedBro, setSelectedBro] = useState<BroPresenceState | null>(null);
 
-  // Filtra outros perfis da comunidade (ignora o próprio usuário logado)
-  const otherProfiles = profiles.filter((p) => p.id !== activeProfile?.id);
+  const { memberIds } = useCommunity();
 
-  const communityBros: BroPresenceState[] = otherProfiles.map((p) => {
-    const livePresence = onlineBros.find((b) => b.user_id === p.id);
-    if (livePresence) return livePresence;
+  // Apenas membros da comunidade ativa, ignorando o próprio usuário logado
+  const otherProfiles = scopeToCommunity(profiles, memberIds ?? null, (p) => p.id).filter(
+    (p) => p.id !== activeProfile?.id
+  );
 
-    if (partnerProfile && partnerProfile.id === p.id && isPartnerOnline) {
-      return {
-        user_id: p.id,
-        user_name: p.name,
-        initials: p.initials,
-        avatar_color: p.avatar_color,
-        status: partnerStatus,
-        updated_at: new Date().toISOString(),
-      };
-    }
-
-    return {
-      user_id: p.id,
-      user_name: p.name,
-      initials: p.initials,
-      avatar_color: p.avatar_color,
-      status: 'OFFLINE',
-      updated_at: p.last_workout_date || new Date().toISOString(),
-    };
-  });
-
-  // Ordena: Treinando primeiro, depois Online, depois Offline
-  communityBros.sort((a, b) => {
-    const rank = (s: string) => (s === 'TRAINING' ? 3 : s === 'ONLINE' ? 2 : 1);
-    return rank(b.status) - rank(a.status);
+  const communityBros = buildCommunityBros({
+    profiles: otherProfiles,
+    onlineBros,
+    partnerProfile,
+    isPartnerOnline,
+    partnerStatus,
   });
 
   const activeCount = communityBros.filter((b) => b.status === 'ONLINE' || b.status === 'TRAINING').length;

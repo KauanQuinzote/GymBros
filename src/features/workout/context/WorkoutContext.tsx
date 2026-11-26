@@ -4,6 +4,8 @@ import { LocalStorageService } from '../../../shared/services/storage';
 import { supabase, isSupabaseConfigured } from '../../../shared/services/supabaseClient';
 import { NotificationService } from '../../../shared/services/notifications';
 import { useAuth } from '../../auth/context/AuthContext';
+import { useCommunity } from '../../communities';
+import { shouldNotifyWorkoutStart } from '../domain/shouldNotifyWorkoutStart';
 
 interface WorkoutContextType {
   activeSession: WorkoutSession | null;
@@ -27,7 +29,11 @@ const WorkoutContext = createContext<WorkoutContextType>({} as WorkoutContextTyp
 
 export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { activeProfile, partnerProfile, profiles, trackPresenceStatus, addBroPoints, incrementStreak } = useAuth();
-  
+  const { memberIds } = useCommunity();
+  // Lido no handler de tempo real para nao recriar a inscricao a cada recarga de membros.
+  const memberIdsRef = React.useRef(memberIds);
+  memberIdsRef.current = memberIds;
+
   const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
   const [activeSession, setActiveSession] = useState<WorkoutSession | null>(null);
   const [partnerActiveSession, setPartnerActiveSession] = useState<WorkoutSession | null>(null);
@@ -108,11 +114,8 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
 
           // Se outro bro da comunidade acabou de iniciar um treino, dispara a notificação no celular
-          if (
-            payload.eventType === 'INSERT' &&
-            updated.user_id !== activeProfile?.id &&
-            updated.status === 'in_progress'
-          ) {
+          const event = { eventType: payload.eventType, session: updated };
+          if (shouldNotifyWorkoutStart(event, activeProfile?.id, memberIdsRef.current)) {
             const bro = profiles.find((p) => p.id === updated.user_id);
             const broName = bro?.name || 'Seu Bro';
             const routineName = updated.routine_name || 'Treino';

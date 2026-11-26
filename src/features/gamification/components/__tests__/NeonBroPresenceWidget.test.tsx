@@ -6,9 +6,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { NeonBroPresenceWidget } from '../NeonBroPresenceWidget';
 import { useAuth, BroPresenceState } from '../../../auth/context/AuthContext';
 import { useWorkout } from '../../../workout/context/WorkoutContext';
+import { useCommunity } from '../../../communities';
 
 jest.mock('../../../auth/context/AuthContext');
 jest.mock('../../../workout/context/WorkoutContext');
+jest.mock('../../../communities', () => ({
+  useCommunity: jest.fn(),
+  scopeToCommunity: jest.requireActual('../../../communities/domain/scopeToCommunity').scopeToCommunity,
+}));
 jest.mock('lucide-react-native', () => ({
   Activity: () => null,
   Dumbbell: () => null,
@@ -22,10 +27,12 @@ jest.mock('lucide-react-native', () => ({
 
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockedUseWorkout = useWorkout as jest.MockedFunction<typeof useWorkout>;
+const mockedUseCommunity = useCommunity as jest.MockedFunction<typeof useCommunity>;
 
 describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedUseCommunity.mockReturnValue({ memberIds: new Set(['user-1', 'bro-2', 'bro-3']) } as any);
     mockedUseWorkout.mockReturnValue({
       activeSession: null,
       partnerActiveSession: null,
@@ -81,6 +88,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
       trackPresenceStatus: jest.fn(),
+      setPresenceScope: jest.fn(),
       isLoading: false,
     });
 
@@ -134,6 +142,7 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
       trackPresenceStatus: jest.fn(),
+      setPresenceScope: jest.fn(),
       isLoading: false,
     });
 
@@ -148,5 +157,27 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
     expect(screen.getByText(/Leg Day Monstro/i)).toBeTruthy();
     expect(screen.getByText(/Agachamento Livre/i)).toBeTruthy();
     expect(screen.getByText(/140 kg/i)).toBeTruthy();
+  });
+
+  it('should not render profiles that are not members of the active community', () => {
+    const mockProfiles = [
+      { id: 'user-1', name: 'Kauan Quinzote', initials: 'KQ', avatar_color: '#00F0FF', pin_code: '1234', bro_points: 100, streak: 3 },
+      { id: 'bro-2', name: 'Lucas Bro', initials: 'LB', avatar_color: '#0A84FF', pin_code: '0000', bro_points: 50, streak: 1 },
+      { id: 'outsider', name: 'Pedro Fora', initials: 'PF', avatar_color: '#00FF66', pin_code: '1111', bro_points: 10, streak: 0 },
+    ];
+    mockedUseCommunity.mockReturnValue({ memberIds: new Set(['user-1', 'bro-2']) } as any);
+    mockedUseAuth.mockReturnValue({
+      activeProfile: mockProfiles[0],
+      partnerProfile: null,
+      profiles: mockProfiles,
+      isPartnerOnline: false,
+      partnerStatus: 'OFFLINE',
+      onlineBros: [],
+    } as any);
+
+    render(<NeonBroPresenceWidget />);
+
+    expect(screen.getByText('Lucas')).toBeTruthy();
+    expect(screen.queryByText('Pedro')).toBeNull();
   });
 });

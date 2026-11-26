@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth, ProfileSelectScreen } from './src/features/auth';
 import { WorkoutProvider, useWorkout, ActiveWorkoutScreen } from './src/features/workout';
+import { CommunityProvider } from './src/features/communities';
 import { HomeScreen } from './src/features/dashboard';
 import { RoutinesScreen } from './src/features/routines';
 import { HistoryScreen } from './src/features/history';
@@ -123,11 +124,13 @@ export default function App() {
   return (
     <SafeAreaProvider style={{ flex: 1, backgroundColor: '#0A0D14' }}>
       <AuthProvider>
-        <WorkoutProvider>
-          <ChillingProvider>
-            <MainNavigation />
-          </ChillingProvider>
-        </WorkoutProvider>
+        <CommunityProvider>
+          <WorkoutProvider>
+            <ChillingProvider>
+              <MainNavigation />
+            </ChillingProvider>
+          </WorkoutProvider>
+        </CommunityProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );

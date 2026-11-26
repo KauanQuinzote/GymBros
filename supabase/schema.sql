@@ -68,3 +68,22 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.workout_sessions;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.workout_logs;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.profiles;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.nudges;
+
+-- 6. Comunidades (issue #7). Definicao completa, RPCs e backfill em:
+--    supabase/migrations/20261124000000_create_communities.sql
+CREATE TABLE IF NOT EXISTS public.communities (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL CHECK (char_length(btrim(name)) BETWEEN 3 AND 50),
+  description TEXT CHECK (description IS NULL OR char_length(description) <= 140),
+  invite_code CHAR(6) NOT NULL UNIQUE CHECK (invite_code ~ '^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6}$'),
+  created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.community_members (
+  community_id UUID NOT NULL REFERENCES public.communities(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  role TEXT NOT NULL DEFAULT 'member' CHECK (role IN ('admin', 'member')),
+  joined_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (community_id, user_id)
+);
