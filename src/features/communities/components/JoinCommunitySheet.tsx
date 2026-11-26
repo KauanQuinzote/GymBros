@@ -36,10 +36,10 @@ export const JoinCommunitySheet: React.FC<JoinCommunitySheetProps> = ({ visible,
   };
 
   return (
-    <CommunitySheetShell visible={visible} title="Entrar com codigo" onClose={handleClose}>
+    <CommunitySheetShell visible={visible} title="Entrar com código" onClose={handleClose}>
       <View className="gap-4">
         <TextInput
-          placeholder="Codigo de 6 caracteres"
+          placeholder="Código de 6 caracteres"
           placeholderTextColor="#94a3b8"
           autoCapitalize="characters"
           autoCorrect={false}

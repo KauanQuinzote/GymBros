@@ -73,7 +73,7 @@ describe('SupabaseCommunityRepository', () => {
 
     await expect(repository.join({ invite_code: 'ZZZZZZ', user_id: 'bia' })).rejects.toMatchObject({
       code: 'INVALID_INVITE_CODE',
-      message: 'Codigo de convite invalido',
+      message: 'Código de convite inválido',
     });
   });
 

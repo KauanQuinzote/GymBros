@@ -44,7 +44,7 @@ describe('InMemoryCommunityRepository', () => {
     await expect(repository.join({ invite_code: 'ZZZZZZ', user_id: 'bia' })).rejects.toMatchObject({
       name: 'CommunityError',
       code: 'INVALID_INVITE_CODE',
-      message: 'Codigo de convite invalido',
+      message: 'Código de convite inválido',
     });
     expect(await repository.listMembers(community.id)).toHaveLength(1);
   });
@@ -110,7 +110,7 @@ describe('InMemoryCommunityRepository', () => {
   it('should reject an invite code with the wrong length', async () => {
     await expect(buildRepository().join({ invite_code: 'ABC', user_id: 'bia' })).rejects.toMatchObject({
       code: 'INVALID_INPUT',
-      message: 'O codigo tem 6 caracteres',
+      message: 'O código tem 6 caracteres',
     });
   });
 

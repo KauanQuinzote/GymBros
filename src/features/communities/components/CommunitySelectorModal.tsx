@@ -5,6 +5,7 @@ import { CommunitySheetShell } from './CommunitySheetShell';
 import { CommunityList } from './CommunityList';
 import { CommunityMembersList } from './CommunityMembersList';
 import { InviteCodeCard } from './InviteCodeCard';
+import { LeaveCommunityButton } from './LeaveCommunityButton';
 import { useCommunitySheets } from './CommunityActions';
 
 interface CommunitySelectorModalProps {
@@ -28,6 +29,11 @@ export const CommunitySelectorModal: React.FC<CommunitySelectorModalProps> = ({
             <>
               <InviteCodeCard code={activeCommunity.invite_code} />
               <CommunityMembersList />
+              <LeaveCommunityButton
+                key={activeCommunity.id}
+                communityId={activeCommunity.id}
+                communityName={activeCommunity.name}
+              />
             </>
           )}
         </View>

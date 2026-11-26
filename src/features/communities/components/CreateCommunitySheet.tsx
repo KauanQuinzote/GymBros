@@ -52,7 +52,7 @@ export const CreateCommunitySheet: React.FC<CreateCommunitySheetProps> = ({ visi
         <View className="gap-4">
           <TextInput placeholder="Nome da comunidade" placeholderTextColor="#94a3b8" maxLength={50}
             value={name} onChangeText={setName} className={INPUT_CLASS} />
-          <TextInput placeholder="Descricao (opcional)" placeholderTextColor="#94a3b8" maxLength={140}
+          <TextInput placeholder="Descrição (opcional)" placeholderTextColor="#94a3b8" maxLength={140}
             value={description} onChangeText={setDescription} className={INPUT_CLASS} />
           {error && <Text className="text-rose-500 text-xs font-semibold">{error}</Text>}
           <CommunitySubmitButton label={loading ? 'Criando...' : 'Criar'}

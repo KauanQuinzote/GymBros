@@ -35,7 +35,7 @@ export class SupabaseCommunityRepository implements CommunityRepository {
       p_user_id: created_by,
     });
     if (error || !data) {
-      throw unknownError(error?.message ?? 'Nao foi possivel criar a comunidade');
+      throw unknownError(error?.message ?? 'Não foi possível criar a comunidade');
     }
     return toCommunity(data as CommunityRow);
   }
@@ -50,7 +50,7 @@ export class SupabaseCommunityRepository implements CommunityRepository {
       throw invalidInviteCodeError();
     }
     if (error || !data) {
-      throw unknownError(error?.message ?? 'Nao foi possivel entrar na comunidade');
+      throw unknownError(error?.message ?? 'Não foi possível entrar na comunidade');
     }
     return toCommunity(data as CommunityRow);
   }

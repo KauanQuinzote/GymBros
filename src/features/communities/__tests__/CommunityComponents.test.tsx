@@ -4,6 +4,7 @@ import { CommunityEmptyState } from '../components/CommunityEmptyState';
 import { CreateCommunitySheet } from '../components/CreateCommunitySheet';
 import { JoinCommunitySheet } from '../components/JoinCommunitySheet';
 import { CommunityMembersList } from '../components/CommunityMembersList';
+import { LeaveCommunityButton } from '../components/LeaveCommunityButton';
 import { CommunityContextType, useCommunity } from '../context/CommunityContext';
 import { useAuth } from '../../auth/context/AuthContext';
 
@@ -16,6 +17,7 @@ jest.mock('lucide-react-native', () => ({
   ShieldCheck: () => null,
   X: () => null,
   Check: () => null,
+  LogOut: () => null,
 }));
 
 const mockedUseCommunity = useCommunity as jest.MockedFunction<typeof useCommunity>;
@@ -44,7 +46,7 @@ const buildContext = (overrides: Partial<CommunityContextType> = {}): CommunityC
   ...overrides,
 });
 
-const EMPTY_TITLE = 'Voce ainda nao tem uma comunidade';
+const EMPTY_TITLE = 'Você ainda não tem uma comunidade';
 
 describe('Community Components', () => {
   beforeEach(() => {
@@ -65,9 +67,9 @@ describe('Community Components', () => {
     it('should open the join sheet', () => {
       render(<CommunityEmptyState />);
 
-      fireEvent.click(screen.getByText('Entrar com codigo'));
+      fireEvent.click(screen.getByText('Entrar com código'));
 
-      expect(screen.getByPlaceholderText('Codigo de 6 caracteres')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Código de 6 caracteres')).toBeTruthy();
     });
 
     it('should hide the card while loading', () => {
@@ -98,17 +100,17 @@ describe('Community Components', () => {
 
   describe('JoinCommunitySheet', () => {
     it('should show the error message when joinCommunity rejects', async () => {
-      const joinCommunity = jest.fn().mockRejectedValue(new Error('Codigo de convite invalido'));
+      const joinCommunity = jest.fn().mockRejectedValue(new Error('Código de convite inválido'));
       mockedUseCommunity.mockReturnValue(buildContext({ joinCommunity }));
       const onClose = jest.fn();
       render(<JoinCommunitySheet visible onClose={onClose} />);
 
-      fireEvent.change(screen.getByPlaceholderText('Codigo de 6 caracteres'), {
+      fireEvent.change(screen.getByPlaceholderText('Código de 6 caracteres'), {
         target: { value: 'ZZZZZZ' },
       });
       fireEvent.click(screen.getByText('Entrar'));
 
-      expect(await screen.findByText('Codigo de convite invalido')).toBeTruthy();
+      expect(await screen.findByText('Código de convite inválido')).toBeTruthy();
       expect(joinCommunity).toHaveBeenCalledWith('ZZZZZZ');
       expect(onClose).not.toHaveBeenCalled();
     });
@@ -126,8 +128,56 @@ describe('Community Components', () => {
       fireEvent.click(screen.getByText('Criar'));
 
       expect(await screen.findByText('ABC234')).toBeTruthy();
-      expect(screen.getByText('Compartilhe este codigo com seus bros')).toBeTruthy();
+      expect(screen.getByText('Compartilhe este código com seus bros')).toBeTruthy();
       expect(createCommunity).toHaveBeenCalledWith('Bros do Ferro', undefined);
+    });
+  });
+
+  describe('LeaveCommunityButton', () => {
+    it('should ask for confirmation before leaving', () => {
+      const leaveCommunity = jest.fn();
+      mockedUseCommunity.mockReturnValue(buildContext({ leaveCommunity }));
+      render(<LeaveCommunityButton communityId="c-1" communityName="Bros do Ferro" />);
+
+      fireEvent.click(screen.getByText('Sair da comunidade'));
+
+      expect(screen.getByText('Sair de Bros do Ferro?')).toBeTruthy();
+      expect(leaveCommunity).not.toHaveBeenCalled();
+    });
+
+    it('should go back without leaving when cancelled', () => {
+      const leaveCommunity = jest.fn();
+      mockedUseCommunity.mockReturnValue(buildContext({ leaveCommunity }));
+      render(<LeaveCommunityButton communityId="c-1" communityName="Bros do Ferro" />);
+
+      fireEvent.click(screen.getByText('Sair da comunidade'));
+      fireEvent.click(screen.getByText('Cancelar'));
+
+      expect(screen.getByText('Sair da comunidade')).toBeTruthy();
+      expect(leaveCommunity).not.toHaveBeenCalled();
+    });
+
+    it('should leave the community after confirming', async () => {
+      const leaveCommunity = jest.fn().mockResolvedValue(undefined);
+      mockedUseCommunity.mockReturnValue(buildContext({ leaveCommunity }));
+      render(<LeaveCommunityButton communityId="c-1" communityName="Bros do Ferro" />);
+
+      fireEvent.click(screen.getByText('Sair da comunidade'));
+      fireEvent.click(screen.getByText('Confirmar saída'));
+
+      expect(await screen.findByText('Sair da comunidade')).toBeTruthy();
+      expect(leaveCommunity).toHaveBeenCalledWith('c-1');
+    });
+
+    it('should show the error when leaving fails', async () => {
+      const leaveCommunity = jest.fn().mockRejectedValue(new Error('Falha de rede'));
+      mockedUseCommunity.mockReturnValue(buildContext({ leaveCommunity }));
+      render(<LeaveCommunityButton communityId="c-1" communityName="Bros do Ferro" />);
+
+      fireEvent.click(screen.getByText('Sair da comunidade'));
+      fireEvent.click(screen.getByText('Confirmar saída'));
+
+      expect(await screen.findByText('Falha de rede')).toBeTruthy();
     });
   });
 

@@ -35,7 +35,7 @@ export function parseJoinPayload(payload: JoinCommunityPayload): JoinCommunityPa
 }
 
 export const invalidInviteCodeError = (): CommunityError =>
-  new CommunityError('INVALID_INVITE_CODE', 'Codigo de convite invalido');
+  new CommunityError('INVALID_INVITE_CODE', 'Código de convite inválido');
 
 export interface InMemoryCommunityRepositoryOptions {
   now?: () => string;
@@ -133,6 +133,6 @@ export class InMemoryCommunityRepository implements CommunityRepository {
         return code;
       }
     }
-    throw new CommunityError('UNKNOWN', 'Nao foi possivel gerar um codigo de convite unico');
+    throw new CommunityError('UNKNOWN', 'Não foi possível gerar um código de convite único');
   }
 }

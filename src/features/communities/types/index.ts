@@ -22,13 +22,13 @@ export const CommunityMemberSchema = z.object({
 });
 
 export const CreateCommunityPayloadSchema = z.object({
-  name: z.string().trim().min(3, 'Nome precisa ter ao menos 3 caracteres').max(50, 'Nome pode ter no maximo 50 caracteres'),
+  name: z.string().trim().min(3, 'Nome precisa ter ao menos 3 caracteres').max(50, 'Nome pode ter no máximo 50 caracteres'),
   description: z.string().trim().max(140).optional(),
   created_by: z.string().min(1),
 });
 
 export const JoinCommunityPayloadSchema = z.object({
-  invite_code: z.string().length(INVITE_CODE_LENGTH, 'O codigo tem 6 caracteres'),
+  invite_code: z.string().length(INVITE_CODE_LENGTH, 'O código tem 6 caracteres'),
   user_id: z.string().min(1),
 });
 

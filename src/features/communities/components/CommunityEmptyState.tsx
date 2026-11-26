@@ -20,10 +20,10 @@ export const CommunityEmptyState: React.FC = () => {
           <View className="items-center gap-2">
             <Users className="text-cyan-400" size={32} />
             <Text className="text-slate-50 text-lg font-bold tracking-tight">
-              Voce ainda nao tem uma comunidade
+              Você ainda não tem uma comunidade
             </Text>
             <Text className="text-slate-400 text-sm text-center">
-              Crie a sua ou entre com o codigo de um bro para disputar o placar juntos.
+              Crie a sua ou entre com o código de um bro para disputar o placar juntos.
             </Text>
           </View>
           {buttons}

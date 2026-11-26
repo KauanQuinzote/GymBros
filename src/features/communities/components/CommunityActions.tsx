@@ -27,7 +27,7 @@ export const useCommunitySheets = () => {
         activeOpacity={0.7}
       >
         <Key className="text-cyan-400" size={18} />
-        <Text className="text-white font-bold text-sm">Entrar com codigo</Text>
+        <Text className="text-white font-bold text-sm">Entrar com código</Text>
       </TouchableOpacity>
     </View>
   );

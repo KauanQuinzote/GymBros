@@ -32,7 +32,7 @@ async function loadState(): Promise<CommunityState> {
       members: members ? JSON.parse(members) : [],
     };
   } catch {
-    throw new CommunityError('UNKNOWN', 'Nao foi possivel ler as comunidades salvas');
+    throw new CommunityError('UNKNOWN', 'Não foi possível ler as comunidades salvas');
   }
 }
 
@@ -43,7 +43,7 @@ async function saveState({ communities, members }: CommunityState): Promise<void
       [MEMBERS_KEY, JSON.stringify(members)],
     ]);
   } catch {
-    throw new CommunityError('UNKNOWN', 'Nao foi possivel salvar as comunidades');
+    throw new CommunityError('UNKNOWN', 'Não foi possível salvar as comunidades');
   }
 }
 
