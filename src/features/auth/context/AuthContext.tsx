@@ -19,6 +19,10 @@ export interface BroPresenceState {
 }
 
 interface AuthContextType {
+  authUserId: string | null;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string) => Promise<void>;
+  signOutAccount: () => Promise<void>;
   activeProfile: BroProfile | null;
   partnerProfile: BroProfile | null;
   profiles: BroProfile[];
@@ -52,7 +56,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [partnerStatus, setPartnerStatus] = useState<PartnerPresenceStatus>('OFFLINE');
   const [onlineBros, setOnlineBros] = useState<BroPresenceState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
   const presenceChannelRef = useRef<any>(null);
+  
+  useEffect(() => {
+  if (!supabase) return;
+
+  let mounted = true;
+
+  supabase.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      console.warn('Erro ao recuperar sessão:', error.message);
+      return;
+    }
+
+    if (mounted) {
+      setAuthUserId(data.session?.user.id ?? null);
+    }
+  });
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setAuthUserId(session?.user.id ?? null);
+  });
+
+  return () => {
+    mounted = false;
+    subscription.unsubscribe();
+  };
+}, []);
 
   useEffect(() => {
     loadProfiles();
@@ -237,6 +270,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return false;
   };
 
+  const signInWithEmail = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  if (!supabase) {
+    throw new Error('Supabase não está configurado.');
+  }
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email.trim(),
+    password,
+  });
+
+  if (error) {
+    throw error;
+  }
+};
+
+const signUpWithEmail = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  if (!supabase) {
+    throw new Error('Supabase não está configurado.');
+  }
+
+  const { error } = await supabase.auth.signUp({
+    email: email.trim(),
+    password,
+  });
+
+  if (error) {
+    throw error;
+  }
+};
+
+const signOutAccount = async (): Promise<void> => {
+  if (!supabase) {
+    throw new Error('Supabase não está configurado.');
+  }
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw error;
+  }
+
+  setActiveProfile(null);
+  setOnlineBros([]);
+  setIsPartnerOnline(false);
+  setPartnerStatus('OFFLINE');
+};
+
   const logout = () => {
     setActiveProfile(null);
     setIsPartnerOnline(false);
@@ -339,6 +425,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider
       value={{
+        authUserId,
+        signInWithEmail,
+        signUpWithEmail,
+        signOutAccount,
         activeProfile,
         partnerProfile,
         profiles,

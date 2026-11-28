@@ -81,6 +81,12 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
       trackPresenceStatus: jest.fn(),
+
+      authUserId: null,
+      signInWithEmail: jest.fn().mockResolvedValue(undefined),
+      signUpWithEmail: jest.fn().mockResolvedValue(undefined),
+      signOutAccount: jest.fn().mockResolvedValue(undefined),
+
       isLoading: false,
     });
 
@@ -134,6 +140,12 @@ describe('NeonBroPresenceWidget (Stories Inline Community Presence)', () => {
       registerProfile: jest.fn(),
       loadProfiles: jest.fn(),
       trackPresenceStatus: jest.fn(),
+
+      authUserId: null,
+      signInWithEmail: jest.fn().mockResolvedValue(undefined),
+      signUpWithEmail: jest.fn().mockResolvedValue(undefined),
+      signOutAccount: jest.fn().mockResolvedValue(undefined),
+
       isLoading: false,
     });
 

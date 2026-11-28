@@ -63,6 +63,12 @@ describe('WorkoutContext - criação de ficha', () => {
       registerProfile: jest.fn().mockResolvedValue(profile),
       loadProfiles: jest.fn().mockResolvedValue(undefined),
       trackPresenceStatus: jest.fn().mockResolvedValue(undefined),
+
+      authUserId: null,
+      signInWithEmail: jest.fn().mockResolvedValue(undefined),
+      signUpWithEmail: jest.fn().mockResolvedValue(undefined),
+      signOutAccount: jest.fn().mockResolvedValue(undefined),
+
       isLoading: false,
     });
   });

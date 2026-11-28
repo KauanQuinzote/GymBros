@@ -34,6 +34,22 @@ jest.mock('../../../shared/services/supabaseClient', () => {
   return {
     isSupabaseConfigured: true,
     supabase: {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        onAuthStateChange: jest.fn().mockReturnValue({
+          data: {
+            subscription: {
+              unsubscribe: jest.fn(),
+            },
+          },
+        }),
+        signInWithPassword: jest.fn(),
+        signUp: jest.fn(),
+        signOut: jest.fn(),
+      },
       channel: jest.fn().mockReturnValue(mockChannel),
       removeChannel: jest.fn(),
       from: jest.fn().mockReturnValue({
